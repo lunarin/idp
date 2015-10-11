@@ -29,65 +29,65 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
-  $stateProvider
+    $stateProvider
+      
+    // setup an abstract state for the tabs directive
+      .state('tab', {
+          url: '/tab',
+          abstract: true,
+          templateUrl: 'templates/tabs.html'
+      })
 
-  // setup an abstract state for the tabs directive
-    .state('tab', {
-    url: '/tab',
-    abstract: true,
-    templateUrl: 'templates/tabs.html'
-  })
+    // Each tab has its own nav history stack:
 
-  // Each tab has its own nav history stack:
-
-  .state('tab.diary', {
-    url: '/diary',
-    views: {
-      'tab-diary': {
-        templateUrl: 'templates/tab-diary.html',
-        controller: 'DiaryCtrl'
-      }
-    }
-  })
-
-  .state('tab.chats', {
-      url: '/chats',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
+    .state('tab.diary', {
+        url: '/diary',   
+        views: {
+            'tab-diary': {
+                templateUrl: 'templates/tab-diary.html',
+                controller: 'DiaryCtrl'
+            }
         }
-      }
     })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
+    .state('tab.profile', {
+        url: '/diary/profile',
+        views: {
+            'tab-diary': {
+                templateUrl: 'templates/profile.html',
+                controller: 'ProfileCtrl'
+            }
         }
-      }
     })
 
-  .state('tab.account', {
-    url: '/account',
-    views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
-      }
-    }
-  })
-  
-  .state('profile', {
-      url: '/profile',
-      views: {
-          'profile': {
-              templateUrl: 'templates/profile.html',
-              controller: 'AccountCtrl'
+    .state('tab.addfood', {
+        url: '/addfood',
+        views: {
+            'tab-addfood': {
+                templateUrl: 'templates/tab-addfood.html',
+                controller: 'AddFoodCtrl'
+            }
+        }
+    })
+      .state('tab.chat-detail', {
+          url: '/addfood/:chatId',
+          views: {
+              'tab-addfood': {
+                  templateUrl: 'templates/chat-detail.html',
+                  controller: 'ChatDetailCtrl'
+              }
           }
-      }
-  });
+      })
+
+    .state('tab.findfood', {
+        url: '/findfood',
+        views: {
+            'tab-findfood': {
+                templateUrl: 'templates/tab-findfood.html',
+                controller: 'FindFoodCtrl'
+            }
+        }
+    });
+  
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/diary');
 

@@ -1,35 +1,52 @@
 <ion-view view-title="Diary">
-    <ion-nav-buttons side="primary">
-        <button class="button button-fab button-balanced icon ion-ios-person">
-        </button>
+
+    <ion-nav-buttons side="primary">    
+        <button class="button button-fab button-balanced icon ion-ios-person" onclick=" window.location = '#/tab/diary/profile'"></button>
     </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
         <button class="button button-fab button-balanced icon ion-thumbsup"></button>
     </ion-nav-buttons>
-  <ion-content class="padding">
-    <div class="list card">
-      <div class="item item-divider">Breakfast</div>
-      <div class="item item-body">
-        <div>
-          Insert food here <b>EAT ME</b>
+
+    <ion-content class="padding">
+        <div class="bar-light" align="center" style="line-height:33px; margin-bottom:5px">
+            <span class="h5" style="float:left; margin-top:5px; margin-bottom:0px"><a class="button button-small button-icon icon ion-chevron-left" style="float:left"></a>Yesterday</span>
+            <span class="h4">Today</span>
+            <span class="h5" style="float:right; margin-top:5px; margin-bottom:0px">Tomorrow<a class="button button-small button-icon icon ion-chevron-right" style="float:right"></a></span>
         </div>
-      </div>
-    </div>
-    <div class="list card">
-      <div class="item item-divider">Lunch</div>
-      <div class="item item-body">
-        <div>
-          You ate an apple today!
+        <div style="height:100px">
+            <p style="margin-top:10px; margin-left:10%">Nutrients Remaining</p>
         </div>
-      </div>
-    </div>
-    <div class="list card">
-      <div class="item item-divider">Dinner</div>
-      <div class="item item-body">
-        <div>
-          You are not eating <b>tonight</b>.
+        <div class="list">
+            <div class="item item-divider"><div class="h5">Breakfast</div></div>
+            <!-- http://ionicframework.com/docs/api/directive/ionList/ -->
+            <div class="item">
+                <a class="button button-small button-icon icon ion-ios-plus-outline" href="#">
+                    Add Food
+                </a>
+            </div>
+
+            <div class="item item-divider"><div class="h5">Lunch</div></div>
+            <div class="item">
+                <a class="button button-small button-icon icon ion-ios-plus-outline" href="#">
+                    Add Food
+                </a>
+            </div>
+
+            <div class="item item-divider"><div class="h5">Dinner</div></div>
+            <div class="item">
+                <a class="button button-small button-icon icon ion-ios-plus-outline" href="#">
+                    Add Food
+                </a>
+            </div>
+
+            <div class="item item-divider"><div class="h5">Snacks</div></div>
+            <div class="item">
+                <a class="button button-small button-icon icon ion-ios-plus-outline" href="#">
+                    Add Food
+                </a>
+            </div>
+            
         </div>
-      </div>
-    </div>
-  </ion-content>
+
+    </ion-content>
 </ion-view>
