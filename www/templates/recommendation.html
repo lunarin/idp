@@ -1,10 +1,7 @@
-<ion-view view-title="Diary">
+<ion-view view-title="Recommendation">
 
-    <ion-nav-buttons side="primary">    
-        <button class="button button-fab button-balanced icon ion-ios-person" onclick=" window.location = '#/tab/diary/profile'"></button>
-    </ion-nav-buttons>
     <ion-nav-buttons side="secondary">
-        <button class="button button-fab button-balanced icon ion-thumbsup" onclick=" window.location = '#/tab/diary/recommendation'"></button>
+        <button class="button button-fab button-balanced icon ion-checkmark-round"></button>
     </ion-nav-buttons>
 
     <ion-content class="padding">
@@ -40,12 +37,28 @@
             </div>
 
             <div class="item item-divider"><div class="h5">Snacks</div></div>
-            <div class="item">
-                <a class="button button-small button-icon icon ion-ios-plus-outline" href="#">
-                    Add Food
-                </a>
-            </div>
             
+            
+            <div class="item">
+                <div class="h5">Price : $ {{preference.price}}</div>
+                <div class="range range-energized">
+                    <i class="icon ion-social-usd-outline"></i>
+                    <input type="range" name="price" ng-model="preference.price" min="0" max="50">
+                    <i class="icon ion-social-usd"></i>
+                </div>
+            </div>
+            <div class="item">
+                <div class="h5">Proximity : {{preference.proximity}} km</div>
+                <div class="range range-energized">
+                    <i class="icon ion-ios-location-outline"></i>
+                    <input type="range" name="proximity" ng-model="preference.proximity" min="0" max="10">
+                    <i class="icon ion-ios-location"></i>
+                </div>
+            </div>
+
+  
+            
+
         </div>
 
     </ion-content>

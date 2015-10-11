@@ -49,12 +49,23 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
             }
         }
     })
+
     .state('tab.profile', {
         url: '/diary/profile',
         views: {
             'tab-diary': {
                 templateUrl: 'templates/profile.html',
                 controller: 'ProfileCtrl'
+            }
+        }
+    })
+
+    .state('tab.recommendation', {
+        url: '/diary/recommendation',
+        views: {
+            'tab-diary': {
+                templateUrl: 'templates/recommendation.html',
+                controller: 'RecommendationCtrl'
             }
         }
     })

@@ -6,6 +6,19 @@ angular.module('starter.controllers', [])
     };
 })
 
+.controller('RecommendationCtrl', function ($scope) {
+    $scope.preference = {
+        'price': 10,
+        'proximity': 3
+    };
+})
+
+.controller('ProfileCtrl', function ($scope) {
+    $scope.settings = {
+        enableFriends: true
+    };
+})
+
 .controller('AddFoodCtrl', function($scope, Chats) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -15,10 +28,21 @@ angular.module('starter.controllers', [])
   //$scope.$on('$ionicView.enter', function(e) {
   //});
 
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
+    $scope.chats = Chats.all();
+    /*
+    var doSearch = ionic.debounce(function (query) {
+        Flickr.search(query).then(function (resp) {
+            $scope.photos = resp;
+        });
+    }, 500);
+    */
+    $scope.search = function () {
+        //doSearch($scope.query);
+    };
+
+    $scope.remove = function(chat) {
+        Chats.remove(chat);
+    };
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
@@ -29,10 +53,4 @@ angular.module('starter.controllers', [])
   $scope.settings = {
     enableFriends: true
   };
-})
-
-.controller('ProfileCtrl', function ($scope) {
-    $scope.settings = {
-        enableFriends: true
-    };
 });
