@@ -29,28 +29,33 @@ angular.module('starter.controllers', [])
   //});
 
     $scope.stores = FoodAndStores.stores();
-    /*
-    var doSearch = ionic.debounce(function (query) {
-        Flickr.search(query).then(function (resp) {
-            $scope.photos = resp;
-        });
-    }, 500);
-    */
-    $scope.search = function () {
-        //doSearch($scope.query);
+    $scope.foods = FoodAndStores.foods();
+    $scope.store_name = function (storeId) {
+        return FoodAndStores.get_store(storeId).name;
     };
-
+    
+    var doSearch = function (query) {
+        $scope.results = FoodAndStores.search(query);
+    };
+    $scope.query = "";
+    $scope.search = function () {
+        if ($scope.query.length > 3) {
+            doSearch($scope.query);
+        }
+    };
+    $scope.results = [];
     /*$scope.remove = function(chat) {
         Chats.remove(chat);
     };*/
 })
 
-.controller('ChatDetailCtrl', function ($scope, $stateParams, FoodAndStores) {
-    $scope.chat = FoodAndStores.get($stateParams.chatId);
+.controller('FoodDetailCtrl', function ($scope, $stateParams, FoodAndStores) {
+    $scope.food = FoodAndStores.get_food($stateParams.foodId);
 })
 
-.controller('FindFoodCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
+.controller('FindFoodCtrl', function ($scope, FoodAndStores) {
+    $scope.stores = FoodAndStores.stores();
+    $scope.settings = {
+        enableFriends: true
+    };
 });

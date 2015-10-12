@@ -13,41 +13,38 @@
         <div style="height:100px">
             <p style="margin-top:10px; margin-left:10%">Nutrients Remaining</p>
         </div>
-        <div class="list">
-            <div class="item item-divider"><div class="h5">Breakfast</div></div>
-            <!-- http://ionicframework.com/docs/api/directive/ionList/ -->
-            <div class="item">
-                <a class="button button-small button-icon icon ion-ios-plus-outline" href="#">
-                    Add Food
-                </a>
+
+            <div class="list">
+                <div class="item item-divider"><div class="h5">Breakfast</div></div>
+                <!-- http://ionicframework.com/docs/api/directive/ionList/ -->
+                <div class="item">
+                    <a class="button button-small button-icon icon ion-ios-plus-outline" href="#">
+                        Add Food
+                    </a>
+                </div>
+
+                <div class="item item-divider"><div class="h5">Lunch</div></div>
+                <div class="item">
+                    <a class="button button-small button-icon icon ion-ios-plus-outline" href="#">
+                        Add Food
+                    </a>
+                </div>
+                <div class="item item-divider"><div class="h5">Dinner</div></div>
+                <div class="item">
+                    <a class="button button-small button-icon icon ion-ios-plus-outline" href="#">
+                        Add Food
+                    </a>
+                </div>
+                <div class="item item-divider"><div class="h5">Snacks</div></div>
             </div>
 
-            <div class="item item-divider"><div class="h5">Lunch</div></div>
-            <div class="item">
-                <a class="button button-small button-icon icon ion-ios-plus-outline" href="#">
-                    Add Food
-                </a>
-            </div>
-
-            <div class="item item-divider"><div class="h5">Dinner</div></div>
-            <div class="item">
-                <a class="button button-small button-icon icon ion-ios-plus-outline" href="#">
-                    Add Food
-                </a>
-            </div>
-
-            <div class="item item-divider"><div class="h5">Snacks</div></div>
-            
-            
-            <div class="item">
+            <div style="background-color:white">
                 <div class="h5">Price : $ {{preference.price}}</div>
                 <div class="range range-energized">
                     <i class="icon ion-social-usd-outline"></i>
                     <input type="range" name="price" ng-model="preference.price" min="0" max="50">
                     <i class="icon ion-social-usd"></i>
                 </div>
-            </div>
-            <div class="item">
                 <div class="h5">Proximity : {{preference.proximity}} km</div>
                 <div class="range range-energized">
                     <i class="icon ion-ios-location-outline"></i>
@@ -55,11 +52,6 @@
                     <i class="icon ion-ios-location"></i>
                 </div>
             </div>
-
-  
-            
-
-        </div>
 
     </ion-content>
 </ion-view>
