@@ -13,7 +13,7 @@
             </div>
         </div>
         <ion-list>
-            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="food in searchText.results" type="item-text-wrap" href="#/tab/addfood/{{food.id}}">
+            <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="food in searchText.results" type="item-text-wrap" href="#/tab/addfood/{{food.id}}">
                 <img ng-src="{{food.foodImage}}">
                 <h2>{{food.name}}</h2>
                 <p>{{store_name(food.store_id)}}</p>

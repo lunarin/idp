@@ -110,7 +110,7 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/diary');
   uiGmapGoogleMapApiProvider.configure({
-      key: 'AIzaSyAbIhAJ3oaElm0APMBFRXpoutS6aqPfsps',
+      //key: 'AIzaSyAbIhAJ3oaElm0APMBFRXpoutS6aqPfsps',
       v: '3.20', //defaults to latest 3.X anyhow
       libraries: 'weather,geometry,visualization'
   });
