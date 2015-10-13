@@ -3,7 +3,6 @@ angular.module('starter.services', [])
 .factory('FoodAndStores', function () {
     // Might use a resource here that returns a JSON array
 
-    // Some fake testing data
     var food_stores = [{
         id: 0,
         name: 'Hatched',
@@ -122,17 +121,7 @@ angular.module('starter.services', [])
                 }
             }
             return null;
-        },
-
-        search: function (query) {
-            var result = [];
-            for (var i = 0; i < foods.length; i++) {
-                var food_name = foods[i].name;
-                if (food_name.indexOf(query) != -1) {
-                    result.push(foods[i]);
-                }
-            }
-            return result;
         }
+        
     };
 });

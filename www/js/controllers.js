@@ -25,25 +25,36 @@ angular.module('starter.controllers', [])
   // To listen for when this page is active (for example, to refresh data),
   // listen for the $ionicView.enter event:
   //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
+    //$scope.$on('$ionicView.enter', function(e) {
+    //});
+    $scope.searchText = {results:[]};
     $scope.stores = FoodAndStores.stores();
     $scope.foods = FoodAndStores.foods();
     $scope.store_name = function (storeId) {
         return FoodAndStores.get_store(storeId).name;
     };
     
-    var doSearch = function (query) {
-        $scope.results = FoodAndStores.search(query);
+
+    var doSearch = function () {
+        var result = [];
+        var foods = $scope.foods;
+        for (var i = 0; i < foods.length; i++) {
+            var food_name = foods[i].name.toLowerCase();
+            var query = $scope.searchText.query.toLowerCase();
+            if (food_name.indexOf(query) > -1) {
+                result.push(foods[i]);
+            }
+        }
+        $scope.searchText.results = result;
+        console.log($scope.searchText.results);
     };
-    $scope.query = "";
+
     $scope.search = function () {
-        if ($scope.query.length > 3) {
-            doSearch($scope.query);
+        if ($scope.searchText.query.length > 2) {
+            doSearch($scope.searchText.query);
         }
     };
-    $scope.results = [];
+    
     /*$scope.remove = function(chat) {
         Chats.remove(chat);
     };*/
