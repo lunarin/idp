@@ -13,9 +13,27 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('ProfileCtrl', function ($scope) {
+.controller('ProfileCtrl', function ($scope, Camera) {
     $scope.settings = {
         enableFriends: true
+    };
+
+    var options = {
+        quality: 75,
+        targetWidth: 320,
+        targetHeight: 320,
+        saveToPhotoAlbum: false
+    };
+
+    $scope.getPhoto = function () {
+        Camera.getPicture(options).then(function (imageURI) {
+            $scope.barcode = {
+                scanned: true,
+                lastPhoto: imageURI
+            };
+        }, function (err) {
+            console.err(err);
+        });
     };
 })
 

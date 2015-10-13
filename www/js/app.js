@@ -84,6 +84,7 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
             views: {
                 'tab-addfood': {
                     templateUrl: 'templates/barcode-scanner.html',
+                    controller: 'ProfileCtrl'
                 }
             }
         })
