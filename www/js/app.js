@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 'starter.services', ])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -23,7 +23,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function ($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -109,5 +109,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/diary');
-
+  uiGmapGoogleMapApiProvider.configure({
+      key: 'AIzaSyAbIhAJ3oaElm0APMBFRXpoutS6aqPfsps',
+      v: '3.20', //defaults to latest 3.X anyhow
+      libraries: 'weather,geometry,visualization'
+  });
 });
