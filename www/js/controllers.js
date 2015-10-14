@@ -4,20 +4,17 @@ angular.module('starter.controllers', [])
     $scope.userProfile = function () {
 
     };
-})
-
-.controller('RecommendationCtrl', function ($scope) {
     $scope.preference = {
         'price': 10,
         'proximity': 3
     };
 })
 
+
 .controller('ProfileCtrl', function ($scope, Camera) {
     $scope.settings = {
         enableFriends: true
     };
-
     var options = {
         quality: 75,
         targetWidth: 320,

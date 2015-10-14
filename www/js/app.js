@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 'starter.services', ])
+angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 'starter.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -44,18 +44,8 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
         url: '/diary',   
         views: {
             'tab-diary': {
-                templateUrl: 'templates/tab-diary.html',
+                templateUrl: 'templates/diary/tab-diary.html',
                 controller: 'DiaryCtrl'
-            }
-        }
-    })
-
-    .state('tab.profile', {
-        url: '/diary/profile',
-        views: {
-            'tab-diary': {
-                templateUrl: 'templates/profile.html',
-                controller: 'ProfileCtrl'
             }
         }
     })
@@ -64,45 +54,66 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
         url: '/diary/recommendation',
         views: {
             'tab-diary': {
-                templateUrl: 'templates/recommendation.html',
-                controller: 'RecommendationCtrl'
+                templateUrl: 'templates/diary/recommendation.html',
+                controller: 'DiaryCtrl'
             }
         }
     })
-
+    .state('tab.profile', {
+        url: '/profile',
+        views: {
+            'tab-profile': {
+                templateUrl: 'templates/profile/tab-profile.html',
+                controller: 'ProfileCtrl'
+            }
+        }
+    })
+    
+    .state('tab.account', {
+        url: '/profile/account',
+        views: {
+            'tab-profile': {
+                templateUrl: 'templates/profile/account.html',
+                controller: 'ProfileCtrl'
+            }
+        }
+    })
+            
     .state('tab.addfood', {
         url: '/addfood',
         views: {
             'tab-addfood': {
-                templateUrl: 'templates/tab-addfood.html',
+                templateUrl: 'templates/addfood/tab-addfood.html',
                 controller: 'AddFoodCtrl'
             }
         }
     })
-        .state('tab.barcode-scanner', {
-            url: '/addfood/barcode-scanner',
-            views: {
-                'tab-addfood': {
-                    templateUrl: 'templates/barcode-scanner.html',
-                    controller: 'ProfileCtrl'
-                }
+
+    .state('tab.barcode-scanner', {
+        url: '/addfood/barcode-scanner',
+        views: {
+            'tab-addfood': {
+                templateUrl: 'templates/addfood/barcode-scanner.html',
+                controller: 'AddFoodCtrl'
             }
-        })
-      .state('tab.food-detail', {
-          url: '/addfood/:foodId',
-          views: {
-              'tab-addfood': {
-                  templateUrl: 'templates/food-detail.html',
-                  controller: 'FoodDetailCtrl'
-              }
-          }
-      })
+        }
+    })
+
+    .state('tab.food-detail', {
+        url: '/addfood/:foodId',
+        views: {
+            'tab-addfood': {
+                templateUrl: 'templates/addfood/food-detail.html',
+                controller: 'FoodDetailCtrl'
+            }
+        }
+    })
 
     .state('tab.findfood', {
         url: '/findfood',
         views: {
             'tab-findfood': {
-                templateUrl: 'templates/tab-findfood.html',
+                templateUrl: 'templates/findfood/tab-findfood.html',
                 controller: 'FindFoodCtrl'
             }
         }
@@ -111,7 +122,7 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/diary');
   uiGmapGoogleMapApiProvider.configure({
-      //key: 'AIzaSyAbIhAJ3oaElm0APMBFRXpoutS6aqPfsps',
+      key: 'AIzaSyAbIhAJ3oaElm0APMBFRXpoutS6aqPfsps',
       v: '3.20', //defaults to latest 3.X anyhow
       libraries: 'weather,geometry,visualization'
   });
