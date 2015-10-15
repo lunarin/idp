@@ -11,7 +11,7 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
-      
+
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
@@ -23,6 +23,7 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
   });
 })
 
+
 .config(function ($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
@@ -30,7 +31,7 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
     $stateProvider
-      
+
     // setup an abstract state for the tabs directive
       .state('tab', {
           url: '/tab',
@@ -41,7 +42,7 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
     // Each tab has its own nav history stack:
 
     .state('tab.diary', {
-        url: '/diary',   
+        url: '/diary',
         views: {
             'tab-diary': {
                 templateUrl: 'templates/diary/tab-diary.html',
@@ -59,6 +60,7 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
             }
         }
     })
+
     .state('tab.profile', {
         url: '/profile',
         views: {
@@ -68,7 +70,17 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
             }
         }
     })
-    
+
+    .state('tab.activity', {
+        url: '/profile/activity',
+        views: {
+            'tab-profile': {
+                templateUrl: 'templates/profile/activity.html',
+                controller: 'ActivityCtrl'
+            }
+        }
+    })
+
     .state('tab.account', {
         url: '/profile/account',
         views: {
@@ -78,7 +90,7 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
             }
         }
     })
-            
+
     .state('tab.addfood', {
         url: '/addfood',
         views: {
@@ -118,7 +130,7 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
             }
         }
     });
-  
+
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/diary');
   uiGmapGoogleMapApiProvider.configure({
