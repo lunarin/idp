@@ -2,8 +2,13 @@
     <ion-content class="has-header">
         <div class="row">
             <div class="col" align="center">
-                <img ng-src="{{store.logo}}" style="width:75%">
+                <img ng-src="{{store.logo}}"  style="max-width:75%;max-height:25%">
             </div>
+        </div>
+        <div class="row" style="height:50%;padding-top:20px">
+          <div class="col">
+            <img src="img/map2.png" style="height:100%;width:100%">
+          </div>
         </div>
         <!-- insert google maps image -->
 
@@ -17,19 +22,19 @@
                 </div>
                 <div class="row" style="padding-left:0px">
                     <div class="col" align="center">
-                        <i class="ion-ios-body"></i>
+                        <img src="img/cal.png" style="width:25px">
                         <h6 style="margin:0px">{{food.nutrient_values.calories}} kcal</h6>
                     </div>
                     <div class="col" align="center">
-                        <i class="ion-ios-body"></i>
+                        <img src="img/fat.png" style="width:25px">
                         <h6 style="margin:0px">{{food.nutrient_values.fat}}g</h6>
                     </div>
                     <div class="col" align="center">
-                        <i class="ion-ios-body"></i>
+                        <img src="img/carbs.png" style="width:25px">
                         <h6 style="margin:0px">{{food.nutrient_values.carbs}}g</h6>
                     </div>
                     <div class="col" align="center">
-                        <i class="ion-ios-body"></i>
+                        <img src="img/protein.png" style="width:25px">
                         <h6 style="margin:0px">{{food.nutrient_values.protein}}g</h6>
                     </div>
                 </div>
@@ -44,11 +49,6 @@
             </ion-item>
         </ion-list>
 
-        <div class="row" style="height:50%;padding-top:20px">
-          <div class="col col-80 col-offset-10">
-            <img src="img/map2.png" style="height:100%;width:100%">
-          </div>
-        </div>
 
     </ion-content>
 </ion-view>

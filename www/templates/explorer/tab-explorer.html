@@ -1,59 +1,62 @@
 <ion-view view-title="Explorer">
-    
-    <ion-nav-buttons side="secondary">
-        <button class="button button-fab button-energized icon ion-heart" onclick=" window.location = '#/tab/explorer/preference'"></button>
-    </ion-nav-buttons>
-    <ion-content class="padding" no-scroll>
-                 <div class="row row-center" ng-if="foods.length==0" style="height:60%">
-                     <div class="col" align="center">
-                         <h6>You've finished browsing all the food nearby</h6><br />
-                         <h6>Select the diary tab below to get a meal plan recommended!</h6>
-                     </div>
-                 </div>
-                 <swipe-cards>
-                    <swipe-card ng-repeat="food in foods" on-card-swipe="cardSwiped($index)">
-                        <div class="image">
-                            <img ng-src="{{food.foodImage}}" align="middle" style="overflow: hidden; max-height: 250px;">
-                        </div>
-                        <div class="row">
-                            <div class="col" align="center">
-                                {{food.name}}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col" align="center">
-                                <i class="ion-ios-body"></i>
-                                <h6 style="margin:0px">{{food.nutrient_values.calories}} kcal</h6>
-                            </div>
-                            <div class="col" align="center">
-                                <i class="ion-ios-body"></i>
-                                <h6 style="margin:0px">{{food.nutrient_values.fat}}g</h6>
-                            </div>
-                            <div class="col" align="center">
-                                <i class="ion-ios-body"></i>
-                                <h6 style="margin:0px">{{food.nutrient_values.carbs}}g</h6>
-                            </div>
-                            <div class="col" align="center">
-                                <i class="ion-ios-body"></i>
-                                <h6 style="margin:0px">{{food.nutrient_values.protein}}g</h6>
-                            </div>
-                            <div class="col" align="center">
-                                <i class="ion-ios-body"></i>
-                                <h6 style="margin:0px">${{food.price}}</h6>
-                            </div>
-                        </div>
-                        <div class="button-bar">
-                            <div class="row">
-                                <div class="col" align="center">
-                                    <button class="button button-clear button-assertive icon ion-close-round" ng-click="dislike(food,$index)"> Dislike</button>
-                                </div>
-                                <div class="col"  align="center">
-                                    <button class="button button-clear button-assertive icon ion-heart" ng-click="like(food,$index)"> Like</button>
-                                </div>
-                            </div>
-                        </div>
-                    </swipe-card>
-                </swipe-cards>
-         
-    </ion-content>
+
+  <ion-nav-buttons side="secondary">
+    <button class="button button-fab button-energized icon ion-heart" onclick=" window.location = '#/tab/explorer/preference'"></button>
+  </ion-nav-buttons>
+  <!-- <ion-content class="padding" no-scroll> -->
+    <div class="row row-center" ng-if="foods.length==0" style="height:60%">
+      <div class="col" align="center">
+        <h6>You've finished browsing all the food nearby</h6>
+        <br />
+        <h6>Select the diary tab below to get a meal plan recommended!</h6>
+      </div>
+    </div>
+    <swipe-cards>
+      <swipe-card ng-repeat="food in foods" on-card-swipe="cardSwiped($index)">
+        <div ng-controller="SwipeCtrl">
+        <div class="image">
+          <img ng-src="{{food.foodImage}}" align="middle" style="overflow: hidden; max-height: 250px;">
+        </div>
+        <div class="row">
+          <div class="col" align="center">
+            {{food.name}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col" align="center">
+            <img src="img/cal.png" style="width:25px">
+            <h6 style="margin:0px">{{food.nutrient_values.calories}} kcal</h6>
+          </div>
+          <div class="col" align="center">
+            <img src="img/fat.png"  style="width:25px">
+            <h6 style="margin:0px">{{food.nutrient_values.fat}}g</h6>
+          </div>
+          <div class="col" align="center">
+            <img src="img/carbs.png"  style="width:25px">
+            <h6 style="margin:0px">{{food.nutrient_values.carbs}}g</h6>
+          </div>
+          <div class="col" align="center">
+            <img src="img/protein.png"  style="width:25px">
+            <h6 style="margin:0px">{{food.nutrient_values.protein}}g</h6>
+          </div>
+          <div class="col" align="center">
+            <img src="img/money.png" style="width:25px">
+            <h6 style="margin:0px">${{food.price}}</h6>
+          </div>
+        </div>
+        <div class="button-bar">
+          <div class="row">
+            <div class="col" align="center">
+              <button class="button button-clear button-assertive icon ion-close-round" ng-click="dislike(food,$index)"> Dislike</button>
+            </div>
+            <div class="col" align="center">
+              <button class="button button-clear button-assertive icon ion-heart" ng-click="like(food,$index)"> Like</button>
+            </div>
+          </div>
+        </div>
+        </div>
+      </swipe-card>
+    </swipe-cards>
+
+  <!-- </ion-content> -->
 </ion-view>

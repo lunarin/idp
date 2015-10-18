@@ -63,6 +63,12 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
         templateUrl: 'templates/questions.html',
         controller: 'QnsCtrl'
     })
+
+    .state('tutorial', {
+        url: '/tutorial',
+        templateUrl: 'templates/tutorial.html',
+        controller: 'TutorialCtrl'
+    })
     // setup an abstract state for the tabs directive
       .state('tab', {
           url: '/tab',
@@ -197,7 +203,7 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
             }
         }
     })
-    
+
     .state('tab.store-detail', {
         url: '/findfood/:storeId',
         views: {

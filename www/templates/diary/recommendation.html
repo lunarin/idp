@@ -1,10 +1,10 @@
 <ion-view view-title="Recommendation">
-    
+
     <ion-nav-buttons side="secondary">
         <button class="button button-fab button-energized icon button-outline ion-ios-settings-strong" onclick=" window.location = '#/tab/diary/recommendfilter'"></button>
     </ion-nav-buttons>
-    <ion-content class="padding">
-        <div class="row">
+    <!-- <ion-content class="padding"> -->
+        <div class="row" style="padding-top:55px">
             <div class="col" align="center">
                 <h4>Today's Overview</h4>
             </div>
@@ -15,10 +15,10 @@
                 <h6>No meal plans are available</h6>
                 <h6>Please try adjusting your filter preference</h6>
             </div>
-        </div>    
-        
+        </div>
+
         <swipe-cards>
-            <swipe-card ng-repeat="meal in meal_plan_cards" on-card-swipe="cardSwiped($index)" 
+            <swipe-card ng-repeat="meal in meal_plan_cards" on-card-swipe="cardSwiped($index)"
                         style=" display: none;
   position: fixed;
   -webkit-transform: scale(1,1);
@@ -27,7 +27,7 @@
   width: 80%;
   height: 80%;
   margin-left: -160px;
-  margin-top: -250px;
+  margin-top: -200px;
   box-sizing: border-box;
   background-color: white;
   border-radius: 4px;
@@ -46,23 +46,23 @@
                             </div>
                             <div class="row">
                                 <div class="col" align="center">
-                                    <i class="ion-ios-body"></i>
+                                    <img src="img/cal.png" style="width:25px">
                                     <h6 style="margin:0px">{{meal.breakfast.nutrient_values.calories}} kcal</h6>
                                 </div>
                                 <div class="col" align="center">
-                                    <i class="ion-ios-body"></i>
+                                    <img src="img/fat.png" style="width:25px">
                                     <h6 style="margin:0px">{{meal.breakfast.nutrient_values.fat}}g</h6>
                                 </div>
                                 <div class="col" align="center">
-                                    <i class="ion-ios-body"></i>
+                                    <img src="img/carbs.png" style="width:25px">
                                     <h6 style="margin:0px">{{meal.breakfast.nutrient_values.carbs}}g</h6>
                                 </div>
                                 <div class="col" align="center">
-                                    <i class="ion-ios-body"></i>
+                                    <img src="img/protein.png" style="width:25px">
                                     <h6 style="margin:0px">{{meal.breakfast.nutrient_values.protein}}g</h6>
                                 </div>
                                 <div class="col" align="center">
-                                    <i class="ion-ios-body"></i>
+                                    <img src="img/money.png" style="width:25px">
                                     <h6 style="margin:0px">${{meal.breakfast.price}}</h6>
                                 </div>
                             </div>
@@ -140,5 +140,5 @@
                 </div>
             </swipe-card>
         </swipe-cards>
-    </ion-content>
+    <!-- </ion-content> -->
 </ion-view>

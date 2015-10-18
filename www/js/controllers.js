@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps','ngCordova'])
+angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps','ngCordova','ionic.contrib.ui.cards','ionic'])
 
 .controller('DiaryCtrl', function ($rootScope, $scope, Users,$window) {
 
@@ -517,21 +517,159 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps','ngCordova'])
 })
 
 .controller('ExplorerCtrl', function ($scope, FoodAndStores, $rootScope, $ionicSwipeCardDelegate) {
-    $scope.foods = FoodAndStores.foods();
+    $scope.foods = [{
+        id: 0,
+        name: 'Eggs Benedict',
+        store_id: 0,
+        foodImage: 'http://farm8.staticflickr.com/7105/7237535962_0ae3b02942_c.jpg',
+        nutrient_values: {
+            calories: 428,
+            fat: 33.48,
+            carbs: 12.3,
+            protein: 18.54
+        },
+        price:7
+    }, {
+        id: 1,
+        name: 'Eggs Benedict',
+        store_id: 1,
+        foodImage: 'http://eggrecipesforbreakfast.com/wp-content/uploads/2015/01/1.jpg',
+        nutrient_values: {
+            calories: 408,
+            fat: 30.8,
+            carbs: 12.1,
+            protein: 24.83
+        },
+        price: 13
+    }, {
+        id: 2,
+        name: 'Fruit Salad',
+        store_id: 5,
+        foodImage: 'https://s.yimg.com/ea/img/-/130222/salad130222getty300_18idm81-18idmgc.jpg',
+        nutrient_values: {
+            calories: 130,
+            fat: 1.9,
+            carbs: 30.4,
+            protein: 2.13
+        },
+        price: 4
+    }, {
+        id: 3,
+        name: 'Chicken Rice',
+        store_id: 5,
+        foodImage: 'http://steamykitchen.com/wp-content/uploads/2009/08/hainanese-chicken-83.jpg',
+        nutrient_values: {
+            calories: 666,
+            fat: 44,
+            carbs: 55,
+            protein: 30
+        },
+        price: 7
+    }, {
+        id: 4,
+        name: 'Chicken Laksa',
+        store_id: 4,
+        foodImage: 'http://rasamalaysia.com/uploaded_images/laksa-recipe/laksa5.jpg',
+        nutrient_values: {
+            calories: 591,
+            fat: 32,
+            carbs: 58,
+            protein: 17
+        },
+        price: 6
+    }, {
+        id: 5,
+        name: 'Nutella Bar',
+        store_id: 3,
+        foodImage: 'https://www.medifast1.com/media/common/images/products/meals/bars/crunch/64805-1-zoom.jpg',
+        nutrient_values: {
+            calories: 271,
+            fat: 13,
+            carbs: 35,
+            protein: 5
+        },
+        price: 3
+    }, {
+        id: 6,
+        name: 'Cream of Carrot',
+        store_id: 2,
+        foodImage: 'http://www.vegkitchen.com/wp-content/uploads/2011/11/Carrot-soup.jpg',
+        nutrient_values: {
+            calories: 326,
+            fat: 25,
+            carbs: 37,
+            protein: 24
+        },
+        price: 7
+    }, {
+        id: 7,
+        name: 'Eggs Benedict',
+        store_id: 3,
+        foodImage: 'http://www.bbcgoodfood.com/sites/bbcgoodfood.com/files/recipe_images/recipe-image-legacy-id--857455_11.jpg',
+        nutrient_values: {
+            calories: 421,
+            fat: 42.41,
+            carbs: 8.7,
+            protein: 22.14
+        },
+        price: 9
+    }, {
+        id: 8,
+        name: 'Seafood Laksa',
+        store_id: 4,
+        foodImage: 'http://rasamalaysia.com/uploaded_images/laksa-recipe/laksa5.jpg',
+        nutrient_values: {
+            calories: 591,
+            fat: 32,
+            carbs: 58,
+            protein: 17
+        },
+        price: 6
+    }, {
+        id: 8,
+        name: 'Beef Pho',
+        store_id: 5,
+        foodImage: 'http://www.slendierslim.com.au/images/com_yoorecipe/natalie-916/Large.JPG',
+        nutrient_values: {
+            calories: 334,
+            fat: 6,
+            carbs: 55,
+            protein: 15
+        },
+        price: 9
+    }];
     $scope.cardSwiped = function(index) {
         $scope.foods.splice(index, 1);
     };
-
-    $scope.dislike = function (foodDisliked,index) {
-        var dislikeSet = $rootScope.user.preference.dislike;
-        dislikeSet.push(foodDisliked);
-        $scope.foods.splice(index, 1);
-    };
-    $scope.like = function (foodLiked, index) {
-        var likeSet = $rootScope.user.preference.like;
-        likeSet.push(foodLiked);
-        $scope.foods.splice(index, 1);
-    };
+    //
+    // $scope.dislike = function (foodDisliked,index) {
+    //     var dislikeSet = $rootScope.user.preference.dislike;
+    //     dislikeSet.push(foodDisliked);
+    //
+    //     $scope.foods.splice(index, 1);
+    // };
+    // $scope.like = function (foodLiked, index) {
+    //     var likeSet = $rootScope.user.preference.like;
+    //     likeSet.push(foodLiked);
+    //     $scope.foods.splice(index, 1);
+    // };
+})
+.controller('SwipeCtrl', function ($scope, $rootScope,$ionicSwipeCardDelegate,Users) {
+  $scope.dislike = function (foodDisliked,index) {
+      var dislikeSet = $rootScope.user.preference.dislike;
+      console.log(dislikeSet);
+      dislikeSet.push(foodDisliked);
+      var card = $ionicSwipeCardDelegate.getSwipeableCard($scope);
+      //$scope.foods.splice(index, 1);
+      card.swipe();
+  };
+  $scope.like = function (foodLiked, index) {
+      var likeSet = $rootScope.user.preference.like;
+      likeSet.push(foodLiked);
+      var card = $ionicSwipeCardDelegate.getSwipeableCard($scope);
+      //$scope.foods.splice(index, 1);
+      card.swipe();
+  };
 })
 
 .controller('ExplorerHistoryCtrl', function ($scope, FoodAndStores) {
@@ -681,7 +819,7 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps','ngCordova'])
         $ionicSlideBoxDelegate.next();
     }
     $scope.goDiary = function () {
-        $window.location.replace('#/tab/diary');
+        $window.location.replace('#/tutorial');
     }
 
 })
@@ -693,6 +831,11 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps','ngCordova'])
     $scope.Login = function () {
         $window.location = '#/tab/diary';
     }
+
+})
+
+.controller('TutorialCtrl', function ($scope, $window) {
+  $scope.tutorials = ['img/1.png','img/2.png','img/3.png','img/4.png','img/5.png','img/6.png','img/7.png','img/8.png','img/9.png','img/11.png','img/12.png','img/13.png','img/14.png','img/15.png'];
 
 })
 
