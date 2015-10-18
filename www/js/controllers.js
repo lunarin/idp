@@ -420,7 +420,7 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps','ngCordova','
   };
 
   $scope.generateRandom = function () {
-      var randFoodId = Math.floor((Math.random() * $scope.foods.length) + 1);
+      var randFoodId = 5;
       $window.location.replace('#/tab/addfood/'+randFoodId);
   }
 
