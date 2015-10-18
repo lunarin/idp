@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova'])
+angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps'])
 
 .controller('DiaryCtrl', function($rootScope, $scope, Users, $window) {
 
