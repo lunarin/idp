@@ -10,12 +10,7 @@
             </div>
         </div>
 
-        <div class="row row-center" style="height:30%" ng-if="meal_plan_cards.length==0">
-            <div class="col" align="center">
-                <h6>No meal plans are available</h6>
-                <h6>Please try adjusting your filter preference</h6>
-            </div>
-        </div>
+
 
         <swipe-cards>
             <swipe-card ng-repeat="meal in meal_plan_cards" on-card-swipe="cardSwiped($index)"
@@ -79,23 +74,23 @@
                             </div>
                             <div class="row">
                                 <div class="col" align="center">
-                                    <i class="ion-ios-body"></i>
+                                    <img src="img/cal.png" style="width:25px">
                                     <h6 style="margin:0px">{{meal.lunch.nutrient_values.calories}} kcal</h6>
                                 </div>
                                 <div class="col" align="center">
-                                    <i class="ion-ios-body"></i>
+                                  <img src="img/fat.png" style="width:25px">
                                     <h6 style="margin:0px">{{meal.lunch.nutrient_values.fat}}g</h6>
                                 </div>
                                 <div class="col" align="center">
-                                    <i class="ion-ios-body"></i>
+                                    <img src="img/carbs.png" style="width:25px">
                                     <h6 style="margin:0px">{{meal.lunch.nutrient_values.carbs}}g</h6>
                                 </div>
                                 <div class="col" align="center">
-                                    <i class="ion-ios-body"></i>
+                                    <img src="img/protein.png" style="width:25px">
                                     <h6 style="margin:0px">{{meal.lunch.nutrient_values.protein}}g</h6>
                                 </div>
                                 <div class="col" align="center">
-                                    <i class="ion-ios-body"></i>
+                                    <img src="img/money.png" style="width:25px">
                                     <h6 style="margin:0px">${{lunchie.price}}</h6>
                                 </div>
                             </div>
@@ -112,23 +107,23 @@
                             </div>
                             <div class="row">
                                 <div class="col" align="center">
-                                    <i class="ion-ios-body"></i>
+                                    <img src="img/cal.png" style="width:25px">
                                     <h6 style="margin:0px">{{meal.dinner.nutrient_values.calories}} kcal</h6>
                                 </div>
                                 <div class="col" align="center">
-                                    <i class="ion-ios-body"></i>
+                                    <img src="img/fat.png" style="width:25px">
                                     <h6 style="margin:0px">{{meal.dinner.nutrient_values.fat}}g</h6>
                                 </div>
                                 <div class="col" align="center">
-                                    <i class="ion-ios-body"></i>
+                                    <img src="img/carbs.png" style="width:25px">
                                     <h6 style="margin:0px">{{meal.dinner.nutrient_values.carbs}}g</h6>
                                 </div>
                                 <div class="col" align="center">
-                                    <i class="ion-ios-body"></i>
+                                    <img src="img/protein.png" style="width:25px">
                                     <h6 style="margin:0px">{{meal.dinner.nutrient_values.protein}}g</h6>
                                 </div>
                                 <div class="col" align="center">
-                                    <i class="ion-ios-body"></i>
+                                    <img src="img/money.png" style="width:25px">
                                     <h6 style="margin:0px">${{meal.dinner.price}}</h6>
                                 </div>
                             </div>
@@ -140,5 +135,11 @@
                 </div>
             </swipe-card>
         </swipe-cards>
+        <div class="row row-center" style="height:30%" ng-if="meal_plan_cards.length==0">
+            <div class="col" align="center">
+                <h6>No meal plans are available</h6>
+                <h6>Please try adjusting your filter preference</h6>
+            </div>
+        </div>
     <!-- </ion-content> -->
 </ion-view>
