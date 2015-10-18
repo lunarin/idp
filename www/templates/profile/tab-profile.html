@@ -1,4 +1,4 @@
-<ion-view view-title="PROFILE">
+<ion-view view-title="Profile">
   <div class="bar bar-header">
     <button class="button icon-left ion-chevron-left button-clear button-dark">&nbsp;&nbsp;Back</button>
     <div class="h1 title">Profile</div>
@@ -14,28 +14,23 @@
       <div class="col col-40" style="text-align:left">
         <div style="font-size:25px"> Johnny See </div>
         <div style="font-size:25px;padding-top:10px"> Bae Fit </div>
-        <div style="padding-top:15px"> Edit Profile <i class="ion-gear-b"></i></div>
+        <div style="padding-top:15px" onclick=" window.location = '#/tab/profile/editprofile'"><i class="ion-gear-b"></i> Edit Profile </div>
       </div>
     </div>
-
-<!--
-    <div class="row">
-      <div class="col col-70" style="text-align:center;font-size:25px" onclick=" window.location = '#/tab/profile/activity'">Johnny See Bae Fit</div>
-    </div> -->
     <div class="list">
       <label class="item item-input">
         <span class="input-label">Goal Weight (kg)</span>
-        <input type="number" style="text-align:right;color:orange;" value="55"  >
+        <input type="number" style="text-align:right;color:#ED7C12;" value="55"  >
       </label>
       <label class="item item-input">
         <span class="input-label">Current Weight (kg)</span>
-        <input type="number" style="text-align:right;color:orange;margin-right:15px" value="55">
+        <input type="number" style="text-align:right;color:#ED7C12;margin-right:15px" value="55">
       </label>
       <label class="item item-input item-select">
         <div class="input-label">
           Weight Goal
         </div>
-        <select style="color:orange">
+        <select style="color:#ED7C12">
           <option>Lose 0.2 kg per week</option>
           <option selected>Lose 0.5 kg per week</option>
           <option>Lose 0.8 kg per week</option>
@@ -45,7 +40,7 @@
         <div class="input-label">
           Activity Level
         </div>
-        <select style="color:orange">
+        <select style="color:#ED7C12">
           <option ng-repeat="item in activityList" ng-value="item.value" ng-model="data.clientSide" ng-change="changeItem(item)">
             {{ item.header }}
           </option>

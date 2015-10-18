@@ -5,12 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 'starter.services', 'nvd3', 'ionic.contrib.ui.cards'])
 
-.run(function($ionicPlatform) {
+.run(function ($ionicPlatform) {
   $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
 
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -18,28 +16,59 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
     }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
-      StatusBar.styleLightContent();
+        StatusBar.styleLightContent();
+        StatusBar.hide();
     }
   });
 })
 
+.filter('inSlicesOf', ['$rootScope',
+		function ($rootScope) {
+		    makeSlices = function (stores, count) {
+		        if (!count)
+		            count = 3;
+
+		        if (!angular.isArray(stores) && !angular.isString(stores)) return stores;
+
+		        var array = [];
+		        for (var i = 0; i < stores.length; i++) {
+		            var chunkIndex = parseInt(i / count, 10);
+		            var isFirst = (i % count === 0);
+		            if (isFirst)
+		                array[chunkIndex] = [];
+		            array[chunkIndex].push(stores[i]);
+		        }
+		        if (angular.equals($rootScope.arrayinSliceOf, array))
+		            return $rootScope.arrayinSliceOf;
+		        else
+		            $rootScope.arrayinSliceOf = array;
+		        return array;
+		    };
+		    return makeSlices;
+		}]
+	)
+
 
 .config(function ($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider) {
 
-  // Ionic uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  // Each state's controller can be found in controllers.js
     $stateProvider
+        .state('home', {
+            url: '/home',
+            templateUrl: 'templates/home.html',
+            controller: 'HomeCtrl'
+        })
 
+    .state('questions', {
+        url: '/questions',
+        templateUrl: 'templates/questions.html',
+        controller: 'QnsCtrl'
+    })
     // setup an abstract state for the tabs directive
       .state('tab', {
           url: '/tab',
           abstract: true,
           templateUrl: 'templates/tabs.html'
       })
-
-    // Each tab has its own nav history stack:
 
     .state('tab.diary', {
         url: '/diary',
@@ -51,16 +80,35 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
         }
     })
 
+    .state('tab.diaryfood', {
+        url: '/diary/foodinfo',
+        views: {
+            'tab-diary': {
+                templateUrl: 'templates/diary/edit-food.html',
+                controller: 'EditDiaryCtrl'
+            }
+        }
+    })
+
     .state('tab.recommendation', {
         url: '/diary/recommendation',
         views: {
             'tab-diary': {
                 templateUrl: 'templates/diary/recommendation.html',
-                controller: 'DiaryCtrl'
+                controller: 'RecommendationCtrl'
             }
         }
     })
 
+    .state('tab.recommendsetting', {
+        url: '/diary/recommendfilter',
+        views: {
+            'tab-diary': {
+                templateUrl: 'templates/diary/recommend-setting.html',
+                controller: 'FilterCtrl'
+            }
+        }
+    })
     .state('tab.profile', {
         url: '/profile',
         views: {
@@ -71,12 +119,12 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
         }
     })
 
-    .state('tab.activity', {
-        url: '/profile/activity',
+    .state('tab.editprofile', {
+        url: '/profile/editprofile',
         views: {
             'tab-profile': {
-                templateUrl: 'templates/profile/activity.html',
-                controller: 'ActivityCtrl'
+                templateUrl: 'templates/profile/editprofile.html',
+                controller: 'editprofile'
             }
         }
     })
@@ -91,6 +139,25 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
         }
     })
 
+    .state('tab.explorer', {
+        url: '/explorer',
+        views: {
+            'tab-explorer': {
+                templateUrl: 'templates/explorer/tab-explorer.html',
+                controller: 'ExplorerCtrl'
+            }
+        }
+    })
+
+    .state('tab.explorer-history', {
+        url: '/explorer/preference',
+        views: {
+            'tab-explorer': {
+                templateUrl: 'templates/explorer/preference-history.html',
+                controller: 'ExplorerHistoryCtrl'
+            }
+        }
+    })
     .state('tab.addfood', {
         url: '/addfood',
         views: {
@@ -129,12 +196,34 @@ angular.module('starter', ['ionic', 'uiGmapgoogle-maps', 'starter.controllers', 
                 controller: 'FindFoodCtrl'
             }
         }
-    });
+    })
+    
+    .state('tab.store-detail', {
+        url: '/findfood/:storeId',
+        views: {
+            'tab-findfood': {
+                templateUrl: 'templates/findfood/store-detail.html',
+                controller: 'StoreDetailCtrl'
+            }
+        }
+    })
+
+    .state('tab.store-food-detail', {
+        url: '/findfood/:storeId/:foodId',
+        views: {
+            'tab-findfood': {
+                templateUrl: 'templates/findfood/store-food-detail.html',
+                controller: 'StoreFoodDetailCtrl'
+            }
+        }
+    })
+
+    ;
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/diary');
+  $urlRouterProvider.otherwise('/home');
   uiGmapGoogleMapApiProvider.configure({
-      key: 'AIzaSyAbIhAJ3oaElm0APMBFRXpoutS6aqPfsps',
+      key: 'AIzaSyBz9ZF8pmU91ekUiRmemTbvCzRXap9QsbY',
       v: '3.20', //defaults to latest 3.X anyhow
       libraries: 'weather,geometry,visualization'
   });

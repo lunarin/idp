@@ -1,57 +1,144 @@
-<ion-view view-title="RECOMMENDATION">
-
+<ion-view view-title="Recommendation">
+    
     <ion-nav-buttons side="secondary">
-        <button class="button button-fab button-balanced icon ion-checkmark-round"></button>
+        <button class="button button-fab button-energized icon button-outline ion-ios-settings-strong" onclick=" window.location = '#/tab/diary/recommendfilter'"></button>
     </ion-nav-buttons>
-
     <ion-content class="padding">
-        <div class="bar-light" align="center" style="line-height:33px; margin-bottom:5px">
-            <span class="h5" style="float:left; margin-top:5px; margin-bottom:0px"><a class="button button-small button-icon icon ion-chevron-left" style="float:left"></a>Yesterday</span>
-            <span class="h4">Today</span>
-            <span class="h5" style="float:right; margin-top:5px; margin-bottom:0px">Tomorrow<a class="button button-small button-icon icon ion-chevron-right" style="float:right"></a></span>
-        </div>
-        <div style="height:100px">
-            <p style="margin-top:10px; margin-left:10%">Nutrients Remaining</p>
+        <div class="row">
+            <div class="col" align="center">
+                <h4>Today's Overview</h4>
+            </div>
         </div>
 
-            <div class="list">
-                <div class="item item-divider"><div class="h5">Breakfast</div></div>
-                <!-- http://ionicframework.com/docs/api/directive/ionList/ -->
-                <div class="item">
-                    <a class="button button-small button-icon icon ion-ios-plus-outline" href="#">
-                        Add Food
-                    </a>
-                </div>
-
-                <div class="item item-divider"><div class="h5">Lunch</div></div>
-                <div class="item">
-                    <a class="button button-small button-icon icon ion-ios-plus-outline" href="#">
-                        Add Food
-                    </a>
-                </div>
-                <div class="item item-divider"><div class="h5">Dinner</div></div>
-                <div class="item">
-                    <a class="button button-small button-icon icon ion-ios-plus-outline" href="#">
-                        Add Food
-                    </a>
-                </div>
-                <div class="item item-divider"><div class="h5">Snacks</div></div>
+        <div class="row row-center" style="height:30%" ng-if="meal_plan_cards.length==0">
+            <div class="col" align="center">
+                <h6>No meal plans are available</h6>
+                <h6>Please try adjusting your filter preference</h6>
             </div>
-
-            <div style="background-color:white">
-                <div class="h5">Price : $ {{preference.price}}</div>
-                <div class="range range-energized">
-                    <i class="icon ion-social-usd-outline"></i>
-                    <input type="range" name="price" ng-model="preference.price" min="0" max="50">
-                    <i class="icon ion-social-usd"></i>
+        </div>    
+        
+        <swipe-cards>
+            <swipe-card ng-repeat="meal in meal_plan_cards" on-card-swipe="cardSwiped($index)" 
+                        style=" display: none;
+  position: fixed;
+  -webkit-transform: scale(1,1);
+  left: 50%;
+  top: 50%;
+  width: 80%;
+  height: 80%;
+  margin-left: -160px;
+  margin-top: -250px;
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 4px;
+  border-color:black;
+  overflow: hidden;
+  -webkit-animation-fill-mode: forwards;">
+                <div class="list">
+                    <div class="item item-divider"><div class="h5" style="margin:0px">Breakfast</div></div>
+                    <ion-list>
+                        <ion-item class="item-avatar-left" type="item-text-wrap" style="padding-top:8px;padding-bottom:8px;">
+                            <img src="{{meal.breakfast.foodImage}}">
+                            <div class="row">
+                                <div class="col" align="left" style="padding-top:0px">
+                                    <h4>{{meal.breakfast.name}}</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" align="center">
+                                    <i class="ion-ios-body"></i>
+                                    <h6 style="margin:0px">{{meal.breakfast.nutrient_values.calories}} kcal</h6>
+                                </div>
+                                <div class="col" align="center">
+                                    <i class="ion-ios-body"></i>
+                                    <h6 style="margin:0px">{{meal.breakfast.nutrient_values.fat}}g</h6>
+                                </div>
+                                <div class="col" align="center">
+                                    <i class="ion-ios-body"></i>
+                                    <h6 style="margin:0px">{{meal.breakfast.nutrient_values.carbs}}g</h6>
+                                </div>
+                                <div class="col" align="center">
+                                    <i class="ion-ios-body"></i>
+                                    <h6 style="margin:0px">{{meal.breakfast.nutrient_values.protein}}g</h6>
+                                </div>
+                                <div class="col" align="center">
+                                    <i class="ion-ios-body"></i>
+                                    <h6 style="margin:0px">${{meal.breakfast.price}}</h6>
+                                </div>
+                            </div>
+                        </ion-item>
+                    </ion-list>
+                    <div class="item item-divider"><div class="h5" style="margin:0px">Lunch</div></div>
+                    <ion-list>
+                        <ion-item class="item-avatar-left" type="item-text-wrap" style="padding-top:8px;padding-bottom:8px;">
+                            <img src="{{meal.lunch.foodImage}}">
+                            <div class="row">
+                                <div class="col" align="left" style="padding-top:0px">
+                                    <h4>{{meal.lunch.name}}</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" align="center">
+                                    <i class="ion-ios-body"></i>
+                                    <h6 style="margin:0px">{{meal.lunch.nutrient_values.calories}} kcal</h6>
+                                </div>
+                                <div class="col" align="center">
+                                    <i class="ion-ios-body"></i>
+                                    <h6 style="margin:0px">{{meal.lunch.nutrient_values.fat}}g</h6>
+                                </div>
+                                <div class="col" align="center">
+                                    <i class="ion-ios-body"></i>
+                                    <h6 style="margin:0px">{{meal.lunch.nutrient_values.carbs}}g</h6>
+                                </div>
+                                <div class="col" align="center">
+                                    <i class="ion-ios-body"></i>
+                                    <h6 style="margin:0px">{{meal.lunch.nutrient_values.protein}}g</h6>
+                                </div>
+                                <div class="col" align="center">
+                                    <i class="ion-ios-body"></i>
+                                    <h6 style="margin:0px">${{lunchie.price}}</h6>
+                                </div>
+                            </div>
+                        </ion-item>
+                    </ion-list>
+                    <div class="item item-divider"><div class="h5" style="margin:0px">Dinner</div></div>
+                    <ion-list>
+                        <ion-item class="item-avatar-left" type="item-text-wrap" style="padding-top:8px;padding-bottom:8px;">
+                            <img src="{{meal.dinner.foodImage}}">
+                            <div class="row">
+                                <div class="col" align="left" style="padding-top:0px">
+                                    <h4>{{meal.dinner.name}}</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col" align="center">
+                                    <i class="ion-ios-body"></i>
+                                    <h6 style="margin:0px">{{meal.dinner.nutrient_values.calories}} kcal</h6>
+                                </div>
+                                <div class="col" align="center">
+                                    <i class="ion-ios-body"></i>
+                                    <h6 style="margin:0px">{{meal.dinner.nutrient_values.fat}}g</h6>
+                                </div>
+                                <div class="col" align="center">
+                                    <i class="ion-ios-body"></i>
+                                    <h6 style="margin:0px">{{meal.dinner.nutrient_values.carbs}}g</h6>
+                                </div>
+                                <div class="col" align="center">
+                                    <i class="ion-ios-body"></i>
+                                    <h6 style="margin:0px">{{meal.dinner.nutrient_values.protein}}g</h6>
+                                </div>
+                                <div class="col" align="center">
+                                    <i class="ion-ios-body"></i>
+                                    <h6 style="margin:0px">${{meal.dinner.price}}</h6>
+                                </div>
+                            </div>
+                        </ion-item>
+                    </ion-list>
                 </div>
-                <div class="h5">Proximity : {{preference.proximity}} km</div>
-                <div class="range range-energized">
-                    <i class="icon ion-ios-location-outline"></i>
-                    <input type="range" name="proximity" ng-model="preference.proximity" min="0" max="10">
-                    <i class="icon ion-ios-location"></i>
+                <div class="button-bar">
+                    <button class="button button-full button-energized button-outline" ng-click="addToDiary(meal)">Add to diary!</button>
                 </div>
-            </div>
-
+            </swipe-card>
+        </swipe-cards>
     </ion-content>
 </ion-view>

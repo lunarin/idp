@@ -1,0 +1,26 @@
+<ion-view view-title="Filter">
+   
+        <ion-content>
+            
+                <div class="h4">Price : $ {{pref.price}}</div>
+                <div class="range range-energized">
+                    <i class="icon ion-social-usd-outline"></i>
+                    <input type="range" name="price" ng-model="pref.price" min="1" max="15">
+                    <i class="icon ion-social-usd"></i>
+                </div>
+                <div class="h4">Proximity : {{pref.proximity}} km</div>
+                <div class="range range-energized">
+                    <i class="icon ion-ios-location-outline"></i>
+                    <input type="range" name="proximity" ng-model="pref.proximity" min="1" max="10">
+                    <i class="icon ion-ios-location"></i>
+                </div>
+            <div class="row">
+                <div class="col" align="center">
+                    <button class="button button-full button-energized button-outline" ng-click="save()">Filter my meals!</button>
+                </div>
+            </div>
+
+
+        </ion-content>
+
+</ion-view>

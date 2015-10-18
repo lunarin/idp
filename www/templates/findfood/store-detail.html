@@ -1,0 +1,47 @@
+<ion-view view-title="{{store.name}}">
+    <ion-content class="has-header">
+        <div class="row">
+            <div class="col" align="center">
+                <img ng-src="{{store.logo}}" style="width:75%">
+            </div>
+        </div>
+        <!-- insert google maps image -->
+
+        <ion-list>
+            <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="food in store.menu" type="item-text-wrap" style="padding-bottom:0" href="#/tab/findfood/{{store.id}}/{{food.id}}">
+                <img ng-src="{{food.foodImage}}">
+                <div class="row" style="padding:0px">
+                    <div class="col" align="left" style="padding-top:0px">
+                        <h2>{{food.name}}</h2>
+                    </div>
+                </div>
+                <div class="row" style="padding-left:0px">
+                    <div class="col" align="center">
+                        <i class="ion-ios-body"></i>
+                        <h6 style="margin:0px">{{food.nutrient_values.calories}} kcal</h6>
+                    </div>
+                    <div class="col" align="center">
+                        <i class="ion-ios-body"></i>
+                        <h6 style="margin:0px">{{food.nutrient_values.fat}}g</h6>
+                    </div>
+                    <div class="col" align="center">
+                        <i class="ion-ios-body"></i>
+                        <h6 style="margin:0px">{{food.nutrient_values.carbs}}g</h6>
+                    </div>
+                    <div class="col" align="center">
+                        <i class="ion-ios-body"></i>
+                        <h6 style="margin:0px">{{food.nutrient_values.protein}}g</h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col" align="left" style="padding-left:0px">
+                        <h3>${{food.price}}</h3>
+                    </div>
+                </div>
+
+                <i class="icon ion-chevron-right icon-accessory"></i>
+
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,31 @@
+<ion-view view-title="Preference">
+    <ion-content>
+
+        <div class="row row-bottom" ng-repeat="row in preference | inSlicesOf:2">
+            <div class="col col-50" ng-repeat="meal in row" align="center">
+                <div style="border-radius: 30px;
+    border: 2px solid black;
+    padding: 5px; height:145px; width:155px;" ng-click="meal.liked = !meal.liked">
+                    <div class="row">
+                        <div class="col" align="center">
+                            <img ng-src="{{meal.food.foodImage}}" style="width:75%">
+                        </div>
+                    </div>
+                    <div class="row"  style="padding-bottom:0px">
+                        <div class="col" align="center"  style="padding:0px">
+                            <h6>{{meal.food.name}}</h6>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:0px">
+                        <div class="col" align="center" ng-if="meal.liked" style="padding-top:0px; color:darkred">
+                            <i class=" ion-ios-heart"></i>
+                        </div>
+                        <div class="col" align="center" ng-if="!meal.liked" style="padding-top:0px; color:darkred">
+                            <i class="ion-ios-heart-outline"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
