@@ -36,7 +36,7 @@ angular.module('starter.services', [])
     }, {
         id: 5,
         name: 'NamNam',
-        logo: '/www/img/namnam.png',
+        logo: 'img/namnam.png',
         distance: 2
     }];
 
@@ -161,7 +161,7 @@ angular.module('starter.services', [])
         },
         price: 9
     }];
-    
+
     return {
         stores: function () {
             return food_stores.sort(function (store_a, store_b) {
@@ -235,7 +235,7 @@ angular.module('starter.services', [])
 }])
 
 .factory('Users', function () {
-    
+
     var users = [
         {
             id: 0,

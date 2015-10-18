@@ -1,5 +1,5 @@
 <ion-view view-title="Add Food">
-    
+
     <ion-content class="has-header">
         <div id="search-bar">
             <div class="item item-input-inset">
@@ -7,11 +7,8 @@
                     <i class="icon ion-search placeholder-icon"></i>
                     <input type="text" placeholder="Search" ng-model="searchText.query" ng-change="search()">
                 </label>
-                <button class="button button-small button-outline button-fab button-energized icon ion-ios-barcode-outline" ng-click="getPhoto()"> Barcode</button>
+                <button class="button button-small button-outline button-fab button-energized icon ion-ios-barcode-outline" ng-click="scanBarcode()"> Barcode</button>
             </div>
-        </div>
-        <div ng-hide="true">
-            <input type="button" ng-change="generateRandom()" ng-model="barcode.scanned">
         </div>
         <ion-list>
             <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="food in searchText.results" type="item-text-wrap" href="#/tab/addfood/{{food.id}}">
@@ -19,11 +16,12 @@
                 <h2>{{food.name}}</h2>
                 <p>{{store_name(food.store_id)}}</p>
                 <i class="icon ion-chevron-right icon-accessory"></i>
-                <!--
-                    <ion-option-button class="button-assertive" ng-click="remove(food)">
-                    Delete
-                </ion-option-button>
-                -->
+            </ion-item>
+            <ion-item ng-if="searchText.results.length ==0" class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="food in foods" type="item-text-wrap" href="#/tab/addfood/{{food.id}}">
+                <img ng-src="{{food.foodImage}}">
+                <h2>{{food.name}}</h2>
+                <p>{{store_name(food.store_id)}}</p>
+                <i class="icon ion-chevron-right icon-accessory"></i>
             </ion-item>
         </ion-list>
     </ion-content>
