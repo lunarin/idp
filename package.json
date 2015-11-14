@@ -24,11 +24,5 @@
   ],
   "cordovaPlatforms": [
     "ios"
-  ],
-      "name": "Devdactic Ionic to Heroku Example",
-      "description": "A simple Ionic app for Heroku",
-      "repository": "https://github.com/saimon24/devdactic-tinderstyle",
-      "logo": "http://pathToYourLogo.png",
-      "keywords": ["ionic", "devdactic", "whatever"]
-
+  ]
 }
