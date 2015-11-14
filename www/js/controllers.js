@@ -1,194 +1,270 @@
-angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps','ngCordova','ionic.contrib.ui.cards','ionic'])
+angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova', 'ionic.contrib.ui.cards', 'ionic'])
 
-.controller('DiaryCtrl', function ($rootScope, $scope, Users,$window) {
+.controller('DiaryCtrl', function($rootScope, $scope, Users, $window, $firebaseObject) {
+  $scope.$on('$ionicView.enter', function(e) {
+    if (!$rootScope.addfood_date) {
+      $rootScope.addfood_date = new Date();
+    }
+    $scope.current_view = 0;
+    $scope.today = new Date(new Date().getTime() + $scope.current_view * day);
+    $scope.ytd = new Date(new Date().getTime() + ($scope.current_view - 1) * day);
+    $scope.tmr = new Date(new Date().getTime() + ($scope.current_view + 1) * day);
 
-    if (!$rootScope.user) {
-        $rootScope.user = Users.get_user('0');
-    }
-    if (!$rootScope.filter) {
-        $rootScope.filter = {
-            'price': 12,
-            'proximity': 8
-        };
-    }
     $scope.calendar = {
-        date_textray: ['16 Oct', '17 Oct', 'Today', '19 Oct', '20 Oct'],
-        startIndex: 2
+      ytd: $scope.ytd.getDate() + ' ' + months[$scope.ytd.getMonth()],
+      today: $scope.today.getDate() + ' ' + months[$scope.today.getMonth()],
+      tmr: $scope.tmr.getDate() + ' ' + months[$scope.tmr.getMonth()]
+    };
+  })
+  if (!$rootScope.user) {
+    $rootScope.user = Users.get_user('0');
+  }
+  if (!$rootScope.filter) {
+    $rootScope.filter = {
+      'price': 12,
+      'proximity': 8
+    };
+  }
+
+
+  $rootScope.cal = 2090
+  $rootScope.fat = 70
+  $rootScope.carbs = 157
+  $rootScope.protein = 183
+
+  var months = Users.months();
+  var day = 86400000;
+  $scope.today = new Date(new Date().getTime() + $scope.current_view * day);
+  $scope.ytd = new Date(new Date().getTime() + ($scope.current_view - 1) * day);
+  $scope.tmr = new Date(new Date().getTime() + ($scope.current_view + 1) * day);
+
+  $scope.calendar = {
+    ytd: $scope.ytd.getDate() + ' ' + months[$scope.ytd.getMonth()],
+    today: $scope.today.getDate() + ' ' + months[$scope.today.getMonth()],
+    tmr: $scope.tmr.getDate() + ' ' + months[$scope.tmr.getMonth()]
+  };
+
+  $scope.indexUp = function() {
+    $scope.current_view = $scope.current_view - 1;
+    $scope.today = new Date(new Date().getTime() + $scope.current_view * day);
+    $scope.ytd = new Date(new Date().getTime() + ($scope.current_view - 1) * day);
+    $scope.tmr = new Date(new Date().getTime() + ($scope.current_view + 1) * day);
+    $scope.calendar = {
+      ytd: $scope.ytd.getDate() + ' ' + months[$scope.ytd.getMonth()],
+      today: $scope.today.getDate() + ' ' + months[$scope.today.getMonth()],
+      tmr: $scope.tmr.getDate() + ' ' + months[$scope.tmr.getMonth()]
+    };
+  }
+  $scope.indexDown = function() {
+    $scope.current_view = $scope.current_view + 1;
+    $scope.today = new Date(new Date().getTime() + $scope.current_view * day);
+    $scope.ytd = new Date(new Date().getTime() + ($scope.current_view - 1) * day);
+    $scope.tmr = new Date(new Date().getTime() + ($scope.current_view + 1) * day);
+    $scope.calendar = {
+      ytd: $scope.ytd.getDate() + ' ' + months[$scope.ytd.getMonth()],
+      today: $scope.today.getDate() + ' ' + months[$scope.today.getMonth()],
+      tmr: $scope.tmr.getDate() + ' ' + months[$scope.tmr.getMonth()]
+    };
+  }
+  $scope.edit_breakfast = function(breakdex) {
+    var meal_food = {
+      meal: 'breakfast',
+      food: $rootScope.user.today_meal.breakfast[breakdex],
+      foodex: breakdex
+    };
+    $rootScope.editFood = meal_food;
+    $window.location.replace('#/tab/diary/foodinfo');
+  };
+  $scope.edit_lunch = function(lunchdex) {
+    var meal_food = {
+      meal: 'lunch',
+      food: $rootScope.user.today_meal.lunch[lunchdex],
+      foodex: lunchdex
+    };
+    $rootScope.editFood = meal_food;
+    $window.location.replace('#/tab/diary/foodinfo');
+  };
+  $scope.edit_dinner = function(dinnerdex) {
+    var meal_food = {
+      meal: 'dinner',
+      food: $rootScope.user.today_meal.dinner[dinnerdex],
+      foodex: dinnerdex
+    };
+    $rootScope.editFood = meal_food;
+    $window.location.replace('#/tab/diary/foodinfo');
+  };
+  $scope.edit_snack = function(snackdex) {
+    var meal_food = {
+      meal: 'snack',
+      food: $rootScope.user.today_meal.snack[snackdex],
+      foodex: snackdex
+    };
+    $rootScope.editFood = meal_food;
+    $window.location.replace('#/tab/diary/foodinfo');
+  };
+  $scope.remove_breakfast = function(breakfast) {
+    $rootScope.user.today_meal.breakfast.splice(breakfast, 1);
+  };
+  $scope.remove_lunch = function(lunch) {
+    $rootScope.user.today_meal.lunch.splice(lunch, 1);
+  };
+  $scope.remove_dinner = function(dinner) {
+    $rootScope.user.today_meal.dinner.splice(dinner, 1);
+  };
+  $scope.remove_snack = function(snack) {
+    $rootScope.user.today_meal.snack.splice(snack, 1);
+  };
+
+  $scope.addFoodWithDate = function() {
+    $rootScope.addfood_date = $scope.today;
+    $window.location = '#/tab/diary/addfood';
+  }
+  $scope.options = {
+    chart: {
+      type: 'pieChart',
+      height: 100,
+      width: 80,
+      x: function(d) {
+        return d.key;
+      },
+      y: function(d) {
+        return d.y;
+      },
+      showLabels: false,
+      showLegend: false,
+      transitionDuration: 500,
+      donutRatio: 0.70,
+      donut: true,
+      title: $rootScope.protein + 'g',
+      growOnHover: false,
+      margin: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
+
+      }
     }
-    $scope.indexUp = function () {
-        $scope.calendar.startIndex = $scope.calendar.startIndex - 1;
+  };
+  $scope.options1 = {
+    chart: {
+      type: 'pieChart',
+      height: 100,
+      width: 80,
+      x: function(d) {
+        return d.key;
+      },
+      y: function(d) {
+        return d.y;
+      },
+      showLabels: false,
+      showLegend: false,
+      transitionDuration: 500,
+      donutRatio: 0.70,
+      donut: true,
+      title: $rootScope.carbs + 'g',
+      growOnHover: false,
+      margin: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
+
+      }
     }
-    $scope.indexDown = function () {
-        $scope.calendar.startIndex = $scope.calendar.startIndex + 1;
+  };
+  $scope.options2 = {
+    chart: {
+      type: 'pieChart',
+      height: 100,
+      width: 80,
+      x: function(d) {
+        return d.key;
+      },
+      y: function(d) {
+        return d.y;
+      },
+      showLabels: false,
+      showLegend: false,
+      transitionDuration: 500,
+      donutRatio: 0.70,
+      donut: true,
+      title: $rootScope.fat+ 'g',
+      growOnHover: false,
+      margin: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
+
+      }
+
     }
-    $scope.edit_breakfast = function (breakdex) {
-        var meal_food = {
-            meal: 'breakfast',
-            food: $rootScope.user.today_meal.breakfast[breakdex],
-            foodex: breakdex
-        };
-        $rootScope.editFood = meal_food;
-        $window.location.replace('#/tab/diary/foodinfo');
-    };
-    $scope.edit_lunch = function (lunchdex) {
-        var meal_food = {
-            meal: 'lunch',
-            food: $rootScope.user.today_meal.lunch[lunchdex],
-            foodex: lunchdex
-        };
-        $rootScope.editFood = meal_food;
-        $window.location.replace('#/tab/diary/foodinfo');
-    };
-    $scope.edit_dinner = function (dinnerdex) {
-        var meal_food = {
-            meal: 'dinner',
-            food: $rootScope.user.today_meal.dinner[dinnerdex],
-            foodex: dinnerdex
-        };
-        $rootScope.editFood = meal_food;
-        $window.location.replace('#/tab/diary/foodinfo');
-    };
-    $scope.edit_snack = function (snackdex) {
-        var meal_food = {
-            meal: 'snack',
-            food: $rootScope.user.today_meal.snack[snackdex],
-            foodex: snackdex
-        };
-        $rootScope.editFood = meal_food;
-        $window.location.replace('#/tab/diary/foodinfo');
-    };
-    $scope.remove_breakfast = function (breakfast) {
-        $rootScope.user.today_meal.breakfast.splice(breakfast, 1);
-    };
-    $scope.remove_lunch = function (lunch) {
-        $rootScope.user.today_meal.lunch.splice(lunch, 1);
-    };
-    $scope.remove_dinner = function (dinner) {
-        $rootScope.user.today_meal.dinner.splice(dinner, 1);
-    };
-    $scope.remove_snack = function (snack) {
-        $rootScope.user.today_meal.snack.splice(snack, 1);
-    };
+  };
+  $scope.options3 = {
+    chart: {
+      type: 'pieChart',
+      height: 100,
+      width: 80,
+      x: function(d) {
+        return d.key;
+      },
+      y: function(d) {
+        return d.y;
+      },
+      showLabels: false,
+      showLegend: false,
+      transitionDuration: 500,
+      donutRatio: 0.70,
+      donut: true,
+      title: $rootScope.cal + 'kcal',
+      growOnHover: false,
+      margin: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
 
+      }
+    }
+  };
 
-    $scope.options = {
-        chart: {
-            type: 'pieChart',
-            height: 100,
-            width: 80,
-            x: function (d) {
-                return d.key;
-            },
-            y: function (d) {
-                return d.y;
-            },
-            showLabels: false,
-            showLegend: false,
-            transitionDuration: 500,
-            donutRatio: 0.70,
-            donut: true,
-            title: "81g",
-            growOnHover: false
-        }
-    };
-    $scope.options1 = {
-        chart: {
-            type: 'pieChart',
-            height: 100,
-            width: 80,
-            x: function (d) {
-                return d.key;
-            },
-            y: function (d) {
-                return d.y;
-            },
-            showLabels: false,
-            showLegend: false,
-            transitionDuration: 500,
-            donutRatio: 0.70,
-            donut: true,
-            title: "81g",
-            growOnHover: false
-        }
-    };
-    $scope.options2 = {
-        chart: {
-            type: 'pieChart',
-            height: 100,
-            width: 80,
-            x: function (d) {
-                return d.key;
-            },
-            y: function (d) {
-                return d.y;
-            },
-            showLabels: false,
-            showLegend: false,
-            transitionDuration: 500,
-            donutRatio: 0.70,
-            donut: true,
-            title: "21g",
-            growOnHover: false
-
-        }
-    };
-    $scope.options3 = {
-        chart: {
-            type: 'pieChart',
-            height: 100,
-            width: 80,
-            x: function (d) {
-                return d.key;
-            },
-            y: function (d) {
-                return d.y;
-            },
-            showLabels: false,
-            showLegend: false,
-            transitionDuration: 500,
-            donutRatio: 0.70,
-            donut: true,
-            title: "1200kcal",
-            growOnHover: false
-        }
-    };
-
-    $scope.data = [{
-        key: "One",
-        y: Math.random() * 100,
-        color: "#1f77b4"
-    }, {
-        key: "Two",
-        y: Math.random() * 100,
-        color: "#aec7e8"
-    }];
-    $scope.data1 = [{
-        key: "One",
-        y: Math.random() * 100,
-        color: "#FC3030"
-    }, {
-        key: "Two",
-        y: Math.random() * 100,
-        color: "#FF9E9E"
-    }];
-    $scope.data2 = [{
-        key: "One",
-        y: Math.random() * 100,
-        color: "#FCFCB6"
-    }, {
-        key: "Two",
-        y: Math.random() * 100,
-        color: "#E4E600"
-    }];
-    $scope.data3 = [{
-        key: "One",
-        y: Math.random() * 100,
-        color: "#B6DECA"
-    }, {
-        key: "Two",
-        y: Math.random() * 100,
-        color: "#00BD5F"
-    }];
+  $scope.data = [{
+    key: "One",
+    y: Math.floor((Math.random() * 100) + 1),
+    color: "#1f77b4"
+  }, {
+    key: "Two",
+    y: $rootScope.protein,
+    color: "#aec7e8"
+  }];
+  $scope.data1 = [{
+    key: "One",
+    y: Math.floor((Math.random() * 100) + 1),
+    color: "#FC3030"
+  }, {
+    key: "Two",
+    y: $rootScope.carbs,
+    color: "#FF9E9E"
+  }];
+  $scope.data2 = [{
+    key: "One",
+    y: Math.floor((Math.random() * 100) + 1),
+    color: "#FCFCB6"
+  }, {
+    key: "Two",
+    y: $rootScope.fat,
+    color: "#E4E600"
+  }];
+  $scope.data3 = [{
+    key: "One",
+    y: Math.floor((Math.random() * 100) + 1),
+    color: "#B6DECA"
+  }, {
+    key: "Two",
+    y: $rootScope.cal,
+    color: "#00BD5F"
+  }];
   //
   //   var width = 250;
   //   var height = 250;
@@ -199,155 +275,190 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps','ngCordova','
   //   .attr("y", 100)
   //   .attr("text-anchor", "middle")
   //   .text("Sample Charts");
-
 })
 
-.controller('EditDiaryCtrl', function ($scope, $rootScope,$window) {
-    $scope.food = $rootScope.editFood.food;
-    var previousMeal = $rootScope.editFood.meal.valueOf();
-    $scope.added_to = { meal: $rootScope.editFood.meal};
+.controller('EditDiaryCtrl', function($scope, $rootScope, $window) {
+  $scope.food = $rootScope.editFood.food;
+  var previousMeal = $rootScope.editFood.meal.valueOf();
+  $scope.added_to = {
+    meal: $rootScope.editFood.meal
+  };
 
-    $scope.save_edit = function () {
-        if (previousMeal == 'breakfast') {
-            console.log("break");
-            $rootScope.user.today_meal.breakfast.splice($rootScope.editFood.foodex, 1);
-            var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
-            meal_array.push($scope.food);
-        }
-        else if (previousMeal == 'lunch') {
-            $rootScope.user.today_meal.lunch.splice($rootScope.editFood.foodex, 1);
-            console.log("lunch");
-            var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
-            meal_array.push($scope.food);
-        }
-        else if (previousMeal == 'dinner') {
-            console.log("dinz");
-            $rootScope.user.today_meal.dinner.splice($rootScope.editFood.foodex, 1);
-            var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
-            meal_array.push($scope.food);
-        } else {
-            console.log("snack");
-            $rootScope.user.today_meal.snack.splice($rootScope.editFood.foodex, 1);
-            var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
-            meal_array.push($scope.food);
-        }
-        $rootScope.editFood = {};
-        $window.location.replace('#/tab/diary');
-    };
+  $scope.save_edit = function() {
+    if (previousMeal == 'breakfast') {
+      console.log("break");
+      $rootScope.user.today_meal.breakfast.splice($rootScope.editFood.foodex, 1);
+      var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
+      meal_array.push($scope.food);
+    } else if (previousMeal == 'lunch') {
+      $rootScope.user.today_meal.lunch.splice($rootScope.editFood.foodex, 1);
+      console.log("lunch");
+      var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
+      meal_array.push($scope.food);
+    } else if (previousMeal == 'dinner') {
+      console.log("dinz");
+      $rootScope.user.today_meal.dinner.splice($rootScope.editFood.foodex, 1);
+      var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
+      meal_array.push($scope.food);
+    } else {
+      console.log("snack");
+      $rootScope.user.today_meal.snack.splice($rootScope.editFood.foodex, 1);
+      var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
+      meal_array.push($scope.food);
+    }
+    $rootScope.editFood = {};
+    $window.location.replace('#/tab/diary');
+  };
 })
 
-.controller('RecommendationCtrl', function ($scope, $rootScope,FoodAndStores, $window) {
+.controller('RecommendCtrl', function($scope, $rootScope, FoodAndStores, $window) {
+  $scope.$on('$ionicView.enter', function(e) {
+    $rootScope.justEntered = true;
+  });
+  $scope.disliked_meals = $rootScope.user.preference.dislike;
+  $scope.liked_meals = $rootScope.user.preference.like;
+  $scope.neutral = [];
+  $scope.foods = FoodAndStores.foods();
+  $scope.meal_plan_cards = [];
 
-    $scope.disliked_meals = $rootScope.user.preference.dislike;
-    $scope.liked_meals = $rootScope.user.preference.like;
-    $scope.neutral = [];
-    $scope.foods = FoodAndStores.foods();
-    $scope.meal_plan_cards = [];
-
-    for (var i = 0; i < $scope.foods.length; i++) {
-        var food = $scope.foods[i];
-        var inDislike = false;
-        var inLike = false;
-        for (var d = 0; d < $scope.disliked_meals.length; d++) {
-            if ($scope.disliked_meals[d].id == food.id) {
-                inDislike = true;
-            }
-        }
-        if (!inDislike) {
-            for (var k = 0; k < $scope.liked_meals.length; k++) {
-                if ($scope.liked_meals[k].id == food.id) {
-                    inLike = true;
-                }
-            }
-            if (!inLike) {
-                $scope.neutral.push(food);
-            };
-        }
+  for (var i = 0; i < $scope.foods.length; i++) {
+    var food = $scope.foods[i];
+    var inDislike = false;
+    var inLike = false;
+    for (var d = 0; d < $scope.disliked_meals.length; d++) {
+      if ($scope.disliked_meals[d].id == food.id) {
+        inDislike = true;
+      }
     }
-    //generate random new meal plan
-    $scope.addMealPlan = function () {
-        console.log("called");
-        var passed = {liked:[],neutral:[]};
-        for (var i = 0; i < $scope.liked_meals.length; i++) {
-            if ($scope.liked_meals[i].price <= $rootScope.filter.price) {
-                passed.liked.push($scope.liked_meals[i]);
-            }
+    if (!inDislike) {
+      for (var k = 0; k < $scope.liked_meals.length; k++) {
+        if ($scope.liked_meals[k].id == food.id) {
+          inLike = true;
         }
-        for (var i = 0; i < $scope.neutral.length; i++) {
-            if ($scope.neutral[i].price <= $rootScope.filter.price) {
-                passed.neutral.push($scope.neutral[i]);
-            }
-        }
-        var randLength = passed.liked.length + passed.neutral.length;
-        var randomFoodex = function () {
-            var randFoodIndex_plusOne = Math.floor((Math.random() * randLength) + 1);
-            if (randFoodIndex_plusOne > passed.liked.length) {
-                randFoodIndex_plusOne = Math.floor((Math.random() * randLength) + 1);
-            }
-            return randFoodIndex_plusOne - 1;
-        }
-        if (randLength >= 3) {
-            var newMeal = {
-                'breakfast': {},
-                'lunch': {},
-                'dinner': {}
-            }
-            var foodno = randomFoodex();
-            if (foodno < passed.liked.length) {
-                newMeal.breakfast = passed.liked[foodno];
-            } else {
-                newMeal.breakfast = passed.neutral[foodno - passed.liked.length];
-            }
-            foodno = randomFoodex();
-            if (foodno < passed.liked.length) {
-                newMeal.lunch = passed.liked[foodno];
-            } else {
-                newMeal.lunch = passed.neutral[foodno - passed.liked.length];
-            }
-            foodno = randomFoodex();
-            if (foodno < passed.liked.length) {
-                newMeal.dinner = passed.liked[foodno];
-            } else {
-                newMeal.dinner = passed.neutral[foodno - passed.liked.length];
-            }
-            $scope.meal_plan_cards.push(newMeal);
-        }
+      }
+      if (!inLike) {
+        $scope.neutral.push(food);
+      };
     }
-    $scope.cardSwiped = function (index) {
-        $scope.meal_plan_cards.splice(index, 1);
-        //$scope.addMealPlan();
+  }
+  //generate random new meal plan
+  $scope.addMealPlan = function() {
+    var passed = {
+      liked: [],
+      neutral: []
     };
-
-    if ($scope.meal_plan_cards.length == 0) {
-        for (var i = 0; i < 5; i++) {
-            $scope.addMealPlan();
-        }
+    for (var i = 0; i < $scope.liked_meals.length; i++) {
+      if ($scope.liked_meals[i].price <= $rootScope.filter.price) {
+        passed.liked.push($scope.liked_meals[i]);
+      }
+    }
+    for (var i = 0; i < $scope.neutral.length; i++) {
+      if ($scope.neutral[i].price <= $rootScope.filter.price) {
+        passed.neutral.push($scope.neutral[i]);
+      }
+    }
+    var randLength = passed.liked.length + passed.neutral.length;
+    var randomFoodex = function() {
+      var randFoodIndex_plusOne = Math.floor((Math.random() * randLength) + 1);
+      if (randFoodIndex_plusOne > passed.liked.length) {
+        randFoodIndex_plusOne = Math.floor((Math.random() * randLength) + 1);
+      }
+      return randFoodIndex_plusOne - 1;
+    }
+    if (randLength >= 3) {
+      var newMeal = {
+        'breakfast': {},
+        'lunch': {},
+        'dinner': {}
+      }
+      var foodno = randomFoodex();
+      if (foodno < passed.liked.length) {
+        newMeal.breakfast = passed.liked[foodno];
+      } else {
+        newMeal.breakfast = passed.neutral[foodno - passed.liked.length];
+      }
+      foodno = randomFoodex();
+      if (foodno < passed.liked.length) {
+        newMeal.lunch = passed.liked[foodno];
+      } else {
+        newMeal.lunch = passed.neutral[foodno - passed.liked.length];
+      }
+      foodno = randomFoodex();
+      if (foodno < passed.liked.length) {
+        newMeal.dinner = passed.liked[foodno];
+      } else {
+        newMeal.dinner = passed.neutral[foodno - passed.liked.length];
+      }
+      $scope.meal_plan_cards.push(newMeal);
     }
 
-    //save meal plan
-    $scope.addToDiary = function (meal) {
-        var bf = $rootScope.user.today_meal.breakfast;
-        bf.push(meal.breakfast);
-        var lun = $rootScope.user.today_meal.lunch;
-        lun.push(meal.lunch);
-        var din = $rootScope.user.today_meal.dinner;
-        din.push(meal.dinner);
-        $window.location.replace('#/tab/diary');
+  }
+  $scope.cardSwiped = function(index) {
+    $scope.meal_plan_cards.splice(index, 1);
+    $rootScope.justEntered = false;
+    //$scope.addMealPlan();
+  };
+
+  if ($scope.meal_plan_cards.length == 0) {
+    for (var i = 0; i < 5; i++) {
+      $scope.addMealPlan();
+    }
+  }
+  var newMeal = {
+    'breakfast': {},
+    'lunch': {},
+    'dinner': {}
+  }
+  newMeal.breakfast = $scope.foods[2];
+  newMeal.lunch = $scope.foods[3];
+  newMeal.dinner = $scope.foods[8];
+  $scope.meal_plan_cards[2] = newMeal;
+
+
+  //save meal plan
+  $scope.addToDiary = function(meal) {
+    var bf = $rootScope.user.today_meal.breakfast;
+    bf.push(meal.breakfast);
+    var lun = $rootScope.user.today_meal.lunch;
+    lun.push(meal.lunch);
+    var din = $rootScope.user.today_meal.dinner;
+    din.push(meal.dinner);
+    $rootScope.userCal += meal.breakfast.nutrient_values.calories;
+    $rootScope.userCal += meal.lunch.nutrient_values.calories;
+    $rootScope.userCal += meal.dinner.nutrient_values.calories;
+
+    $rootScope.userCarbs += meal.breakfast.nutrient_values.carbs;
+    $rootScope.userCarbs += meal.lunch.nutrient_values.carbs;
+    $rootScope.userCarbs += meal.dinner.nutrient_values.carbs;
+
+    $rootScope.userFat += meal.breakfast.nutrient_values.fat;
+    $rootScope.userFat += meal.lunch.nutrient_values.fat;
+    $rootScope.userFat += meal.dinner.nutrient_values.fat;
+
+    $rootScope.userProtein +=$rootScope.userFat += meal.breakfast.nutrient_values.protein;
+    $rootScope.userProtein +=$rootScope.userFat += meal.lunch.nutrient_values.protein;
+    $rootScope.userProtein +=$rootScope.userFat += meal.dinner.nutrient_values.protein;
+    if (bf[0].name == "Fruit Salad" && lun[0].name == "Chicken Rice" && din[0].name == "Seafood Laksa") {
+      $rootScope.task = 2
+      $rootScope.stopTimer();
+      $rootScope.startTimer();
     };
+    $window.location.replace('#/tab/diary');
+  }
 })
 
-.controller('FilterCtrl', function ($scope,$rootScope, $window) {
-    $scope.$on('$ionicView.enter', function (e) {
-        $scope.pref = {
-            'price': $rootScope.filter.price,
-            'proximity': $rootScope.filter.proximity
-        }
-    })
-    $scope.save = function(){
-        $rootScope.filter.price = $scope.pref.price;
-        $rootScope.filter.proximity = $scope.pref.proximity;
-        $window.location='#/tab/diary';
+.controller('FilterCtrl', function($scope, $rootScope, $window) {
+  $scope.$on('$ionicView.enter', function(e) {
+    $scope.pref = {
+      'price': $rootScope.filter.price,
+      'proximity': $rootScope.filter.proximity
     }
+  })
+  $scope.save = function() {
+    $rootScope.filter.price = $scope.pref.price;
+    $rootScope.filter.proximity = $scope.pref.proximity;
+    $window.location.replace('#/tab/diary');
+  }
 })
 
 .controller('editprofile', function($scope) {
@@ -368,9 +479,6 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps','ngCordova','
     text: "Lose 1 Kilograms per week",
     value: "ko"
   }];
-
-
-
 })
 
 .controller('ProfileCtrl', function($scope, Camera) {
@@ -397,7 +505,7 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps','ngCordova','
   }];
 })
 
-.controller('AddFoodCtrl', function($scope, FoodAndStores, $window, $rootScope,$cordovaBarcodeScanner) {
+.controller('AddFoodCtrl', function($scope, FoodAndStores, Users, $window, $rootScope, $cordovaBarcodeScanner) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -405,6 +513,7 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps','ngCordova','
   //
   //$scope.$on('$ionicView.enter', function(e) {
   //});
+
   $scope.searchText = {
     results: []
   };
@@ -413,15 +522,10 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps','ngCordova','
   $scope.store_name = function(storeId) {
     return FoodAndStores.get_store(storeId).name;
   };
-  $scope.eat_food = function () {
-      var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
-      meal_array.push($scope.food);
-      $window.location.replace('#/tab/diary');
-  };
 
-  $scope.generateRandom = function () {
-      var randFoodId = 5;
-      $window.location.replace('#/tab/addfood/'+randFoodId);
+  $scope.generateRandom = function() {
+    var randFoodId = 5;
+    $window.location.replace('#/tab/diary/addfood/' + randFoodId);
   }
 
   var doSearch = function() {
@@ -443,62 +547,94 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps','ngCordova','
     }
   };
 
-  var options = {
-      quality: 75,
-      targetWidth: 320,
-      targetHeight: 320,
-      saveToPhotoAlbum: false
+  $scope.scanBarcode = function() {
+    $cordovaBarcodeScanner.scan().then(function(imageData) {
+      $scope.generateRandom();
+    }, function(error) {
+      console.log("An error happened -> " + error);
+    });
+  };
+})
+
+.controller('FoodDetailCtrl', function($scope, $stateParams, FoodAndStores, $rootScope, $window, Users, $ionicPopup, $timeout) {
+  $scope.food = FoodAndStores.get_food($stateParams.foodId);
+  $scope.added_to = {};
+  $scope.added_to.meal = 'breakfast';
+  $scope.added_to.portion = '1';
+  var today = new Date();
+  var months = Users.months();
+  $scope.eat_food = function() {
+    var add_to_date = $rootScope.addfood_date;
+    var day_to_add = add_to_date.getDate();
+    var mth_to_add = add_to_date.getMonth();
+    //check if User has a meal schedule instance else create
+    if (day_to_add == today.getDate() && mth_to_add == today.getMonth()) {
+      var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
+      meal_array.push($scope.food);
+    } else if (day_to_add < today.getDate()) {
+      var meal_array = $rootScope.user.yesterday[$scope.added_to.meal];
+      meal_array.push($scope.food);
+    } else {
+      var meal_array = $rootScope.user.tomorrow[$scope.added_to.meal];
+      meal_array.push($scope.food);
+    }
+
+    if (day_to_add == 13 && mth_to_add == 10 && $scope.added_to.meal == 'lunch' && $scope.added_to.portion == '2' && $scope.food.name == "Fruit Salad") {
+      $rootScope.task = 3
+      $rootScope.stopTimer();
+    }
+    add_alert();
   };
 
-  $scope.scanBarcode = function() {
-        $cordovaBarcodeScanner.scan().then(function(imageData) {
-            $scope.generateRandom();
-        }, function(error) {
-            console.log("An error happened -> " + error);
-        });
-    };
+  var add_alert = function() {
+    var alertPopup = $ionicPopup.show({
+      title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Added to diary!</h4></div></div><div class="row"><div class="col" align="center"><i class="ion-checkmark-round"></i></div></div></div>'
+    });
+    alertPopup.then(function(res) {
+      console.log('Added to diary');
+    });
+    $timeout(function() {
+      alertPopup.close(); //close the popup after 1.5 seconds
+      $window.location.replace("#/tab/diary/addfood");
+    }, 1500);
+  };
 })
 
-.controller('FoodDetailCtrl', function ($scope, $stateParams, FoodAndStores, $rootScope, $window) {
-    $scope.food = FoodAndStores.get_food($stateParams.foodId);
-    $scope.added_to = {};
-    $scope.added_to.meal = 'breakfast';
-    $scope.added_to.portion = '1';
-    $scope.added_to.date = new Date(2015, 9, 18);
-    $scope.eat_food = function () {
-        var day = $scope.added_to.date.getDate();
-        if (day == 18) {
-            var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
-            meal_array.push($scope.food);
-            $window.location="#/tab/diary";
-        } else if (day < 18) {
-            var meal_array = $rootScope.user.yesterday[$scope.added_to.meal];
-            meal_array.push($scope.food);
-            $window.location = "#/tab/diary";
-        } else {
-            var meal_array = $rootScope.user.tomorrow[$scope.added_to.meal];
-            meal_array.push($scope.food);
-            $window.location = "#/tab/diary";
-        }
-    };
+.controller('StoreDetailCtrl', function($scope, $stateParams, FoodAndStores) {
+  $scope.store = FoodAndStores.get_store($stateParams.storeId);
 })
 
-.controller('StoreDetailCtrl', function ($scope, $stateParams, FoodAndStores) {
-    $scope.store = FoodAndStores.get_store($stateParams.storeId);
+.controller('StoreFoodDetailCtrl', function($scope, $window, $rootScope, $stateParams, FoodAndStores) {
+  $scope.food = FoodAndStores.get_food($stateParams.foodId);
+  $scope.added_to = {};
+  $scope.added_to.meal = 'breakfast';
+  $scope.added_to.portion = '1';
+  $scope.added_to.date = new Date();
+  $scope.eat_food = function() {
+    var today = new Date();
+    var add_to_date = $scope.added_to.date
+    var day_to_add = add_to_date.getDate();
+    var mth_to_add = add_to_date.getMonth();
+    //check if User has a meal schedule instance else create
+    if (day_to_add == today.getDate() && mth_to_add == today.getMonth()) {
+      var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
+      meal_array.push($scope.food);
+    } else if (day_to_add < today.getDate()) {
+      var meal_array = $rootScope.user.yesterday[$scope.added_to.meal];
+      meal_array.push($scope.food);
+    } else {
+      var meal_array = $rootScope.user.tomorrow[$scope.added_to.meal];
+      meal_array.push($scope.food);
+    }
 
-})
+    if (day_to_add == 13 && mth_to_add == 10 && $scope.added_to.meal == 'dinner' && $scope.added_to.portion == '1' && $scope.food.name == "Eggs Benedict") {
+      $rootScope.task = 1
+      $rootScope.stopTimer();
+      $rootScope.startTimer();
+    }
 
-.controller('StoreFoodDetailCtrl', function ($scope,$window,$rootScope, $stateParams, FoodAndStores){
-    $scope.food = FoodAndStores.get_food($stateParams.foodId);
-    $scope.added_to = {};
-    $scope.added_to.meal = 'breakfast';
-    $scope.added_to.portion = '1';
-    $scope.added_to.date = new Date(2015, 9, 18);
-    $scope.eat_food = function () {
-        var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
-        meal_array.push($scope.food);
-        $window.location.replace('#/tab/diary');
-    };
+    $window.location.replace('#/tab/diary');
+  };
 })
 
 .controller('FindFoodCtrl', function($scope, FoodAndStores, uiGmapGoogleMapApi) {
@@ -516,130 +652,14 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps','ngCordova','
 
 })
 
-.controller('ExplorerCtrl', function ($scope, FoodAndStores, $rootScope, $ionicSwipeCardDelegate) {
-    $scope.foods = [{
-        id: 0,
-        name: 'Eggs Benedict',
-        store_id: 0,
-        foodImage: 'http://farm8.staticflickr.com/7105/7237535962_0ae3b02942_c.jpg',
-        nutrient_values: {
-            calories: 428,
-            fat: 33.48,
-            carbs: 12.3,
-            protein: 18.54
-        },
-        price:7
-    }, {
-        id: 1,
-        name: 'Eggs Benedict',
-        store_id: 1,
-        foodImage: 'http://eggrecipesforbreakfast.com/wp-content/uploads/2015/01/1.jpg',
-        nutrient_values: {
-            calories: 408,
-            fat: 30.8,
-            carbs: 12.1,
-            protein: 24.83
-        },
-        price: 13
-    }, {
-        id: 2,
-        name: 'Fruit Salad',
-        store_id: 5,
-        foodImage: 'https://s.yimg.com/ea/img/-/130222/salad130222getty300_18idm81-18idmgc.jpg',
-        nutrient_values: {
-            calories: 130,
-            fat: 1.9,
-            carbs: 30.4,
-            protein: 2.13
-        },
-        price: 4
-    }, {
-        id: 3,
-        name: 'Chicken Rice',
-        store_id: 5,
-        foodImage: 'http://steamykitchen.com/wp-content/uploads/2009/08/hainanese-chicken-83.jpg',
-        nutrient_values: {
-            calories: 666,
-            fat: 44,
-            carbs: 55,
-            protein: 30
-        },
-        price: 7
-    }, {
-        id: 4,
-        name: 'Chicken Laksa',
-        store_id: 4,
-        foodImage: 'http://rasamalaysia.com/uploaded_images/laksa-recipe/laksa5.jpg',
-        nutrient_values: {
-            calories: 591,
-            fat: 32,
-            carbs: 58,
-            protein: 17
-        },
-        price: 6
-    }, {
-        id: 5,
-        name: 'Nutella Bar',
-        store_id: 3,
-        foodImage: 'https://www.medifast1.com/media/common/images/products/meals/bars/crunch/64805-1-zoom.jpg',
-        nutrient_values: {
-            calories: 271,
-            fat: 13,
-            carbs: 35,
-            protein: 5
-        },
-        price: 3
-    }, {
-        id: 6,
-        name: 'Cream of Carrot',
-        store_id: 2,
-        foodImage: 'http://www.vegkitchen.com/wp-content/uploads/2011/11/Carrot-soup.jpg',
-        nutrient_values: {
-            calories: 326,
-            fat: 25,
-            carbs: 37,
-            protein: 24
-        },
-        price: 7
-    }, {
-        id: 7,
-        name: 'Eggs Benedict',
-        store_id: 3,
-        foodImage: 'http://www.bbcgoodfood.com/sites/bbcgoodfood.com/files/recipe_images/recipe-image-legacy-id--857455_11.jpg',
-        nutrient_values: {
-            calories: 421,
-            fat: 42.41,
-            carbs: 8.7,
-            protein: 22.14
-        },
-        price: 9
-    }, {
-        id: 8,
-        name: 'Seafood Laksa',
-        store_id: 4,
-        foodImage: 'http://rasamalaysia.com/uploaded_images/laksa-recipe/laksa5.jpg',
-        nutrient_values: {
-            calories: 591,
-            fat: 32,
-            carbs: 58,
-            protein: 17
-        },
-        price: 6
-    }, {
-        id: 8,
-        name: 'Beef Pho',
-        store_id: 5,
-        foodImage: 'http://www.slendierslim.com.au/images/com_yoorecipe/natalie-916/Large.JPG',
-        nutrient_values: {
-            calories: 334,
-            fat: 6,
-            carbs: 55,
-            protein: 15
-        },
-        price: 9
-    }];
+.controller('ExplorerCtrl', function($scope, FoodAndStores, $rootScope, $ionicSwipeCardDelegate) {
+    $scope.$on('$ionicView.enter', function(e) {
+      $rootScope.justEntered = true;
+    });
+    $scope.foods = FoodAndStores.foods();
     $scope.cardSwiped = function(index) {
-        $scope.foods.splice(index, 1);
+      $scope.foods.splice(index, 1);
+      $rootScope.justEntered = false;
     };
     //
     // $scope.dislike = function (foodDisliked,index) {
@@ -653,192 +673,225 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps','ngCordova','
     //     likeSet.push(foodLiked);
     //     $scope.foods.splice(index, 1);
     // };
-})
-.controller('SwipeCtrl', function ($scope, $rootScope,$ionicSwipeCardDelegate,Users) {
-  $scope.dislike = function (foodDisliked,index) {
+  })
+  .controller('SwipeCtrl', function($scope, $rootScope, $ionicSwipeCardDelegate, Users) {
+    $scope.dislike = function(foodDisliked, index) {
       var dislikeSet = $rootScope.user.preference.dislike;
       console.log(dislikeSet);
       dislikeSet.push(foodDisliked);
       var card = $ionicSwipeCardDelegate.getSwipeableCard($scope);
       //$scope.foods.splice(index, 1);
+      $rootScope.justEntered = false;
       card.swipe();
-  };
-  $scope.like = function (foodLiked, index) {
+    };
+    $scope.like = function(foodLiked, index) {
       var likeSet = $rootScope.user.preference.like;
       likeSet.push(foodLiked);
       var card = $ionicSwipeCardDelegate.getSwipeableCard($scope);
       //$scope.foods.splice(index, 1);
+      $rootScope.justEntered = false;
       card.swipe();
+    };
+  })
+
+.controller('ExplorerHistoryCtrl', function($scope, FoodAndStores) {
+  $scope.foods = FoodAndStores.foods();
+  $scope.preference = [{
+    food: $scope.foods[3],
+    liked: true
+  }, {
+    food: $scope.foods[6],
+    liked: false
+  }, {
+
+    food: $scope.foods[0],
+    liked: true
+  }, {
+    food: $scope.foods[5],
+    liked: true
+  }, {
+    food: $scope.foods[2],
+    liked: false
+  }, {
+    food: $scope.foods[4],
+    liked: true
+  }];
+})
+
+.controller('QnsCtrl', function($scope, $ionicSlideBoxDelegate, $window) {
+  $scope.toSelect = function() {
+    if (!$scope.selected) {
+      $scope.selected = '4px solid orange';
+      $scope.bg = 'white';
+      $scope.bg1 = null;
+      $scope.bg2 = null;
+      $scope.selected1 = null;
+      $scope.selected2 = null;
+    } else {
+      $scope.selected = null;
+      $scope.bg = null;
+
+    }
   };
-})
-
-.controller('ExplorerHistoryCtrl', function ($scope, FoodAndStores) {
-    $scope.foods = FoodAndStores.foods();
-    $scope.preference = [{
-        food: $scope.foods[3],
-        liked: true
-    }, {
-        food: $scope.foods[6],
-        liked: false
-    }, {
-
-        food: $scope.foods[0],
-        liked: true
-    }, {
-        food: $scope.foods[5],
-        liked: true
-    }, {
-        food: $scope.foods[2],
-        liked: false
-    }, {
-        food: $scope.foods[4],
-        liked: true
-    }];
-
-})
-
-.controller('QnsCtrl', function ($scope, $ionicSlideBoxDelegate, $window) {
-    $scope.toSelect = function () {
-        if (!$scope.selected) {
-            $scope.selected = '4px solid orange';
-            $scope.bg = 'white';
-            $scope.bg1 = null;
-            $scope.bg2 = null;
-            $scope.selected1 = null;
-            $scope.selected2 = null;
-        } else {
-            $scope.selected = null;
-            $scope.bg = null;
-
-        }
-    };
-    $scope.toSelect1 = function () {
-        if (!$scope.selected1) {
-            $scope.selected1 = '4px solid orange';
-            $scope.bg1 = 'white';
-            $scope.bg2 = null;
-            $scope.bg = null;
-            $scope.selected = null;
-            $scope.selected2 = null;
-        } else {
-            $scope.bg1 = null;
-            $scope.selected1 = null;
-        }
-    };
-    $scope.toSelect2 = function () {
-        if (!$scope.selected2) {
-            $scope.selected2 = '4px solid orange';
-            $scope.bg2 = 'white';
-            $scope.bg1 = null;
-            $scope.bg = null;
-            $scope.selected1 = null;
-            $scope.selected = null;
-        } else {
-            $scope.bg2 = null;
-            $scope.selected2 = null;
-        }
-    };
-    $scope.a = function () {
-        if (!$scope.activity) {
-            $scope.activity = '4px solid orange';
-            $scope.abg = 'white';
-            $scope.abg1 = null;
-            $scope.abg2 = null;
-            $scope.abg3 = null;
-            $scope.activity1 = null;
-            $scope.activity2 = null;
-            $scope.activity3 = null;
-        } else {
-            $scope.abg = null;
-            $scope.activity = null;
-        }
-    };
-    $scope.a1 = function () {
-        if (!$scope.activity1) {
-            $scope.activity1 = '4px solid orange';
-            $scope.abg1 = 'white';
-            $scope.abg = null;
-            $scope.abg2 = null;
-            $scope.abg3 = null;
-            $scope.activity = null;
-            $scope.activity2 = null;
-            $scope.activity3 = null;
-        } else {
-            $scope.abg1 = null;
-            $scope.activity1 = null;
-        }
-    };
-    $scope.a2 = function () {
-        if (!$scope.activity2) {
-            $scope.activity2 = '4px solid orange';
-            $scope.abg2 = 'white';
-            $scope.abg1 = null;
-            $scope.abg = null;
-            $scope.abg3 = null;
-            $scope.activity1 = null;
-            $scope.activity = null;
-            $scope.activity3 = null;
-        } else {
-            $scope.abg2 = null;
-            $scope.activity2 = null;
-        }
-    };
-    $scope.a3 = function () {
-        if (!$scope.activity3) {
-            $scope.activity3 = '4px solid orange';
-            $scope.abg3 = 'white';
-            $scope.abg1 = null;
-            $scope.abg2 = null;
-            $scope.abg = null;
-            $scope.activity = null;
-            $scope.activity1 = null;
-            $scope.activity2 = null;
-        } else {
-            $scope.abg3 = null;
-            $scope.activity3 = null;
-        }
-    };
-
-    $scope.male = function () {
-        if (!$scope.m) {
-            $scope.m = 'orange';
-            $scope.f = null;
-        } else {
-            $scope.m = null;
-        }
-    };
-    $scope.female = function () {
-        if (!$scope.f) {
-            $scope.f = 'orange';
-            $scope.m = null;
-        } else {
-            $scope.f = null;
-        }
+  $scope.toSelect1 = function() {
+    if (!$scope.selected1) {
+      $scope.selected1 = '4px solid orange';
+      $scope.bg1 = 'white';
+      $scope.bg2 = null;
+      $scope.bg = null;
+      $scope.selected = null;
+      $scope.selected2 = null;
+    } else {
+      $scope.bg1 = null;
+      $scope.selected1 = null;
     }
-    $scope.nextSlide = function () {
-        $ionicSlideBoxDelegate.next();
+  };
+  $scope.toSelect2 = function() {
+    if (!$scope.selected2) {
+      $scope.selected2 = '4px solid orange';
+      $scope.bg2 = 'white';
+      $scope.bg1 = null;
+      $scope.bg = null;
+      $scope.selected1 = null;
+      $scope.selected = null;
+    } else {
+      $scope.bg2 = null;
+      $scope.selected2 = null;
     }
-    $scope.goDiary = function () {
-        $window.location.replace('#/tutorial');
+  };
+  $scope.a = function() {
+    if (!$scope.activity) {
+      $scope.activity = '4px solid orange';
+      $scope.abg = 'white';
+      $scope.abg1 = null;
+      $scope.abg2 = null;
+      $scope.abg3 = null;
+      $scope.activity1 = null;
+      $scope.activity2 = null;
+      $scope.activity3 = null;
+    } else {
+      $scope.abg = null;
+      $scope.activity = null;
     }
+  };
+  $scope.a1 = function() {
+    if (!$scope.activity1) {
+      $scope.activity1 = '4px solid orange';
+      $scope.abg1 = 'white';
+      $scope.abg = null;
+      $scope.abg2 = null;
+      $scope.abg3 = null;
+      $scope.activity = null;
+      $scope.activity2 = null;
+      $scope.activity3 = null;
+    } else {
+      $scope.abg1 = null;
+      $scope.activity1 = null;
+    }
+  };
+  $scope.a2 = function() {
+    if (!$scope.activity2) {
+      $scope.activity2 = '4px solid orange';
+      $scope.abg2 = 'white';
+      $scope.abg1 = null;
+      $scope.abg = null;
+      $scope.abg3 = null;
+      $scope.activity1 = null;
+      $scope.activity = null;
+      $scope.activity3 = null;
+    } else {
+      $scope.abg2 = null;
+      $scope.activity2 = null;
+    }
+  };
+  $scope.a3 = function() {
+    if (!$scope.activity3) {
+      $scope.activity3 = '4px solid orange';
+      $scope.abg3 = 'white';
+      $scope.abg1 = null;
+      $scope.abg2 = null;
+      $scope.abg = null;
+      $scope.activity = null;
+      $scope.activity1 = null;
+      $scope.activity2 = null;
+    } else {
+      $scope.abg3 = null;
+      $scope.activity3 = null;
+    }
+  };
+
+  $scope.male = function() {
+    if (!$scope.m) {
+      $scope.m = 'orange';
+      $scope.f = null;
+    } else {
+      $scope.m = null;
+    }
+  };
+  $scope.female = function() {
+    if (!$scope.f) {
+      $scope.f = 'orange';
+      $scope.m = null;
+    } else {
+      $scope.f = null;
+    }
+  }
+  $scope.nextSlide = function() {
+    $ionicSlideBoxDelegate.next();
+  }
+  $scope.goDiary = function() {
+    $window.location.replace('#/tutorial');
+  }
 
 })
 
-.controller('HomeCtrl', function ($scope, $window) {
-    $scope.goQuestions = function () {
-        $window.location = '#/questions';
-    }
-    $scope.Login = function () {
-        $window.location = '#/tab/diary';
-    }
+.controller('HomeCtrl', function($scope, $window, $rootScope) {
+  $scope.goQuestions = function() {
+    $window.location = '#/questions';
+  }
+  $scope.createorFindUser = function(name) {
+    $rootScope.userdata.findOrCreateUser(name).then(function(foundUser) {
+      $rootScope.user_id = foundUser.$id;
+      $rootScope.user_name = foundUser.name;
+    });
+
+  }
+  $scope.goDiary = function() {
+    $window.location.replace('#/tab/diary');
+  }
+})
+
+
+.controller('NameCtrl', function($scope, $window, $rootScope) {
 
 })
 
-.controller('TutorialCtrl', function ($scope, $window) {
-  $scope.tutorials = ['img/1.png','img/2.png','img/3.png','img/4.png','img/5.png','img/6.png','img/7.png','img/8.png','img/9.png','img/11.png','img/12.png','img/13.png','img/14.png','img/15.png'];
+.controller('TutorialCtrl', function($scope, $window) {
+  $scope.tutorials = ['img/1.png', 'img/2.png', 'img/3.png', 'img/4.png', 'img/5.png', 'img/6.png', 'img/7.png', 'img/8.png', 'img/9.png', 'img/11.png', 'img/12.png', 'img/13.png', 'img/14.png', 'img/15.png'];
 
 })
 
+.controller('DashboardCtrl', function($scope, $window, $rootScope) {
+
+
+
+  $scope.goProfile = function() {
+    $window.location.replace('#/tab/profile');
+  }
+  $scope.goDiary = function() {
+    $window.location.replace('#/tab/diary');
+  }
+  $scope.goFind = function() {
+    $window.location.replace('#/tab/findfood');
+  }
+  $scope.goDiscover = function() {
+    $window.location.replace('#/tab/explorer');
+  }
+  $scope.goAdd = function() {
+    $window.location.replace('#/tab/diary/addfood');
+  }
+
+})
 
 
 ;

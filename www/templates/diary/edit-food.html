@@ -25,12 +25,12 @@
                         <h6 style="margin:0px">{{food.nutrient_values.calories}}kcal</h6>
                     </div>
                     <div class="col col-25" align="center">
-                        <img src="img/fat.png" style="width:25px">
-                        <h6 style="margin:0px">{{food.nutrient_values.fat}}g</h6>
+                        <img src="img/carbs.png" style="width:25px">
+                        <h6 style="margin:0px">{{food.nutrient_values.carbs}}g</h6>
                     </div>
                     <div class="col col-25" align="center">
-                        <img src="img/commaSeparatedPhoneNumbers.png" style="width:25px">
-                        <h6 style="margin:0px">{{food.nutrient_values.carbs}}g</h6>
+                        <img src="img/fat.png" style="width:25px">
+                        <h6 style="margin:0px">{{food.nutrient_values.fat}}g</h6>
                     </div>
                     <div class="col col-25" align="center">
                         <img src="img/protein.png" style="width:25px">
@@ -46,9 +46,16 @@
                     Serving Size
                 </div>
                 <select>
-                    <option selected>1 Portion</option>
-                    <option>2 Portions</option>
-                    <option>3 Portions</option>
+                    <option selected value="0.5">0.5</option>
+                    <option value="1">1</option>
+                    <option value="1.5">1.5</option>
+                    <option value="2">2</option>
+                    <option value="2.5">2.5</option>
+                    <option value="3">3</option>
+                    <option value="3.5">3.5</option>
+                    <option value="4">4</option>
+                    <option value="4.5">4.5</option>
+                    <option value="5">5</option>
                 </select>
             </div>
             <div class="item item-input item-select">

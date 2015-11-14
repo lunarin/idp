@@ -1,9 +1,9 @@
-<ion-view view-title="Explorer">
+<ion-view view-title="Nearby">
 
   <ion-nav-buttons side="secondary">
     <button class="button button-fab button-energized icon ion-heart" onclick=" window.location = '#/tab/explorer/preference'"></button>
   </ion-nav-buttons>
-  <!-- <ion-content class="padding" no-scroll> -->
+
     <div class="row row-center" ng-if="foods.length==0" style="height:60%">
       <div class="col" align="center">
         <h6>You've finished browsing all the food nearby</h6>
@@ -28,12 +28,12 @@
             <h6 style="margin:0px">{{food.nutrient_values.calories}} kcal</h6>
           </div>
           <div class="col" align="center">
-            <img src="img/fat.png"  style="width:25px">
-            <h6 style="margin:0px">{{food.nutrient_values.fat}}g</h6>
-          </div>
-          <div class="col" align="center">
             <img src="img/carbs.png"  style="width:25px">
             <h6 style="margin:0px">{{food.nutrient_values.carbs}}g</h6>
+          </div>
+          <div class="col" align="center">
+            <img src="img/fat.png"  style="width:25px">
+            <h6 style="margin:0px">{{food.nutrient_values.fat}}g</h6>
           </div>
           <div class="col" align="center">
             <img src="img/protein.png"  style="width:25px">
@@ -47,9 +47,6 @@
         <div class="button-bar">
           <div class="row">
             <div class="col" align="center">
-              <button class="button button-clear button-assertive icon ion-close-round" ng-click="dislike(food,$index)"> Dislike</button>
-            </div>
-            <div class="col" align="center">
               <button class="button button-clear button-assertive icon ion-heart" ng-click="like(food,$index)"> Like</button>
             </div>
           </div>
@@ -57,6 +54,9 @@
         </div>
       </swipe-card>
     </swipe-cards>
-
-  <!-- </ion-content> -->
+    <div class="row row-bottom animated bounceInDown" style="position:absolute;top:82%; color:grey ;-webkit-animation-duration: 2s;" ng-if="foods.length>0 && $root.justEntered">
+        <div class="col" align="center">
+            <span>Swipe down to discard! </span><i class="ion-arrow-down-c"></i>
+        </div>
+    </div>
 </ion-view>

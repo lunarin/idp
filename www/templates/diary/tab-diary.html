@@ -6,7 +6,8 @@
                 <div class="row row-center" style="padding:0px;">
                     <div class="col" align="left" style="padding:0px;">
                         <div class="button button-icon" style="padding:0px;border:0" ng-click="indexUp()">
-                            <i class="ion-chevron-left"></i><span class="h5"> {{calendar.date_textray[calendar.startIndex-1]}}</span>
+                            <i class="ion-chevron-left"></i><span class="h5" ng-if="current_view!=1"> {{calendar.ytd}}</span>
+                            <span class="h5" ng-if="current_view==1"> Today</span>
                         </div>
                     </div>
                 </div>
@@ -14,7 +15,8 @@
             <div class="col col-33" style="padding:0px;">
                 <div class="row row-center" style="padding:0px;">
                     <div class="col" align="center" style="padding:0px;">
-                        <span class="h5">{{calendar.date_textray[calendar.startIndex]}}</span>
+                        <span class="h5" ng-if="current_view !=0">{{calendar.today}}</span>
+                        <span class="h5" ng-if="current_view ==0">Today</span>
                     </div>
                 </div>
             </div>
@@ -22,7 +24,8 @@
                 <div class="row row-center" style="padding:0px;">
                     <div class="col" align="right" style="padding:0px;">
                         <div class="button button-icon" style="padding:0px;border:0" ng-click="indexDown()">
-                            <span class="h5">{{calendar.date_textray[calendar.startIndex+1]}} </span><i class="ion-chevron-right"></i>
+                            <span class="h5" ng-if="current_view!=-1">{{calendar.tmr}} </span>
+                            <span class="h5" ng-if="current_view==-1">Today </span><i class="ion-chevron-right"></i>
                         </div>
                     </div>
                 </div>
@@ -34,46 +37,63 @@
             Nutrients Remaining
         </div>
         <div class="row" style="padding-top:0px;">
-            <div class="col col-25"  style="padding-top:0px;">
-                <div class="row" style="padding:0px">
-                    <div class="col" align="center" style="padding:0px"><nvd3 options="options" data="data"></nvd3></div>
-                </div>
-                <div class="row">
-                    <div class="col" align="center" style="padding:0px"><span style="font-size:10px">Carbs</span></div>
-                </div>
-            </div>
-            <div class="col col-25"  style="padding-top:0px;">
-                <div class="row" style="padding:0px">
-                    <div class="col" align="center" style="padding:0px"><nvd3 options="options1" data="data1"></nvd3></div>
-                </div>
-                <div class="row">
-                    <div class="col" align="center" style="padding:0px"><span style="font-size:10px">Fats</span></div>
-                </div>
-            </div>
-            <div class="col col-25" style="padding-top:0px;">
-                <div class="row" style="padding:0px">
-                    <div class="col" align="center" style="padding:0px"><nvd3 options="options2" data="data2"></nvd3></div>
-                </div>
-                <div class="row">
-                    <div class="col" align="center" style="padding:0px"><span style="font-size:10px">Proteins</span></div>
-                </div>
-            </div>
-            <div class="col col-25" style="padding-top:0px;">
+            <div class="col col-25"  style="padding-top:10px;">
                 <div class="row" style="padding:0px">
                     <div class="col" align="center" style="padding:0px"><nvd3 options="options3" data="data3"></nvd3></div>
                 </div>
                 <div class="row">
-                    <div class="col" align="center" style="padding:0px"><span style="font-size:10px">Calories</span></div>
+                    <div class="col" align="center" style="padding:0px">
+                        <img src="img/cal.png" style="width:25px"><br /><span style="font-size:10px">Calories</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-25"  style="padding-top:10px;">
+                <div class="row" style="padding:0px">
+                    <div class="col" align="center" style="padding:0px"><nvd3 options="options1" data="data1"></nvd3></div>
+                </div>
+                <div class="row">
+                    <div class="col" align="center" style="padding:0px">
+                        <img src="img/carbs.png" style="width:25px"><br /><span style="font-size:10px">Carbs</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-25" style="padding-top:10px;">
+                <div class="row" style="padding:0px">
+                    <div class="col" align="center" style="padding:0px"><nvd3 options="options2" data="data2"></nvd3></div>
+                </div>
+                <div class="row">
+                    <div class="col" align="center" style="padding:0px">
+                        <img src="img/fat.png" style="width:25px"><br /><span style="font-size:10px">Fat</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-25" style="padding-top:10px;">
+                <div class="row" style="padding:0px">
+                    <div class="col" align="center" style="padding:0px"><nvd3 options="options" data="data"></nvd3></div>
+                </div>
+                <div class="row">
+                    <div class="col" align="center" style="padding:0px">
+                        <img src="img/protein.png" style="width:25px"><br /><span style="font-size:10px">Protein</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row" ng-if="calendar.startIndex ==2">
-            <div class="col" align="center">
-                <button class="button button-full button-energized button-outline" onclick=" window.location = '#/tab/diary/recommendation'">Recommend Meal Plan to Me!</button>
+        <div class="row" ng-if="current_view ==0" style="padding-bottom:0;margin-top:-20px">
+            <div class="col" align="center" style="padding-bottom:0">
+                <button class="button button-full button-energized" style="background-color:rgba(255, 194, 0, 0.8) " onclick=" window.location = '#/tab/diary/recommend'">Recommend Meal Plan to Me!</button>
+            </div>
+        </div>
+        <div class="row" style="padding-top:0">
+            <div class="col" align="center" style="padding-top:0">
+                <button class="button button-full button-positive" style="background-color:#6B99E8" ng-click="addFoodWithDate()">
+                    <i class="icon ion-ios-plus-outline"></i>
+                    Add Food
+                </button>
             </div>
         </div>
 
-        <div class="list" ng-if="calendar.startIndex ==2">
+
+        <div class="list" ng-if="current_view ==0">
             <div class="item item-divider"><div class="h5">Breakfast</div></div>
             <ion-list>
                 <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="breakie in $root.user.today_meal.breakfast track by $index" type="item-text-wrap" ng-click="edit_breakfast($index)">
@@ -85,19 +105,19 @@
                     </div>
                     <div class="row">
                         <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
+                            <img src="img/cal.png" style="width:25px">
                             <h6 style="margin:0px">{{breakie.nutrient_values.calories}} kcal</h6>
                         </div>
                         <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{breakie.nutrient_values.fat}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
+                            <img src="img/carbs.png" style="width:25px">
                             <h6 style="margin:0px">{{breakie.nutrient_values.carbs}}g</h6>
                         </div>
                         <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
+                            <img src="img/fat.png" style="width:25px">
+                            <h6 style="margin:0px">{{breakie.nutrient_values.fat}}g</h6>
+                        </div>
+                        <div class="col" align="center">
+                            <img src="img/protein.png" style="width:25px">
                             <h6 style="margin:0px">{{breakie.nutrient_values.protein}}g</h6>
                         </div>
                     </div>
@@ -117,19 +137,19 @@
                     </div>
                     <div class="row">
                         <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
+                            <img src="img/cal.png" style="width:25px">
                             <h6 style="margin:0px">{{lunchie.nutrient_values.calories}} kcal</h6>
                         </div>
                         <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{lunchie.nutrient_values.fat}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
+                            <img src="img/carbs.png" style="width:25px">
                             <h6 style="margin:0px">{{lunchie.nutrient_values.carbs}}g</h6>
                         </div>
                         <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
+                            <img src="img/fat.png" style="width:25px">
+                            <h6 style="margin:0px">{{lunchie.nutrient_values.fat}}g</h6>
+                        </div>
+                        <div class="col" align="center">
+                            <img src="img/protein.png" style="width:25px">
                             <h6 style="margin:0px">{{lunchie.nutrient_values.protein}}g</h6>
                         </div>
                     </div>
@@ -149,19 +169,19 @@
                     </div>
                     <div class="row">
                         <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
+                            <img src="img/cal.png" style="width:25px">
                             <h6 style="margin:0px">{{dinie.nutrient_values.calories}} kcal</h6>
                         </div>
                         <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{dinie.nutrient_values.fat}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
+                            <img src="img/carbs.png" style="width:25px">
                             <h6 style="margin:0px">{{dinie.nutrient_values.carbs}}g</h6>
                         </div>
                         <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
+                            <img src="img/fat.png" style="width:25px">
+                            <h6 style="margin:0px">{{dinie.nutrient_values.fat}}g</h6>
+                        </div>
+                        <div class="col" align="center">
+                            <img src="img/protein.png" style="width:25px">
                             <h6 style="margin:0px">{{dinie.nutrient_values.protein}}g</h6>
                         </div>
                     </div>
@@ -181,19 +201,19 @@
                     </div>
                     <div class="row">
                         <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
+                            <img src="img/cal.png" style="width:25px">
                             <h6 style="margin:0px">{{snack.nutrient_values.calories}} kcal</h6>
                         </div>
                         <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{snack.nutrient_values.fat}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
+                            <img src="img/carbs.png" style="width:25px">
                             <h6 style="margin:0px">{{snack.nutrient_values.carbs}}g</h6>
                         </div>
                         <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
+                            <img src="img/fat.png" style="width:25px">
+                            <h6 style="margin:0px">{{snack.nutrient_values.fat}}g</h6>
+                        </div>
+                        <div class="col" align="center">
+                            <img src="img/protein.png" style="width:25px">
                             <h6 style="margin:0px">{{snack.nutrient_values.protein}}g</h6>
                         </div>
                     </div>
@@ -204,8 +224,7 @@
             </ion-list>
         </div>
 
-
-        <div class="list" ng-if="calendar.startIndex <2">
+        <div class="list" ng-if="current_view <0">
             <div class="item item-divider"><div class="h5">Breakfast</div></div>
             <ion-list>
                 <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="breakie in $root.user.yesterday.breakfast track by $index" type="item-text-wrap" ng-click="edit_breakfast($index)">
@@ -222,14 +241,14 @@
                         </div>
                         <div class="col" align="center">
                             <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{breakie.nutrient_values.fat}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
                             <h6 style="margin:0px">{{breakie.nutrient_values.carbs}}g</h6>
                         </div>
                         <div class="col" align="center">
                             <i class="ion-ios-body"></i>
+                            <h6 style="margin:0px">{{breakie.nutrient_values.fat}}g</h6>
+                        </div>
+                        <div class="col" align="center">
+                            <img src="img/protein.png" style="width:25px">
                             <h6 style="margin:0px">{{breakie.nutrient_values.protein}}g</h6>
                         </div>
                     </div>
@@ -250,12 +269,12 @@
                             <h6 style="margin:0px">{{lunchie.nutrient_values.calories}} kcal</h6>
                         </div>
                         <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{lunchie.nutrient_values.fat}}g</h6>
+                            <img src="img/carbs.png" style="width:25px">
+                            <h6 style="margin:0px">{{lunchie.nutrient_values.carbs}}g</h6>
                         </div>
                         <div class="col" align="center">
                             <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{lunchie.nutrient_values.carbs}}g</h6>
+                            <h6 style="margin:0px">{{lunchie.nutrient_values.fat}}g</h6>
                         </div>
                         <div class="col" align="center">
                             <i class="ion-ios-body"></i>
@@ -279,12 +298,12 @@
                             <h6 style="margin:0px">{{dinie.nutrient_values.calories}} kcal</h6>
                         </div>
                         <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{dinie.nutrient_values.fat}}g</h6>
+                            <img src="img/carbs.png" style="width:25px">
+                            <h6 style="margin:0px">{{dinie.nutrient_values.carbs}}g</h6>
                         </div>
                         <div class="col" align="center">
                             <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{dinie.nutrient_values.carbs}}g</h6>
+                            <h6 style="margin:0px">{{dinie.nutrient_values.fat}}g</h6>
                         </div>
                         <div class="col" align="center">
                             <i class="ion-ios-body"></i>
@@ -308,12 +327,12 @@
                             <h6 style="margin:0px">{{snack.nutrient_values.calories}} kcal</h6>
                         </div>
                         <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{snack.nutrient_values.fat}}g</h6>
+                            <img src="img/carbs.png" style="width:25px">
+                            <h6 style="margin:0px">{{snack.nutrient_values.carbs}}g</h6>
                         </div>
                         <div class="col" align="center">
                             <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{snack.nutrient_values.carbs}}g</h6>
+                            <h6 style="margin:0px">{{snack.nutrient_values.fat}}g</h6>
                         </div>
                         <div class="col" align="center">
                             <i class="ion-ios-body"></i>
@@ -324,7 +343,9 @@
             </ion-list>
         </div>
 
-        <div class="list" ng-if="calendar.startIndex >2">
+
+
+        <div class="list" ng-if="current_view >0">
             <div class="item item-divider"><div class="h5">Breakfast</div></div>
             <ion-list>
                 <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="breakie in $root.user.tomorrow.breakfast track by $index" type="item-text-wrap" ng-click="edit_breakfast($index)">

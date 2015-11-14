@@ -104,7 +104,7 @@ angular.module('starter.services', [])
         id: 5,
         name: 'Nutella Bar',
         store_id: 3,
-        foodImage: 'https://www.medifast1.com/media/common/images/products/meals/bars/crunch/64805-1-zoom.jpg',
+        foodImage: 'img/nutellabar.png',
         nutrient_values: {
             calories: 271,
             fat: 13,
@@ -128,7 +128,7 @@ angular.module('starter.services', [])
         id: 7,
         name: 'Eggs Benedict',
         store_id: 3,
-        foodImage: 'http://www.bbcgoodfood.com/sites/bbcgoodfood.com/files/recipe_images/recipe-image-legacy-id--857455_11.jpg',
+        foodImage: 'http://mrfivestar.com/wp-content/uploads/2014/12/ImageResizer.jpg',
         nutrient_values: {
             calories: 421,
             fat: 42.41,
@@ -235,7 +235,7 @@ angular.module('starter.services', [])
 }])
 
 .factory('Users', function () {
-
+    var monthDisplay = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var users = [
         {
             id: 0,
@@ -287,6 +287,10 @@ angular.module('starter.services', [])
                 }
             }
             return user;
+        },
+
+        months: function () {
+            return monthDisplay;
         }
     };
 })

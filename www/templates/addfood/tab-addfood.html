@@ -1,5 +1,4 @@
 <ion-view view-title="Add Food">
-
     <ion-content class="has-header">
         <div id="search-bar">
             <div class="item item-input-inset">
@@ -11,13 +10,13 @@
             </div>
         </div>
         <ion-list>
-            <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="food in searchText.results" type="item-text-wrap" href="#/tab/addfood/{{food.id}}">
+            <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="food in searchText.results" type="item-text-wrap" href="#/tab/diary/addfood/{{food.id}}">
                 <img ng-src="{{food.foodImage}}">
                 <h2>{{food.name}}</h2>
                 <p>{{store_name(food.store_id)}}</p>
                 <i class="icon ion-chevron-right icon-accessory"></i>
             </ion-item>
-            <ion-item ng-if="searchText.results.length ==0" class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="food in foods" type="item-text-wrap" href="#/tab/addfood/{{food.id}}">
+            <ion-item ng-if="searchText.results.length ==0" class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="food in foods | orderBy:'+name'" type="item-text-wrap" href="#/tab/diary/addfood/{{food.id}}">
                 <img ng-src="{{food.foodImage}}">
                 <h2>{{food.name}}</h2>
                 <p>{{store_name(food.store_id)}}</p>

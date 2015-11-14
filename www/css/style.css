@@ -7,7 +7,7 @@ border-color:red !important
 .platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader) {
  height: 54px; }
  .platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader).item-input-inset .item-input-wrapper {
- margin-top: 19px !important; }
+ margin-top: 12px !important; }
  .platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader) > * {
  margin-top: 10px; }
 .platform-ios.platform-cordova:not(.fullscreen) .tabs-top > .tabs, .platform-ios.platform-cordova:not(.fullscreen) .tabs.tabs-top {
@@ -38,27 +38,6 @@ border-color:red !important
 
 
 /* Your app's CSS, go crazy, make it your own */
-
-
-
-/*
-.ionic-logo {
-  display: block;
-  margin: 15px auto;
-  width: 96px;
-  height: 96px;
-}
-
-.pane {
-  background-color: white;
-}
-.bar.bar-transparent {
-  background-color: transparent;
-  background-image: none;
-  border: none;
-}
-
-*/
 
 
 .swipe-cards {
