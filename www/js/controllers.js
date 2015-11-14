@@ -189,7 +189,7 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
       transitionDuration: 500,
       donutRatio: 0.70,
       donut: true,
-      title: $rootScope.fat+ 'g',
+      title: $rootScope.fat + 'g',
       growOnHover: false,
       margin: {
         top: 0,

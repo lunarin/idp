@@ -5,11 +5,14 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', 'starter.controllers', 'starter.services', 'nvd3', 'ionic.contrib.ui.cards', 'firebase', 'timer'])
+angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoogle-maps', 'starter.controllers', 'starter.services', 'nvd3', 'ionic.contrib.ui.cards', 'firebase', 'timer'])
 
-.run(function($ionicPlatform, $rootScope, userdata) {
+.run(function($ionicPlatform, $rootScope, userdata, $cordovaBarcodeScanner) {
   $ionicPlatform.ready(function() {
-
+    $rootScope.userCal = 0;
+    $rootScope.userFat = 0;
+    $rootScope.userProtein = 0;
+    $rootScope.userCarbs = 0;
 
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -36,6 +39,14 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
     $rootScope.resumeTimer = function() {
       $rootScope.$broadcast('timer-resume');
       $rootScope.timerRunning = true;
+    };
+
+    $rootScope.scanBarcode = function() {
+      $cordovaBarcodeScanner.scan().then(function(imageData) {
+        $scope.generateRandom();
+      }, function(error) {
+        console.log("An error happened -> " + error);
+      });
     };
 
 
@@ -85,7 +96,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
           var newUser = {
             id: maxId + 1,
             name: name,
-            version: 'a'
+            version: 'b'
           };
           userdataArr.$add(newUser).then(function(dataref) {
             deferred.resolve(userdataArr.$getRecord(dataref.key()));
@@ -155,13 +166,13 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
     .state('tab', {
       url: '/tab',
       abstract: true,
-      templateUrl: 'templates/tabs.html'
+      templateUrl: 'templates/menu.html'
     })
 
   .state('tab.diary', {
     url: '/diary',
     views: {
-      'tab-diary': {
+      'menuContent': {
         templateUrl: 'templates/diary/tab-diary.html',
         controller: 'DiaryCtrl'
       }
@@ -171,7 +182,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
   .state('tab.diaryfood', {
     url: '/diary/foodinfo',
     views: {
-      'tab-diary': {
+      'menuContent': {
         templateUrl: 'templates/diary/edit-food.html',
         controller: 'EditDiaryCtrl'
       }
@@ -181,7 +192,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
   .state('tab.recommend', {
     url: '/diary/recommend',
     views: {
-      'tab-diary': {
+      'menuContent': {
         templateUrl: 'templates/diary/recommend.html',
         controller: 'RecommendCtrl'
       }
@@ -191,7 +202,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
   .state('tab.recommendsetting', {
       url: '/diary/recommendfilter',
       views: {
-        'tab-diary': {
+        'menuContent': {
           templateUrl: 'templates/diary/recommend-setting.html',
           controller: 'FilterCtrl'
         }
@@ -200,7 +211,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
     .state('tab.profile', {
       url: '/profile',
       views: {
-        'tab-profile': {
+        'menuContent': {
           templateUrl: 'templates/profile/tab-profile.html',
           controller: 'ProfileCtrl'
         }
@@ -210,7 +221,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
   .state('tab.editprofile', {
     url: '/profile/editprofile',
     views: {
-      'tab-profile': {
+      'menuContent': {
         templateUrl: 'templates/profile/editprofile.html',
         controller: 'editprofile'
       }
@@ -230,7 +241,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
   .state('tab.explorer', {
     url: '/explorer',
     views: {
-      'tab-explorer': {
+      'menuContent': {
         templateUrl: 'templates/explorer/tab-explorer.html',
         controller: 'ExplorerCtrl'
       }
@@ -240,7 +251,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
   .state('tab.explorer-history', {
       url: '/explorer/preference',
       views: {
-        'tab-explorer': {
+        'menuContent': {
           templateUrl: 'templates/explorer/preference-history.html',
           controller: 'ExplorerHistoryCtrl'
         }
@@ -249,7 +260,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
     .state('tab.addfood', {
       url: '/diary/addfood',
       views: {
-        'tab-addfood': {
+        'menuContent': {
           templateUrl: 'templates/addfood/tab-addfood.html',
           controller: 'AddFoodCtrl'
         }
@@ -259,7 +270,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
   .state('tab.barcode-scanner', {
     url: '/diary/addfood/barcode-scanner',
     views: {
-      'tab-addfood': {
+      'menuContent': {
         templateUrl: 'templates/addfood/barcode-scanner.html',
         controller: 'AddFoodCtrl'
       }
@@ -269,7 +280,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
   .state('tab.food-detail', {
     url: '/diary/addfood/:foodId',
     views: {
-      'tab-addfood': {
+      'menuContent': {
         templateUrl: 'templates/addfood/food-detail.html',
         controller: 'FoodDetailCtrl'
       }
@@ -279,7 +290,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
   .state('tab.findfood', {
     url: '/findfood',
     views: {
-      'tab-findfood': {
+      'menuContent': {
         templateUrl: 'templates/findfood/tab-findfood.html',
         controller: 'FindFoodCtrl'
       }
@@ -289,7 +300,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
   .state('tab.store-detail', {
     url: '/findfood/:storeId',
     views: {
-      'tab-findfood': {
+      'menuContent': {
         templateUrl: 'templates/findfood/store-detail.html',
         controller: 'StoreDetailCtrl'
       }
@@ -299,7 +310,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
   .state('tab.store-food-detail', {
     url: '/findfood/:storeId/:foodId',
     views: {
-      'tab-findfood': {
+      'menuContent': {
         templateUrl: 'templates/findfood/store-food-detail.html',
         controller: 'StoreFoodDetailCtrl'
       }
