@@ -5,14 +5,11 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoogle-maps', 'starter.controllers', 'starter.services', 'nvd3', 'ionic.contrib.ui.cards', 'firebase', 'timer'])
+angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', 'starter.controllers', 'starter.services', 'nvd3', 'ionic.contrib.ui.cards', 'firebase', 'timer'])
 
-.run(function($ionicPlatform, $rootScope, userdata, $cordovaBarcodeScanner) {
+.run(function($ionicPlatform, $rootScope, userdata) {
   $ionicPlatform.ready(function() {
-    $rootScope.userCal = 0;
-    $rootScope.userFat = 0;
-    $rootScope.userProtein = 0;
-    $rootScope.userCarbs = 0;
+
 
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -39,14 +36,6 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoo
     $rootScope.resumeTimer = function() {
       $rootScope.$broadcast('timer-resume');
       $rootScope.timerRunning = true;
-    };
-
-    $rootScope.scanBarcode = function() {
-      $cordovaBarcodeScanner.scan().then(function(imageData) {
-        $scope.generateRandom();
-      }, function(error) {
-        console.log("An error happened -> " + error);
-      });
     };
 
 
@@ -171,13 +160,13 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoo
     .state('tab', {
       url: '/tab',
       abstract: true,
-      templateUrl: 'templates/menu.html'
+      templateUrl: 'templates/tabs.html'
     })
 
   .state('tab.diary', {
     url: '/diary',
     views: {
-      'menuContent': {
+      'tab-diary': {
         templateUrl: 'templates/diary/tab-diary.html',
         controller: 'DiaryCtrl'
       }
@@ -187,7 +176,7 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoo
   .state('tab.diaryfood', {
     url: '/diary/foodinfo',
     views: {
-      'menuContent': {
+      'tab-diary': {
         templateUrl: 'templates/diary/edit-food.html',
         controller: 'EditDiaryCtrl'
       }
@@ -197,7 +186,7 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoo
   .state('tab.recommend', {
     url: '/diary/recommend',
     views: {
-      'menuContent': {
+      'tab-diary': {
         templateUrl: 'templates/diary/recommend.html',
         controller: 'RecommendCtrl'
       }
@@ -207,7 +196,7 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoo
   .state('tab.recommendsetting', {
       url: '/diary/recommendfilter',
       views: {
-        'menuContent': {
+        'tab-diary': {
           templateUrl: 'templates/diary/recommend-setting.html',
           controller: 'FilterCtrl'
         }
@@ -216,7 +205,7 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoo
     .state('tab.profile', {
       url: '/profile',
       views: {
-        'menuContent': {
+        'tab-profile': {
           templateUrl: 'templates/profile/tab-profile.html',
           controller: 'ProfileCtrl'
         }
@@ -226,7 +215,7 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoo
   .state('tab.editprofile', {
     url: '/profile/editprofile',
     views: {
-      'menuContent': {
+      'tab-profile': {
         templateUrl: 'templates/profile/editprofile.html',
         controller: 'editprofile'
       }
@@ -246,7 +235,7 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoo
   .state('tab.explorer', {
     url: '/explorer',
     views: {
-      'menuContent': {
+      'tab-explorer': {
         templateUrl: 'templates/explorer/tab-explorer.html',
         controller: 'ExplorerCtrl'
       }
@@ -256,7 +245,7 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoo
   .state('tab.explorer-history', {
       url: '/explorer/preference',
       views: {
-        'menuContent': {
+        'tab-explorer': {
           templateUrl: 'templates/explorer/preference-history.html',
           controller: 'ExplorerHistoryCtrl'
         }
@@ -265,7 +254,7 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoo
     .state('tab.addfood', {
       url: '/diary/addfood',
       views: {
-        'menuContent': {
+        'tab-addfood': {
           templateUrl: 'templates/addfood/tab-addfood.html',
           controller: 'AddFoodCtrl'
         }
@@ -275,7 +264,7 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoo
   .state('tab.barcode-scanner', {
     url: '/diary/addfood/barcode-scanner',
     views: {
-      'menuContent': {
+      'tab-addfood': {
         templateUrl: 'templates/addfood/barcode-scanner.html',
         controller: 'AddFoodCtrl'
       }
@@ -285,7 +274,7 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoo
   .state('tab.food-detail', {
     url: '/diary/addfood/:foodId',
     views: {
-      'menuContent': {
+      'tab-addfood': {
         templateUrl: 'templates/addfood/food-detail.html',
         controller: 'FoodDetailCtrl'
       }
@@ -295,7 +284,7 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoo
   .state('tab.findfood', {
     url: '/findfood',
     views: {
-      'menuContent': {
+      'tab-findfood': {
         templateUrl: 'templates/findfood/tab-findfood.html',
         controller: 'FindFoodCtrl'
       }
@@ -305,7 +294,7 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoo
   .state('tab.store-detail', {
     url: '/findfood/:storeId',
     views: {
-      'menuContent': {
+      'tab-findfood': {
         templateUrl: 'templates/findfood/store-detail.html',
         controller: 'StoreDetailCtrl'
       }
@@ -315,7 +304,7 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoo
   .state('tab.store-food-detail', {
     url: '/findfood/:storeId/:foodId',
     views: {
-      'menuContent': {
+      'tab-findfood': {
         templateUrl: 'templates/findfood/store-food-detail.html',
         controller: 'StoreFoodDetailCtrl'
       }
