@@ -311,7 +311,7 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
   };
 })
 
-.controller('RecommendCtrl', function($scope, $rootScope, FoodAndStores, $window) {
+.controller('RecommendCtrl', function($scope, $rootScope, FoodAndStores, $window,$ionicPopup,$timeout) {
   $scope.$on('$ionicView.enter', function(e) {
     $rootScope.justEntered = true;
   });
@@ -423,28 +423,43 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
     lun.push(meal.lunch);
     var din = $rootScope.user.today_meal.dinner;
     din.push(meal.dinner);
-    $rootScope.userCal += meal.breakfast.nutrient_values.calories;
-    $rootScope.userCal += meal.lunch.nutrient_values.calories;
-    $rootScope.userCal += meal.dinner.nutrient_values.calories;
-
-    $rootScope.userCarbs += meal.breakfast.nutrient_values.carbs;
-    $rootScope.userCarbs += meal.lunch.nutrient_values.carbs;
-    $rootScope.userCarbs += meal.dinner.nutrient_values.carbs;
-
-    $rootScope.userFat += meal.breakfast.nutrient_values.fat;
-    $rootScope.userFat += meal.lunch.nutrient_values.fat;
-    $rootScope.userFat += meal.dinner.nutrient_values.fat;
-
-    $rootScope.userProtein +=$rootScope.userFat += meal.breakfast.nutrient_values.protein;
-    $rootScope.userProtein +=$rootScope.userFat += meal.lunch.nutrient_values.protein;
-    $rootScope.userProtein +=$rootScope.userFat += meal.dinner.nutrient_values.protein;
+    // $rootScope.userCal += meal.breakfast.nutrient_values.calories;
+    // $rootScope.userCal += meal.lunch.nutrient_values.calories;
+    // $rootScope.userCal += meal.dinner.nutrient_values.calories;
+    //
+    // $rootScope.userCarbs += meal.breakfast.nutrient_values.carbs;
+    // $rootScope.userCarbs += meal.lunch.nutrient_values.carbs;
+    // $rootScope.userCarbs += meal.dinner.nutrient_values.carbs;
+    //
+    // $rootScope.userFat += meal.breakfast.nutrient_values.fat;
+    // $rootScope.userFat += meal.lunch.nutrient_values.fat;
+    // $rootScope.userFat += meal.dinner.nutrient_values.fat;
+    //
+    // $rootScope.userProtein +=$rootScope.userFat += meal.breakfast.nutrient_values.protein;
+    // $rootScope.userProtein +=$rootScope.userFat += meal.lunch.nutrient_values.protein;
+    // $rootScope.userProtein +=$rootScope.userFat += meal.dinner.nutrient_values.protein;
     if (bf[0].name == "Fruit Salad" && lun[0].name == "Chicken Rice" && din[0].name == "Seafood Laksa") {
       $rootScope.task = 2
       $rootScope.stopTimer();
       $rootScope.startTimer();
     };
     $window.location.replace('#/tab/diary');
+    add_alert();
+
   }
+
+  var add_alert = function() {
+    var alertPopup = $ionicPopup.show({
+      title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Task 2 Completed!</h4></div></div><div class="row"><div class="col" align="center"></div></div></div>'
+    });
+    alertPopup.then(function(res) {
+      // console.log('Account is not valid');
+    });
+    $timeout(function() {
+      alertPopup.close(); //close the popup after 1.5 seconds
+      $window.location.replace("#/tab/diary");
+    }, 1500);
+  };
 })
 
 .controller('FilterCtrl', function($scope, $rootScope, $window) {
@@ -579,11 +594,15 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
       meal_array.push($scope.food);
     }
 
-    if (day_to_add == 13 && mth_to_add == 10 && $scope.added_to.meal == 'lunch' && $scope.added_to.portion == '2' && $scope.food.name == "Fruit Salad") {
+    if (day_to_add == 7 && mth_to_add == 10 && $scope.added_to.meal == 'lunch' && $scope.added_to.portion == '2' && $scope.food.name == "Fruit Salad") {
       $rootScope.task = 3
       $rootScope.stopTimer();
+      add_alert1();
+
     }
-    add_alert();
+    else{
+      add_alert();
+    }
   };
 
   var add_alert = function() {
@@ -598,13 +617,26 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
       $window.location.replace("#/tab/diary/addfood");
     }, 1500);
   };
+
+  var add_alert1 = function() {
+    var alertPopup = $ionicPopup.show({
+      title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Task 3 Completed!</h4></div></div><div class="row"><div class="col" align="center"></div></div></div>'
+    });
+    alertPopup.then(function(res) {
+      // console.log('Account is not valid');
+    });
+    $timeout(function() {
+      alertPopup.close(); //close the popup after 1.5 seconds
+      $window.location.replace("#/tab/diary");
+    }, 1500);
+  };
 })
 
 .controller('StoreDetailCtrl', function($scope, $stateParams, FoodAndStores) {
   $scope.store = FoodAndStores.get_store($stateParams.storeId);
 })
 
-.controller('StoreFoodDetailCtrl', function($scope, $window, $rootScope, $stateParams, FoodAndStores) {
+.controller('StoreFoodDetailCtrl', function($scope, $window, $rootScope, $stateParams, FoodAndStores,$ionicPopup, $timeout) {
   $scope.food = FoodAndStores.get_food($stateParams.foodId);
   $scope.added_to = {};
   $scope.added_to.meal = 'breakfast';
@@ -627,14 +659,29 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
       meal_array.push($scope.food);
     }
 
-    if (day_to_add == 13 && mth_to_add == 10 && $scope.added_to.meal == 'dinner' && $scope.added_to.portion == '1' && $scope.food.name == "Eggs Benedict") {
+    if (day_to_add == 7 && mth_to_add == 10 && $scope.added_to.meal == 'dinner' && $scope.added_to.portion == '1' && $scope.food.name == "Eggs Benedict") {
       $rootScope.task = 1
       $rootScope.stopTimer();
+      add_alert();
       $rootScope.startTimer();
     }
 
     $window.location.replace('#/tab/diary');
   };
+
+  var add_alert = function() {
+    var alertPopup = $ionicPopup.show({
+      title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Task 1 completed!</h4></div></div><div class="row"><div class="col" align="center"><i class="ion-checkmark-round"></i></div></div></div>'
+    });
+    alertPopup.then(function(res) {
+      console.log('Added to diary');
+    });
+    $timeout(function() {
+      alertPopup.close(); //close the popup after 1.5 seconds
+      $window.location.replace("#/tab/diary");
+    }, 1500);
+  };
+
 })
 
 .controller('FindFoodCtrl', function($scope, FoodAndStores, uiGmapGoogleMapApi) {
@@ -845,20 +892,34 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
 
 })
 
-.controller('HomeCtrl', function($scope, $window, $rootScope) {
+.controller('HomeCtrl', function($scope, $window, $rootScope,$ionicPopup, $timeout) {
   $scope.goQuestions = function() {
     $window.location = '#/questions';
   }
   $scope.createorFindUser = function(name) {
     $rootScope.userdata.findOrCreateUser(name).then(function(foundUser) {
-      $rootScope.user_id = foundUser.$id;
-      $rootScope.user_name = foundUser.name;
+      if (foundUser != null) {
+        $rootScope.user_id = foundUser.$id;
+        $rootScope.user_name = foundUser.name;
+        $window.location.replace('#/tab/diary');
+      }
+      else{
+        add_alert();
+      }
     });
-
   }
-  $scope.goDiary = function() {
-    $window.location.replace('#/tab/diary');
-  }
+  var add_alert = function() {
+    var alertPopup = $ionicPopup.show({
+      title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Username is not valid</h4></div></div><div class="row"><div class="col" align="center"></div></div></div>'
+    });
+    alertPopup.then(function(res) {
+      // console.log('Account is not valid');
+    });
+    $timeout(function() {
+      alertPopup.close(); //close the popup after 1.5 seconds
+      // $window.location.replace("#/tab/diary/addfood");
+    }, 1500);
+  };
 })
 
 

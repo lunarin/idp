@@ -86,21 +86,26 @@ angular.module('starter', ['ionic', 'ngCordova','ionic.service.core', 'uiGmapgoo
           if (user.name == name) {
             foundUser = user;
           }
+          // if(name == undefined){
+          //   deferred.resolve('blank');
+          // }
           if (user.id > maxId)
             maxId = user.id;
         });
         if (foundUser) {
           deferred.resolve(foundUser);
         } else {
-          console.log("Creating new user", name);
-          var newUser = {
-            id: maxId + 1,
-            name: name,
-            version: 'b'
-          };
-          userdataArr.$add(newUser).then(function(dataref) {
-            deferred.resolve(userdataArr.$getRecord(dataref.key()));
-          });
+          // console.log(foundUser);
+          // console.log("Creating new user", name);
+          // var newUser = {
+          //   id: maxId + 1,
+          //   name: name,
+          //   version: 'a'
+          // };
+          // userdataArr.$add(newUser).then(function(dataref) {
+          //   deferred.resolve(userdataArr.$getRecord(dataref.key()));
+          // });
+          deferred.resolve(null);
         }
       });
       return deferred.promise;
