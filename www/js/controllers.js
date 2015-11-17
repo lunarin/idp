@@ -487,7 +487,7 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
       $rootScope.task = 2
       $rootScope.stopTimer();
       $rootScope.startTimer();
-      // add_alert_default();
+      // add_alert();
     }else{
       add_alert_default();
     }
@@ -973,9 +973,14 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
   }
   $scope.createorFindUser = function(name) {
     $rootScope.userdata.findOrCreateUser(name).then(function(foundUser) {
+      if (foundUser != null) {
         $rootScope.user_id = foundUser.$id;
         $rootScope.user_name = foundUser.name;
         $window.location.replace('#/tab/diary');
+      }
+      else{
+        add_alert();
+      }
     });
   }
   var add_alert = function() {

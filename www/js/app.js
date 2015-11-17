@@ -58,7 +58,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
 })
 
 .factory("userdata", function($firebaseArray, $q) {
-  var dataref = new Firebase("https://foodwithbenefits.firebaseio.com/userdata");
+  var dataref = new Firebase("https://foodwithbenefitsmain.firebaseIO.com/userdata");
   var userdataArr = $firebaseArray(dataref);
   return {
     get: function(i) {
@@ -84,20 +84,21 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
         if (foundUser) {
           deferred.resolve(foundUser);
         } else {
+          if(foundUser != undefined){
           console.log("Creating new user", name);
-          if(name != undefined){
           var newUser = {
             id: maxId + 1,
             name: name,
             version: 'a'
-          }
+          };
         }
         else{
           var newUser = {
             id: maxId + 1,
             name: null,
             version: 'a'
-          }
+          };
+
         }
           userdataArr.$add(newUser).then(function(dataref) {
             deferred.resolve(userdataArr.$getRecord(dataref.key()));
