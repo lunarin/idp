@@ -244,28 +244,8 @@ angular.module('starter.services', [])
             height: 1.73,
             weight: 78,
             password: 'here',
-            today_meal: {
-                breakfast:[],
-                lunch:[],
-                dinner: [],
-                snack: []
-            },
-            yesterday: {
-                breakfast: [],
-                lunch: [],
-                dinner: [],
-                snack: []
-            },
-            tomorrow: {
-                breakfast: [],
-                lunch: [],
-                dinner: [],
-                snack: []
-            },
-            preference: {
-                like: [],
-                dislike:[]
-            }
+            meals: {},
+            preference: []
         }];
 
     return {

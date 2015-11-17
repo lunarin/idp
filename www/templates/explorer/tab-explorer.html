@@ -15,7 +15,7 @@
       </div>
     </div>
     <swipe-cards>
-      <swipe-card ng-repeat="food in foods" on-card-swipe="cardSwiped($index)">
+      <swipe-card ng-repeat="food in foods" on-card-swipe="cardSwiped(food,$index)">
         <div ng-controller="SwipeCtrl">
         <div class="image">
           <img ng-src="{{food.foodImage}}" align="middle" style="overflow: hidden; max-height: 250px;">

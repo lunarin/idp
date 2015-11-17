@@ -46,17 +46,11 @@
         </div>
 
         <div class="list">
-            <div class="item item-input" style="background-color:rgba(105, 105, 105, 0.17)">
-                <div class="row row-center" style="padding:0">
-                    <div class="col" style="padding-left:0px" align="left">
-                        <div class="input-label">
-                            Add to Date
-                        </div>
-                    </div>
-                    <div class="col" style="padding-right:48px" align="right">
-                        {{$root.addfood_date | date:'dd-MM-yyyy'}}
-                    </div>
-                </div>
+            <div class="item item-input">
+              <div class="input-label">
+                  Add to Date
+              </div>
+              <input type="date" ng-model="added_to.date" style="text-align:right">
             </div>
             <div class="item item-input item-select">
                 <div class="input-label">

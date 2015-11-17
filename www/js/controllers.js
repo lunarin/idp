@@ -3,121 +3,162 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
 .controller('DiaryCtrl', function($rootScope, $scope, Users, $window, $firebaseObject) {
   $scope.$on('$ionicView.enter', function(e) {
     if (!$rootScope.addfood_date) {
-      $rootScope.addfood_date = new Date();
+      var today_datetime = new Date();
+      $rootScope.addfood_date = new Date(today_datetime.getFullYear(),today_datetime.getMonth(),today_datetime.getDate());
     }
-    $scope.current_view = 0;
-    $scope.today = new Date(new Date().getTime() + $scope.current_view * day);
-    $scope.ytd = new Date(new Date().getTime() + ($scope.current_view - 1) * day);
-    $scope.tmr = new Date(new Date().getTime() + ($scope.current_view + 1) * day);
-
-    $scope.calendar = {
-      ytd: $scope.ytd.getDate() + ' ' + months[$scope.ytd.getMonth()],
-      today: $scope.today.getDate() + ' ' + months[$scope.today.getMonth()],
-      tmr: $scope.tmr.getDate() + ' ' + months[$scope.tmr.getMonth()]
-    };
+    if (!$rootScope.user) {
+      $rootScope.user = Users.get_user('0');
+      updateMealPlan();
+    }else{
+      console.log($rootScope.user);
+      updateMealPlan();
+    }
+    if (!$rootScope.filter) {
+      $rootScope.filter = {
+        'price': 12,
+        'proximity': 8
+      };
+    }
   })
-  if (!$rootScope.user) {
-    $rootScope.user = Users.get_user('0');
-  }
-  if (!$rootScope.filter) {
-    $rootScope.filter = {
-      'price': 12,
-      'proximity': 8
-    };
-  }
-
-
-  $rootScope.cal = 2090
-  $rootScope.fat = 70
-  $rootScope.carbs = 157
-  $rootScope.protein = 183
 
   var months = Users.months();
   var day = 86400000;
-  $scope.today = new Date(new Date().getTime() + $scope.current_view * day);
-  $scope.ytd = new Date(new Date().getTime() + ($scope.current_view - 1) * day);
-  $scope.tmr = new Date(new Date().getTime() + ($scope.current_view + 1) * day);
-
+  var today_time = new Date();
+  var today_date = new Date(today_time.getFullYear(),today_time.getMonth(),today_time.getDate());
+  $scope.current_view = 0;
+  $scope.today = new Date(today_date.getTime() + $scope.current_view * day);
+  $scope.ytd = new Date(today_date.getTime() + ($scope.current_view - 1) * day);
+  $scope.tmr = new Date(today_date.getTime() + ($scope.current_view + 1) * day);
   $scope.calendar = {
     ytd: $scope.ytd.getDate() + ' ' + months[$scope.ytd.getMonth()],
     today: $scope.today.getDate() + ' ' + months[$scope.today.getMonth()],
     tmr: $scope.tmr.getDate() + ' ' + months[$scope.tmr.getMonth()]
   };
 
+  $rootScope.cal = 2090;
+  $rootScope.fat = 70;
+  $rootScope.carbs = 157;
+  $rootScope.protein = 183;
+  $scope.mealplan_display =
+        { breakfast:[],
+          lunch:[],
+          dinner: [],
+          snack: []
+        };
+
+  var updateMealPlan = function(){
+    if(!$rootScope.user.meals[$scope.today.getTime()]){
+      $rootScope.user.meals[$scope.today.getTime()] = {
+        breakfast:[],
+        lunch:[],
+        dinner: [],
+        snack: []
+      };
+    }
+    $scope.mealplan_display = $rootScope.user.meals[$scope.today.getTime()];
+  }
+
+
   $scope.indexUp = function() {
     $scope.current_view = $scope.current_view - 1;
-    $scope.today = new Date(new Date().getTime() + $scope.current_view * day);
-    $scope.ytd = new Date(new Date().getTime() + ($scope.current_view - 1) * day);
-    $scope.tmr = new Date(new Date().getTime() + ($scope.current_view + 1) * day);
+    $scope.today = new Date(today_date.getTime() + $scope.current_view * day);
+    $scope.ytd = new Date(today_date.getTime() + ($scope.current_view - 1) * day);
+    $scope.tmr = new Date(today_date.getTime() + ($scope.current_view + 1) * day);
     $scope.calendar = {
       ytd: $scope.ytd.getDate() + ' ' + months[$scope.ytd.getMonth()],
       today: $scope.today.getDate() + ' ' + months[$scope.today.getMonth()],
       tmr: $scope.tmr.getDate() + ' ' + months[$scope.tmr.getMonth()]
     };
+    updateMealPlan();
   }
   $scope.indexDown = function() {
     $scope.current_view = $scope.current_view + 1;
-    $scope.today = new Date(new Date().getTime() + $scope.current_view * day);
-    $scope.ytd = new Date(new Date().getTime() + ($scope.current_view - 1) * day);
-    $scope.tmr = new Date(new Date().getTime() + ($scope.current_view + 1) * day);
+    $scope.today = new Date(today_date.getTime() + $scope.current_view * day);
+    $scope.ytd = new Date(today_date.getTime() + ($scope.current_view - 1) * day);
+    $scope.tmr = new Date(today_date.getTime() + ($scope.current_view + 1) * day);
     $scope.calendar = {
       ytd: $scope.ytd.getDate() + ' ' + months[$scope.ytd.getMonth()],
       today: $scope.today.getDate() + ' ' + months[$scope.today.getMonth()],
       tmr: $scope.tmr.getDate() + ' ' + months[$scope.tmr.getMonth()]
     };
+    updateMealPlan();
   }
   $scope.edit_breakfast = function(breakdex) {
+    var meals = $rootScope.user.meals[$scope.today.getTime()];
+    var food_to_edit = meals.breakfast[breakdex];
     var meal_food = {
       meal: 'breakfast',
-      food: $rootScope.user.today_meal.breakfast[breakdex],
-      foodex: breakdex
+      food: food_to_edit,
+      foodex: breakdex,
+      date: $scope.today
     };
     $rootScope.editFood = meal_food;
-    $window.location.replace('#/tab/diary/foodinfo');
+    $window.location='#/tab/diary/foodinfo';
   };
   $scope.edit_lunch = function(lunchdex) {
+    var meals = $rootScope.user.meals[$scope.today.getTime()];
+    var food_to_edit = meals.lunch[lunchdex];
     var meal_food = {
       meal: 'lunch',
-      food: $rootScope.user.today_meal.lunch[lunchdex],
-      foodex: lunchdex
+      food: food_to_edit,
+      foodex: lunchdex,
+      date: $scope.today
     };
     $rootScope.editFood = meal_food;
-    $window.location.replace('#/tab/diary/foodinfo');
+    $window.location='#/tab/diary/foodinfo';
   };
   $scope.edit_dinner = function(dinnerdex) {
+    var meals = $rootScope.user.meals[$scope.today.getTime()];
+    var food_to_edit = meals.dinner[dinnerdex];
     var meal_food = {
       meal: 'dinner',
-      food: $rootScope.user.today_meal.dinner[dinnerdex],
-      foodex: dinnerdex
+      food: food_to_edit,
+      foodex: dinnerdex,
+      date: $scope.today
     };
     $rootScope.editFood = meal_food;
-    $window.location.replace('#/tab/diary/foodinfo');
+    $window.location='#/tab/diary/foodinfo';
   };
   $scope.edit_snack = function(snackdex) {
+    var meals = $rootScope.user.meals[$scope.today.getTime()];
+    var food_to_edit = meals.snack[snackdex];
     var meal_food = {
       meal: 'snack',
-      food: $rootScope.user.today_meal.snack[snackdex],
-      foodex: snackdex
+      food: food_to_edit,
+      foodex: snackdex,
+      date: $scope.today
     };
     $rootScope.editFood = meal_food;
-    $window.location.replace('#/tab/diary/foodinfo');
+    $window.location='#/tab/diary/foodinfo';
   };
-  $scope.remove_breakfast = function(breakfast) {
-    $rootScope.user.today_meal.breakfast.splice(breakfast, 1);
+  $scope.remove_breakfast = function(bf) {
+    // $rootScope.user.today_meal.breakfast.splice(bf, 1);
+    var today = new Date(today_date.getTime() + $scope.current_view * day);
+    var meals = $rootScope.user.meals[today.getTime()];
+    meals.breakfast.splice(bf, 1);
   };
-  $scope.remove_lunch = function(lunch) {
-    $rootScope.user.today_meal.lunch.splice(lunch, 1);
+  $scope.remove_lunch = function(lun) {
+    // $rootScope.user.today_meal.lunch.splice(lunch, 1);
+    var today = new Date(today_date.getTime() + $scope.current_view * day);
+    var meals = $rootScope.user.meals[today.getTime()];
+    meals.lunch.splice(lun, 1);
   };
-  $scope.remove_dinner = function(dinner) {
-    $rootScope.user.today_meal.dinner.splice(dinner, 1);
+  $scope.remove_dinner = function(din) {
+    // $rootScope.user.today_meal.dinner.splice(dinner, 1);
+    var today = new Date(today_date.getTime() + $scope.current_view * day);
+    var meals = $rootScope.user.meals[today.getTime()];
+    meals.dinner.splice(din, 1);
   };
-  $scope.remove_snack = function(snack) {
-    $rootScope.user.today_meal.snack.splice(snack, 1);
+  $scope.remove_snack = function(sna) {
+    // $rootScope.user.today_meal.snack.splice(snack, 1);
+    var today = new Date(today_date.getTime() + $scope.current_view * day);
+    var meals = $rootScope.user.meals[today.getTime()];
+    meals.snack.splice(sna, 1);
   };
 
-  $scope.addFoodWithDate = function() {
-    $rootScope.addfood_date = $scope.today;
-    $window.location = '#/tab/diary/addfood';
+  $scope.addFoodWithDate = function () {
+      $rootScope.addfood_date = $scope.today;
+      $window.location='#/tab/diary/addfood';
   }
   $scope.options = {
     chart: {
@@ -286,24 +327,24 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
 
   $scope.save_edit = function() {
     if (previousMeal == 'breakfast') {
-      console.log("break");
-      $rootScope.user.today_meal.breakfast.splice($rootScope.editFood.foodex, 1);
-      var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
+      $rootScope.user.meals[$rootScope.editFood.date.getTime()].breakfast.splice($rootScope.editFood.foodex, 1);
+      var meals = $rootScope.user.meals[$rootScope.editFood.date.getTime()];
+      var meal_array = meals[$scope.added_to.meal];
       meal_array.push($scope.food);
     } else if (previousMeal == 'lunch') {
-      $rootScope.user.today_meal.lunch.splice($rootScope.editFood.foodex, 1);
-      console.log("lunch");
-      var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
+      $rootScope.user.meals[$rootScope.editFood.date.getTime()].lunch.splice($rootScope.editFood.foodex, 1);
+      var meals = $rootScope.user.meals[$rootScope.editFood.date.getTime()];
+      var meal_array = meals[$scope.added_to.meal];
       meal_array.push($scope.food);
     } else if (previousMeal == 'dinner') {
-      console.log("dinz");
-      $rootScope.user.today_meal.dinner.splice($rootScope.editFood.foodex, 1);
-      var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
+      $rootScope.user.meals[$rootScope.editFood.date.getTime()].dinner.splice($rootScope.editFood.foodex, 1);
+      var meals = $rootScope.user.meals[$rootScope.editFood.date.getTime()];
+      var meal_array = meals[$scope.added_to.meal];
       meal_array.push($scope.food);
     } else {
-      console.log("snack");
-      $rootScope.user.today_meal.snack.splice($rootScope.editFood.foodex, 1);
-      var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
+      $rootScope.user.meals[$rootScope.editFood.date.getTime()].snack.splice($rootScope.editFood.foodex, 1);
+      var meals = $rootScope.user.meals[$rootScope.editFood.date.getTime()];
+      var meal_array = meals[$scope.added_to.meal];
       meal_array.push($scope.food);
     }
     $rootScope.editFood = {};
@@ -315,8 +356,8 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
   $scope.$on('$ionicView.enter', function(e) {
     $rootScope.justEntered = true;
   });
-  $scope.disliked_meals = $rootScope.user.preference.dislike;
-  $scope.liked_meals = $rootScope.user.preference.like;
+  $scope.disliked_meals = [];
+  $scope.liked_meals = FoodAndStores.foods();
   $scope.neutral = [];
   $scope.foods = FoodAndStores.foods();
   $scope.meal_plan_cards = [];
@@ -417,11 +458,15 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
 
   //save meal plan
   $scope.addToDiary = function(meal) {
-    var bf = $rootScope.user.today_meal.breakfast;
+    var today_time = new Date();
+    var today_date = new Date(today_time.getFullYear(),today_time.getMonth(),today_time.getDate());
+    var meals = $rootScope.user.meals[today_date.getTime()];
+
+    var bf = meals.breakfast;
     bf.push(meal.breakfast);
-    var lun = $rootScope.user.today_meal.lunch;
+    var lun = meals.lunch;
     lun.push(meal.lunch);
-    var din = $rootScope.user.today_meal.dinner;
+    var din = meals.dinner;
     din.push(meal.dinner);
     // $rootScope.userCal += meal.breakfast.nutrient_values.calories;
     // $rootScope.userCal += meal.lunch.nutrient_values.calories;
@@ -438,19 +483,28 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
     // $rootScope.userProtein +=$rootScope.userFat += meal.breakfast.nutrient_values.protein;
     // $rootScope.userProtein +=$rootScope.userFat += meal.lunch.nutrient_values.protein;
     // $rootScope.userProtein +=$rootScope.userFat += meal.dinner.nutrient_values.protein;
-    if (bf[0].name == "Fruit Salad" && lun[0].name == "Chicken Rice" && din[0].name == "Seafood Laksa") {
-      $rootScope.task = 2
+    if ((meal.breakfast.name == "Fruit Salad") && (meal.lunch.name == "Chicken Rice") && (meal.dinner.name == "Seafood Laksa")) {
+      $rootScope.task = 3
       $rootScope.stopTimer();
-      $rootScope.startTimer();
-    };
-    $window.location.replace('#/tab/diary');
-    add_alert();
-
+      add_alert();
+    }else{
+      add_alert_default();
+    }
   }
-
+  var add_alert_default = function() {
+    var alertPopup = $ionicPopup.show({
+      title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Meal Plan Added!</h4></div></div><div class="row"><div class="col" align="center"><i class="ion-checkmark-round"></i></div></div></div>'
+    });
+    alertPopup.then(function(res) {
+        $window.location.replace('#/tab/diary');
+    });
+    $timeout(function() {
+      alertPopup.close(); //close the popup after 1.5 seconds
+    }, 1500);
+  };
   var add_alert = function() {
     var alertPopup = $ionicPopup.show({
-      title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Task 2 Completed!</h4></div></div><div class="row"><div class="col" align="center"></div></div></div>'
+      title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Task 3 Completed!</h4></div></div><div class="row"><div class="col" align="center"></div></div></div>'
     });
     alertPopup.then(function(res) {
       // console.log('Account is not valid');
@@ -540,7 +594,7 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
 
   $scope.generateRandom = function() {
     var randFoodId = 5;
-    $window.location.replace('#/tab/diary/addfood/' + randFoodId);
+    $window.location= '#/tab/diary/addfood/' + randFoodId;
   }
 
   var doSearch = function() {
@@ -576,29 +630,32 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
   $scope.added_to = {};
   $scope.added_to.meal = 'breakfast';
   $scope.added_to.portion = '1';
-  var today = new Date();
-  var months = Users.months();
+  var today_datetime = new Date();
+  $scope.added_to.date = new Date($rootScope.addfood_date.getFullYear(),$rootScope.addfood_date.getMonth(),$rootScope.addfood_date.getDate());
+  var today = new Date(today_datetime.getFullYear(),today_datetime.getMonth(),today_datetime.getDate());
+
   $scope.eat_food = function() {
-    var add_to_date = $rootScope.addfood_date;
-    var day_to_add = add_to_date.getDate();
-    var mth_to_add = add_to_date.getMonth();
-    //check if User has a meal schedule instance else create
-    if (day_to_add == today.getDate() && mth_to_add == today.getMonth()) {
-      var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
-      meal_array.push($scope.food);
-    } else if (day_to_add < today.getDate()) {
-      var meal_array = $rootScope.user.yesterday[$scope.added_to.meal];
-      meal_array.push($scope.food);
-    } else {
-      var meal_array = $rootScope.user.tomorrow[$scope.added_to.meal];
-      meal_array.push($scope.food);
+    var add_to_date = $scope.added_to.date.getTime();
+    var meals = {
+        breakfast:[],
+        lunch:[],
+        dinner: [],
+        snack: []
+      };
+    if(!$rootScope.user.meals[add_to_date]){
+      $rootScope.user.meals[add_to_date]=meals;
+    }else{
+      meals = $rootScope.user.meals[add_to_date];
     }
+    var meal_array = meals[$scope.added_to.meal];
+    meal_array.push($scope.food);
 
-    if (day_to_add == 7 && mth_to_add == 10 && $scope.added_to.meal == 'lunch' && $scope.added_to.portion == '2' && $scope.food.name == "Fruit Salad") {
-      $rootScope.task = 3
+    var endDate = new Date(2015,10,7);
+    if (endDate.getTime()===add_to_date && $scope.added_to.meal == 'lunch' && $scope.added_to.portion == '2' && $scope.food.name == "Fruit Salad") {
+      $rootScope.task = 2
       $rootScope.stopTimer();
+      $rootScope.startTimer();
       add_alert1();
-
     }
     else{
       add_alert();
@@ -610,24 +667,22 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
       title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Added to diary!</h4></div></div><div class="row"><div class="col" align="center"><i class="ion-checkmark-round"></i></div></div></div>'
     });
     alertPopup.then(function(res) {
-      console.log('Added to diary');
+        $window.location.replace('#/tab/diary');
     });
     $timeout(function() {
       alertPopup.close(); //close the popup after 1.5 seconds
-      $window.location.replace("#/tab/diary/addfood");
     }, 1500);
   };
 
   var add_alert1 = function() {
     var alertPopup = $ionicPopup.show({
-      title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Task 3 Completed!</h4></div></div><div class="row"><div class="col" align="center"></div></div></div>'
+      title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Task 2 Completed!</h4></div></div><div class="row"><div class="col" align="center"></div></div></div>'
     });
-    alertPopup.then(function(res) {
-      // console.log('Account is not valid');
+    alertPopup.then(function (res) {
+        $window.location.replace('#/tab/diary');
     });
     $timeout(function() {
-      alertPopup.close(); //close the popup after 1.5 seconds
-      $window.location.replace("#/tab/diary");
+      alertPopup.close();
     }, 1500);
   };
 })
@@ -642,31 +697,32 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
   $scope.added_to.meal = 'breakfast';
   $scope.added_to.portion = '1';
   $scope.added_to.date = new Date();
-  $scope.eat_food = function() {
-    var today = new Date();
-    var add_to_date = $scope.added_to.date
-    var day_to_add = add_to_date.getDate();
-    var mth_to_add = add_to_date.getMonth();
-    //check if User has a meal schedule instance else create
-    if (day_to_add == today.getDate() && mth_to_add == today.getMonth()) {
-      var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
-      meal_array.push($scope.food);
-    } else if (day_to_add < today.getDate()) {
-      var meal_array = $rootScope.user.yesterday[$scope.added_to.meal];
-      meal_array.push($scope.food);
-    } else {
-      var meal_array = $rootScope.user.tomorrow[$scope.added_to.meal];
-      meal_array.push($scope.food);
-    }
 
-    if (day_to_add == 7 && mth_to_add == 10 && $scope.added_to.meal == 'dinner' && $scope.added_to.portion == '1' && $scope.food.name == "Eggs Benedict") {
+  $scope.eat_food = function() {
+    var added_date = new Date($scope.added_to.date.getFullYear(),$scope.added_to.date.getMonth(),$scope.added_to.date.getDate());
+    var meals = {
+        breakfast:[],
+        lunch:[],
+        dinner: [],
+        snack: []
+      };
+    if(!$rootScope.user.meals[added_date.getTime()]){
+      $rootScope.user.meals[added_date.getTime()]=meals;
+    }else{
+      meals = $rootScope.user.meals[added_date.getTime()];
+    }
+    var meal_array = meals[$scope.added_to.meal];
+    meal_array.push($scope.food);
+
+    var endDate = new Date(2015,10,7);
+    if (endDate.getTime()===added_date.getTime() && $scope.added_to.meal == 'dinner' && $scope.added_to.portion == '1' && $scope.food.name == "Eggs Benedict") {
       $rootScope.task = 1
       $rootScope.stopTimer();
       add_alert();
       $rootScope.startTimer();
+    }else{
+      add_alert_default();
     }
-
-    $window.location.replace('#/tab/diary');
   };
 
   var add_alert = function() {
@@ -674,13 +730,63 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
       title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Task 1 completed!</h4></div></div><div class="row"><div class="col" align="center"><i class="ion-checkmark-round"></i></div></div></div>'
     });
     alertPopup.then(function(res) {
-      console.log('Added to diary');
+      $window.location.replace("#/tab/diary");
     });
     $timeout(function() {
       alertPopup.close(); //close the popup after 1.5 seconds
-      $window.location.replace("#/tab/diary");
     }, 1500);
   };
+  var add_alert_default = function() {
+    var alertPopup = $ionicPopup.show({
+      title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Added to diary!</h4></div></div><div class="row"><div class="col" align="center"><i class="ion-checkmark-round"></i></div></div></div>'
+    });
+    alertPopup.then(function (res) {
+        $window.location.replace("#/tab/diary");
+    });
+    $timeout(function() {
+      alertPopup.close(); //close the popup after 1.5 seconds
+    }, 1500);
+  };
+
+  // $scope.eat_food = function() {
+  //   var today = new Date();
+  //   var add_to_date = $scope.added_to.date
+  //   var day_to_add = add_to_date.getDate();
+  //   var mth_to_add = add_to_date.getMonth();
+  //   //check if User has a meal schedule instance else create
+  //   if (day_to_add == today.getDate() && mth_to_add == today.getMonth()) {
+  //     var meal_array = $rootScope.user.today_meal[$scope.added_to.meal];
+  //     meal_array.push($scope.food);
+  //   } else if (day_to_add < today.getDate()) {
+  //     var meal_array = $rootScope.user.yesterday[$scope.added_to.meal];
+  //     meal_array.push($scope.food);
+  //   } else {
+  //     var meal_array = $rootScope.user.tomorrow[$scope.added_to.meal];
+  //     meal_array.push($scope.food);
+  //   }
+
+  //   if (day_to_add == 7 && mth_to_add == 10 && $scope.added_to.meal == 'dinner' && $scope.added_to.portion == '1' && $scope.food.name == "Eggs Benedict") {
+  //     $rootScope.task = 1
+  //     $rootScope.stopTimer();
+  //     add_alert();
+  //     $rootScope.startTimer();
+  //   }
+
+  //   $window.location.replace('#/tab/diary');
+  // };
+
+  // var add_alert = function() {
+  //   var alertPopup = $ionicPopup.show({
+  //     title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Task 1 completed!</h4></div></div><div class="row"><div class="col" align="center"><i class="ion-checkmark-round"></i></div></div></div>'
+  //   });
+  //   alertPopup.then(function(res) {
+  //     console.log('Added to diary');
+  //   });
+  //   $timeout(function() {
+  //     alertPopup.close(); //close the popup after 1.5 seconds
+  //     $window.location.replace("#/tab/diary");
+  //   }, 1500);
+  // };
 
 })
 
@@ -702,67 +808,37 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
 .controller('ExplorerCtrl', function($scope, FoodAndStores, $rootScope, $ionicSwipeCardDelegate) {
     $scope.$on('$ionicView.enter', function(e) {
       $rootScope.justEntered = true;
+      $rootScope.justLiked = false;
     });
+
     $scope.foods = FoodAndStores.foods();
-    $scope.cardSwiped = function(index) {
+
+    $scope.cardSwiped = function(foodDisliked,index) {
+      $rootScope.justEntered = false;
+      if(!$rootScope.justLiked){
+        var food_disliked = {food:foodDisliked,liked:false}
+        $rootScope.user.preference.push(food_disliked);
+      }else{
+        $rootScope.justLiked = false;
+      }
       $scope.foods.splice(index, 1);
-      $rootScope.justEntered = false;
     };
-    //
-    // $scope.dislike = function (foodDisliked,index) {
-    //     var dislikeSet = $rootScope.user.preference.dislike;
-    //     dislikeSet.push(foodDisliked);
-    //
-    //     $scope.foods.splice(index, 1);
-    // };
-    // $scope.like = function (foodLiked, index) {
-    //     var likeSet = $rootScope.user.preference.like;
-    //     likeSet.push(foodLiked);
-    //     $scope.foods.splice(index, 1);
-    // };
-  })
-  .controller('SwipeCtrl', function($scope, $rootScope, $ionicSwipeCardDelegate, Users) {
-    $scope.dislike = function(foodDisliked, index) {
-      var dislikeSet = $rootScope.user.preference.dislike;
-      console.log(dislikeSet);
-      dislikeSet.push(foodDisliked);
-      var card = $ionicSwipeCardDelegate.getSwipeableCard($scope);
-      //$scope.foods.splice(index, 1);
-      $rootScope.justEntered = false;
-      card.swipe();
-    };
-    $scope.like = function(foodLiked, index) {
-      var likeSet = $rootScope.user.preference.like;
-      likeSet.push(foodLiked);
-      var card = $ionicSwipeCardDelegate.getSwipeableCard($scope);
-      //$scope.foods.splice(index, 1);
-      $rootScope.justEntered = false;
-      card.swipe();
-    };
-  })
 
-.controller('ExplorerHistoryCtrl', function($scope, FoodAndStores) {
+})
+.controller('SwipeCtrl', function($scope, $rootScope, $ionicSwipeCardDelegate) {
+  $rootScope.justEntered = false;
+  $scope.like = function(foodLiked, index) {
+    $rootScope.justLiked = true;
+    var food_liked = {food:foodLiked,liked:true}
+    $rootScope.user.preference.push(food_liked);
+    var card = $ionicSwipeCardDelegate.getSwipeableCard($scope);
+    card.swipe();
+  };
+})
+
+.controller('ExplorerHistoryCtrl', function($scope, $rootScope, FoodAndStores) {
   $scope.foods = FoodAndStores.foods();
-  $scope.preference = [{
-    food: $scope.foods[3],
-    liked: true
-  }, {
-    food: $scope.foods[6],
-    liked: false
-  }, {
-
-    food: $scope.foods[0],
-    liked: true
-  }, {
-    food: $scope.foods[5],
-    liked: true
-  }, {
-    food: $scope.foods[2],
-    liked: false
-  }, {
-    food: $scope.foods[4],
-    liked: true
-  }];
+  $scope.preference = $rootScope.user.preference;
 })
 
 .controller('QnsCtrl', function($scope, $ionicSlideBoxDelegate, $window) {

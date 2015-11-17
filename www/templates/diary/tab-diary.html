@@ -95,10 +95,10 @@
         </div>
 
 
-        <div class="list" ng-if="current_view ==0">
+        <div class="list">
             <div class="item item-divider"><div class="h5">Breakfast</div></div>
             <ion-list>
-                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="breakie in $root.user.today_meal.breakfast track by $index" type="item-text-wrap" ng-click="edit_breakfast($index)">
+                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="breakie in mealplan_display.breakfast track by $index" type="item-text-wrap" ng-click="edit_breakfast($index)">
                     <img ng-src="{{breakie.foodImage}}">
                     <div class="row">
                         <div class="col" align="left" style="padding-top:0px">
@@ -130,7 +130,7 @@
             </ion-list>
             <div class="item item-divider"><div class="h5">Lunch</div></div>
             <ion-list>
-                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="lunchie in $root.user.today_meal.lunch track by $index" type="item-text-wrap" ng-click="edit_lunch($index)">
+                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="lunchie in mealplan_display.lunch track by $index" type="item-text-wrap" ng-click="edit_lunch($index)">
                     <img ng-src="{{lunchie.foodImage}}">
                     <div class="row">
                         <div class="col" align="left" style="padding-top:0px">
@@ -162,7 +162,7 @@
             </ion-list>
             <div class="item item-divider"><div class="h5">Dinner</div></div>
             <ion-list>
-                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="dinie in $root.user.today_meal.dinner track by $index" type="item-text-wrap"  ng-click="edit_dinner($index)">
+                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="dinie in mealplan_display.dinner track by $index" type="item-text-wrap"  ng-click="edit_dinner($index)">
                     <img ng-src="{{dinie.foodImage}}">
                     <div class="row">
                         <div class="col" align="left" style="padding-top:0px">
@@ -194,7 +194,7 @@
             </ion-list>
             <div class="item item-divider"><div class="h5">Snacks</div></div>
             <ion-list>
-                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="snack in $root.user.today_meal.snack track by $index" type="item-text-wrap"  ng-click="edit_snack($index)">
+                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="snack in mealplan_display.snack track by $index" type="item-text-wrap"  ng-click="edit_snack($index)">
                     <img ng-src="{{snack.foodImage}}">
                     <div class="row">
                         <div class="col" align="left" style="padding-top:0px">
@@ -226,248 +226,7 @@
             </ion-list>
         </div>
 
-        <div class="list" ng-if="current_view <0">
-            <div class="item item-divider"><div class="h5">Breakfast</div></div>
-            <ion-list>
-                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="breakie in $root.user.yesterday.breakfast track by $index" type="item-text-wrap" ng-click="edit_breakfast($index)">
-                    <img ng-src="{{breakie.foodImage}}">
-                    <div class="row">
-                        <div class="col" align="left" style="padding-top:0px">
-                            <h2>{{breakie.name}}</h2>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{breakie.nutrient_values.calories}} kcal</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{breakie.nutrient_values.carbs}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{breakie.nutrient_values.fat}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <img src="img/protein.png" style="width:25px">
-                            <h6 style="margin:0px">{{breakie.nutrient_values.protein}}g</h6>
-                        </div>
-                    </div>
-                </ion-item>
-            </ion-list>
-            <div class="item item-divider"><div class="h5">Lunch</div></div>
-            <ion-list>
-                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="lunchie in $root.user.yesterday.lunch track by $index" type="item-text-wrap" ng-click="edit_lunch($index)">
-                    <img ng-src="{{lunchie.foodImage}}">
-                    <div class="row">
-                        <div class="col" align="left" style="padding-top:0px">
-                            <h2>{{lunchie.name}}</h2>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{lunchie.nutrient_values.calories}} kcal</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <img src="img/carbs.png" style="width:25px">
-                            <h6 style="margin:0px">{{lunchie.nutrient_values.carbs}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{lunchie.nutrient_values.fat}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{lunchie.nutrient_values.protein}}g</h6>
-                        </div>
-                    </div>
-                </ion-item>
-            </ion-list>
-            <div class="item item-divider"><div class="h5">Dinner</div></div>
-            <ion-list>
-                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="dinie in $root.user.yesterday.dinner track by $index" type="item-text-wrap"  ng-click="edit_dinner($index)">
-                    <img ng-src="{{dinie.foodImage}}">
-                    <div class="row">
-                        <div class="col" align="left" style="padding-top:0px">
-                            <h2>{{dinie.name}}</h2>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{dinie.nutrient_values.calories}} kcal</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <img src="img/carbs.png" style="width:25px">
-                            <h6 style="margin:0px">{{dinie.nutrient_values.carbs}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{dinie.nutrient_values.fat}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{dinie.nutrient_values.protein}}g</h6>
-                        </div>
-                    </div>
-                </ion-item>
-            </ion-list>
-            <div class="item item-divider"><div class="h5">Snacks</div></div>
-            <ion-list>
-                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="snack in $root.user.yesterday.snack track by $index" type="item-text-wrap"  ng-click="edit_snack($index)">
-                    <img ng-src="{{snack.foodImage}}">
-                    <div class="row">
-                        <div class="col" align="left" style="padding-top:0px">
-                            <h2>{{snack.name}}</h2>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{snack.nutrient_values.calories}} kcal</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <img src="img/carbs.png" style="width:25px">
-                            <h6 style="margin:0px">{{snack.nutrient_values.carbs}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{snack.nutrient_values.fat}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{snack.nutrient_values.protein}}g</h6>
-                        </div>
-                    </div>
-                </ion-item>
-            </ion-list>
-        </div>
 
-
-
-        <div class="list" ng-if="current_view >0">
-            <div class="item item-divider"><div class="h5">Breakfast</div></div>
-            <ion-list>
-                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="breakie in $root.user.tomorrow.breakfast track by $index" type="item-text-wrap" ng-click="edit_breakfast($index)">
-                    <img ng-src="{{breakie.foodImage}}">
-                    <div class="row">
-                        <div class="col" align="left" style="padding-top:0px">
-                            <h2>{{breakie.name}}</h2>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{breakie.nutrient_values.calories}} kcal</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{breakie.nutrient_values.fat}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{breakie.nutrient_values.carbs}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{breakie.nutrient_values.protein}}g</h6>
-                        </div>
-                    </div>
-                </ion-item>
-            </ion-list>
-            <div class="item item-divider"><div class="h5">Lunch</div></div>
-            <ion-list>
-                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="lunchie in $root.user.tomorrow.lunch track by $index" type="item-text-wrap" ng-click="edit_lunch($index)">
-                    <img ng-src="{{lunchie.foodImage}}">
-                    <div class="row">
-                        <div class="col" align="left" style="padding-top:0px">
-                            <h2>{{lunchie.name}}</h2>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{lunchie.nutrient_values.calories}} kcal</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{lunchie.nutrient_values.fat}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{lunchie.nutrient_values.carbs}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{lunchie.nutrient_values.protein}}g</h6>
-                        </div>
-                    </div>
-                </ion-item>
-            </ion-list>
-            <div class="item item-divider"><div class="h5">Dinner</div></div>
-            <ion-list>
-                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="dinie in $root.user.tomorrow.dinner track by $index" type="item-text-wrap" ng-click="edit_dinner($index)">
-                    <img ng-src="{{dinie.foodImage}}">
-                    <div class="row">
-                        <div class="col" align="left" style="padding-top:0px">
-                            <h2>{{dinie.name}}</h2>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{dinie.nutrient_values.calories}} kcal</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{dinie.nutrient_values.fat}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{dinie.nutrient_values.carbs}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{dinie.nutrient_values.protein}}g</h6>
-                        </div>
-                    </div>
-                    <ion-option-button class="button-assertive" ng-click="remove_dinner($index)">
-                        Remove
-                    </ion-option-button>
-                </ion-item>
-            </ion-list>
-            <div class="item item-divider"><div class="h5">Snacks</div></div>
-            <ion-list>
-                <ion-item class="item-remove-animate item-thumbnail-left" ng-repeat="snack in $root.user.tomorrow.snack track by $index" type="item-text-wrap" ng-click="edit_snack($index)">
-                    <img ng-src="{{snack.foodImage}}">
-                    <div class="row">
-                        <div class="col" align="left" style="padding-top:0px">
-                            <h2>{{snack.name}}</h2>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{snack.nutrient_values.calories}} kcal</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{snack.nutrient_values.fat}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{snack.nutrient_values.carbs}}g</h6>
-                        </div>
-                        <div class="col" align="center">
-                            <i class="ion-ios-body"></i>
-                            <h6 style="margin:0px">{{snack.nutrient_values.protein}}g</h6>
-                        </div>
-                    </div>
-                </ion-item>
-            </ion-list>
-            </div>
 
 </ion-content>
 </ion-view>
