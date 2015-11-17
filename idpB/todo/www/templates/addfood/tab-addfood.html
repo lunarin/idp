@@ -1,0 +1,30 @@
+<ion-view view-title="Add Food">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+    <ion-content class="has-header">
+        <div id="search-bar">
+            <div class="item item-input-inset">
+                <label class="item-input-wrapper" id="search-input">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input type="text" placeholder="Search" ng-model="searchText.query" ng-change="search()">
+                </label>
+                <button class="button button-small button-outline button-fab button-energized icon ion-ios-barcode-outline" ng-click="scanBarcode()"> Barcode</button>
+            </div>
+        </div>
+        <ion-list>
+            <ion-item class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="food in searchText.results" type="item-text-wrap" href="#/tab/diary/addfood/{{food.id}}">
+                <img ng-src="{{food.foodImage}}">
+                <h2>{{food.name}}</h2>
+                <p>{{store_name(food.store_id)}}</p>
+                <i class="icon ion-chevron-right icon-accessory"></i>
+            </ion-item>
+            <ion-item ng-if="searchText.results.length ==0" class="item-remove-animate item-thumbnail-left item-icon-right" ng-repeat="food in foods | orderBy:'+name'" type="item-text-wrap" href="#/tab/diary/addfood/{{food.id}}">
+                <img ng-src="{{food.foodImage}}">
+                <h2>{{food.name}}</h2>
+                <p>{{store_name(food.store_id)}}</p>
+                <i class="icon ion-chevron-right icon-accessory"></i>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

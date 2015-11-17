@@ -1,0 +1,65 @@
+
+
+<ion-view view-title="Dashboard">
+  <ion-content class="padding">
+    <div class="row" style="padding-bottom:0px;margin-top:-15px">
+      <div class="col"style="height:140px" ng-click="resumeTimer()">
+        <img src="/img/User-calories.png" style="max-height:100%;max-width:100%">
+      </div>
+      <div class="col" style="text-align:center;padding-top:20px" ng-click="stopTimer()">
+        <p style="font-size:20px">JOHNNY<br>
+        SEE BAE FIT</p>
+        Daily Target: 1200kcal
+        Consumed: 840kcal
+      </div>
+    </div>
+    <div class="row" style="padding-top:0px;">
+
+      <div class="col col-25" style="padding-top:0px;text-align:center">
+        <nvd3 options="options3" data="data3"></nvd3>
+      </div>
+      <div class="col col-25" style="padding-top:0px;">
+
+        <div class="col" align="center" style="padding:0px">
+          <nvd3 options="options1" data="data1"></nvd3>
+        </div>
+      </div>
+      <div class="col col-25" style="padding-top:0px;">
+        <div class="col" style="padding:0px;text-align:center">
+          <nvd3 options="options2" data="data2"></nvd3>
+        </div>
+      </div>
+      <div class="col col-25" style="padding-top:0px;">
+        <div class="col" align="center" style="padding:0px">
+          <nvd3 options="options" data="data"></nvd3>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-50" style="padding-top:0px;text-align:center;height:100px" ng-click="goDiscover()">
+        <img src="/img/db-Explore.png" style="width:100%;height:100%">
+      </div>
+      <div class="col col-50" style="padding-top:0px;text-align:center;height:100px" ng-click="goFind()">
+        <img src="/img/db-Find.png" style="width:100%;height:100%">
+      </div>
+    </div>
+    <div class="row" style="padding-top:10px">
+      <div class="col" style="padding-top:0px;text-align:center;height:100px" ng-click="goDiary()">
+        <img src="/img/db-Diary.png" style="width:100%;height:100%">
+      </div>
+    </div>
+
+    <div class="row" style="padding-top:10px">
+      <div class="col col-50" style="padding-top:0px;text-align:center;height:100px" ng-click="goProfile()">
+        <img src="/img/db-Profile.png" style="width:100%;height:100%">
+
+      </div>
+      <div class="col col-50" style="padding-top:0px;text-align:center;height:100px" ng-click="goAdd()">
+        <img src="/img/db-Add.png" style="width:100%;height:100%">
+
+      </div>
+
+    </div>
+  </ion-content>
+</ion-view>

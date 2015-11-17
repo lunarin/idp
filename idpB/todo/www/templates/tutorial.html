@@ -1,0 +1,17 @@
+<ion-slide-box>
+  <ion-slide>
+    <div class="row row-center" style="height:100%">
+      <div class="col" style="font-size:30px;text-align:center;font-family:avenir">Welcome to Food With Benefits. Now let us take you through some of our key features</div>
+    </div>
+  </ion-slide>
+  <ion-slide ng-repeat="tutorial in tutorials" show-pager="false">
+    <img ng-src="{{tutorial}}" style="width:100%">
+  </ion-slide>
+  <ion-slide>
+    <div class="row row-center" style="height:100%">
+      <div class="col" align="center">
+        <button class="button button-full button-positive " onclick=" window.location = '#/tab/diary'">Start using Food With Benefits now!</button>
+      </div>
+    </div>
+  </ion-slide>
+</ion-slide-box>

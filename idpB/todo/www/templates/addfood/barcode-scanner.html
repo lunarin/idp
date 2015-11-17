@@ -1,0 +1,11 @@
+<ion-view view-title="Barcode Scanner">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+    <ion-content class="padding">
+        <button ng-click="getPhoto()" class="button button-block button-primary">Photo</button>
+        <div ng-if="barcode.scanned">
+            <img src="{{barcode.lastPhoto}}">
+        </div>
+    </ion-content>
+</ion-view>

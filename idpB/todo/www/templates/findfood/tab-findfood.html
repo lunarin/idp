@@ -1,0 +1,39 @@
+<ion-view view-title="Explore">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-content>
+
+    <div class="row" style="height:60%;padding-top:20px">
+      <div class="col">
+        <img src="img/map1.png" style="height:100%;width:100%">
+      </div>
+    </div>
+
+    <div class="row row-bottom" ng-repeat="row in stores | inSlicesOf:2">
+      <div class="col col-50" ng-repeat="store in row" align="center">
+        <div class="card" style="margin-bottom:0px">
+          <a class="button button-icon" style="padding:0px;border:0" href="#/tab/findfood/{{store.id}}">
+            <div class="item item-text-wrap" style="padding:0px;width:100px;height:100px">
+              <div class="row row-center">
+                <img ng-src="{{store.logo}}" width="100%" height="100%">
+              </div>
+            </div>
+          </a>
+
+          <div class="item item-divider" style="padding:0px">
+            <div class="row row-center">
+              <div class="col" align="center" style="padding:0px">
+                <i class="ion-android-walk"></i>
+                <span class="h5">{{store.distance}} km</span>
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

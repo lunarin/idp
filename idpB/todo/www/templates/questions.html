@@ -1,0 +1,178 @@
+<ion-view>
+  <ion-slide-box>
+    <ion-slide>
+          <div class="row" style="text-align:center;padding-top:40px">
+              <div class="col" style="text-align:center;font-family:avenir;font-size:20px">I am</div>
+          </div>
+          <div class="row" style="padding-top:30px">
+              <div style="background-color:#F0F0F0;text-align:center;padding-top:10px;padding-bottom:10px;margin-right:5px;background-color:{{m}}" class="col col-offset-10" ng-click="male()">Male</div>
+              <div style="background-color:#F0F0F0;text-align:center;padding-top:10px;padding-bottom:10px;margin-left:5px;background-color:{{f}}" class="col" ng-click="female()">Female</div>
+              <div class="col col-10"></div>
+          </div>
+          <div class="row" style="text-align:center;padding-top:30px">
+              <div class="col" style="text-align:center;font-family:avenir;font-size:20px">When were you born?</div>
+          </div>
+          <div class="row" style="padding-top:10px">
+              <div class="col col-50 col-offset-25">
+                  <label class="item item-input">
+                      <input type="date" style="text-align:center">
+                  </label>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col col-80 col-offset-10" style="text-align:center;color:#C8C8C8;font-size:12px">
+                  We use these to calculate an accurate calorie count for you
+              </div>
+          </div>
+          <div class="row" style="text-align:center;padding-top:20px">
+              <div class="col" style="text-align:center;font-family:avenir;font-size:20px">How tall are you?</div>
+          </div>
+          <div class="row" style="padding-top:10px">
+              <div class="col col-50 col-offset-25">
+                  <label class="item item-input">
+                      <input type="number" style="text-align:center">
+                      <span class="input-label" style="font-family:Avenir;width:20%">CM</span>
+                  </label>
+              </div>
+          </div>
+          <div class="row" style="text-align:center;padding-top:20px">
+              <div class="col" style="text-align:center;font-family:avenir;font-size:20px">How much do you weigh?</div>
+          </div>
+          <div class="row" style="padding-top:10px">
+              <div class="col col-50 col-offset-25">
+                  <label class="item item-input">
+                      <input type="number" style="text-align:center">
+                      <span class="input-label" style="font-family:Avenir;width:20%">KG</span>
+                  </label>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col col-80 col-offset-10" style="text-align:center;color:#C8C8C8;font-size:12px">
+                  It's okay to estimate, you can change it later.
+              </div>
+          </div>
+
+      </ion-slide>
+    <ion-slide>
+      <div class="row" style="text-align:center;padding-top:40px">
+        <div class="col" style="text-align:center;font-family:avenir;font-size:20px">What is your goal?</div>
+      </div>
+      <div class="col col-80 col-offset-10" style="margin-bottom:-35px" ng-click="toSelect();">
+        <div class="card">
+          <div class="item item-text-wrap" style="text-align:center;font-family:avenir;background-color:#F0F0F0;;border-left:{{selected}};background-color:{{bg}}">
+            Lose Weight
+          </div>
+        </div>
+      </div>
+      <div class="col col-80 col-offset-10" style="margin-bottom:-35px" ng-click="toSelect1();nextSlide();">
+        <div class="card">
+          <div class="item item-text-wrap" style="text-align:center;font-family:avenir;background-color:#F0F0F0;border-left:{{selected1}};background-color:{{bg1}}">
+            Maintain Weight
+          </div>
+        </div>
+      </div>
+      <div class="col col-80 col-offset-10" style="margin-bottom:-35px" ng-click="toSelect2();nextSlide();">
+        <div class="card">
+          <div class="item item-text-wrap" style="text-align:center;font-family:avenir;background-color:#F0F0F0;border-left:{{selected2}};background-color:{{bg2}}">
+            Gain Weight
+          </div>
+        </div>
+      </div>
+        <div class="row" style="text-align:center;padding-top:40px">
+            <div class="col" style="text-align:center;font-family:avenir;font-size:20px">How much would you like to lose?</div>
+        </div>
+        <div class="row" style="padding-top:10px">
+            <div class="col col-50 col-offset-25">
+                <label class="item item-input">
+                    <input type="text" style="text-align:right">
+                    <span class="input-label" style="font-family:Avenir;width:20%">KG</span>
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-80 col-offset-10" style="text-align:center;color:#C8C8C8;font-size:12px">
+                Don't worry, this doesn't affect your daily calorie goal and you can always change it later.
+            </div>
+        </div>
+        <div class="row" style="text-align:center;padding-top:20px">
+            <div class="col" style="text-align:center;font-family:avenir;font-size:20px">What is your weekly goal?</div>
+        </div>
+        <div class="col col-80 col-offset-10" style="text-align:center">
+            <select style="color:#ED7C12">
+                <option>Lose 0.2 kg per week</option>
+                <option selected>Lose 0.5 kg per week</option>
+                <option>Lose 0.8 kg per week</option>
+            </select>
+        </div>
+    </ion-slide>
+    <ion-slide>
+      <div class="row" style="text-align:center;padding-top:40px">
+        <div class="col" style="text-align:center;font-family:avenir;font-size:25px">How active are you?</div>
+      </div>
+      <div class="col col-80 col-offset-10" style="margin-bottom:-35px" ng-click="a();nextSlide();">
+        <div class="card">
+          <div class="item item-text-wrap" style="text-align:left;font-family:avenir;background-color:#F0F0F0;;border-left:{{activity}};background-color:{{abg}}">
+            <p style="font-size:16px;font-weight:bold">Sedantary
+              <p>
+                Spend most of the day sitting (e.g. bankteller, desk job)
+          </div>
+        </div>
+      </div>
+      <div class="col col-80 col-offset-10" style="margin-bottom:-35px" ng-click="a1();nextSlide();">
+        <div class="card">
+          <div class="item item-text-wrap" style="text-align:left;font-family:avenir;background-color:#F0F0F0;border-left:{{activity1}};background-color:{{abg1}}">
+            <p style="font-size:16px;font-weight:bold">Lightly Active
+              <p>
+                Spend a good part of the day on your feet (e.g. teacher, salesman)
+          </div>
+        </div>
+      </div>
+      <div class="col col-80 col-offset-10" style="margin-bottom:-35px" ng-click="a2();nextSlide();">
+        <div class="card">
+          <div class="item item-text-wrap" style="text-align:left;font-family:avenir;background-color:#F0F0F0;border-left:{{activity2}};background-color:{{abg2}}">
+            <p style="font-size:16px;font-weight:bold">Active
+              <p>
+                Spend a good part of the day doing some physical activity (e.g. waitress, mailman)
+          </div>
+        </div>
+      </div>
+      <div class="col col-80 col-offset-10" style="margin-bottom:-35px" ng-click="a3();nextSlide();">
+        <div class="card">
+          <div class="item item-text-wrap" style="text-align:left;font-family:avenir;background-color:#F0F0F0;border-left:{{activity3}};background-color:{{abg3}}">
+            <p style="font-size:16px;font-weight:bold">Very Active
+              <p>
+                Spend a good part of the day doing heavy physical activity (e.g. bike messenger, carpenter)
+          </div>
+        </div>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div class="row" style="text-align:center;padding-top:30px">
+        <div class="col" style="text-align:center;font-family:avenir;font-size:20px">You are ready to create your account</div>
+      </div>
+      <div class="col col-67 col-offset-20" style="padding-top:20px">
+        <label class="item item-input">
+          <input type="text" placeholder="Enter email address">
+        </label>
+      </div>
+      <div class="col col-67 col-offset-20">
+        <label class="item item-input">
+          <input type="password" placeholder="Choose a password">
+        </label>
+      </div>
+      <div class="col col-67 col-offset-20">
+        6 characters minimum
+      </div>
+      <div class="col col-67 col-offset-20">
+        <label class="item item-input">
+          <input type="text" placeholder="Choose a username">
+        </label>
+      </div>
+      <div class="row" style="text-align:center;padding-top:30px">
+        <div class="col">
+          <button class="button button-dark" ng-click="goDiary()">Done!</button>
+        </div>
+      </div>
+    </ion-slide>
+  </ion-slide-box>
+</ion-view>

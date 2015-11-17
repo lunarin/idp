@@ -1,0 +1,50 @@
+<ion-view view-title="Profile">
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-content class="padding">
+    <!-- take icons from http://ionicons.com/ -->
+
+    <div class="row">
+      <div class="col col-40" style="text-align:left">
+        <img style="max-width:100%" src="http://flowtv.org/wp-content/uploads/2012/12/facebook-profile-picture-no-pic-avatar.png">
+      </div>
+      <div class="col col-40" style="text-align:left">
+        <div style="font-size:25px"> Johnny See </div>
+        <div style="font-size:25px;padding-top:10px"> Bae Fit </div>
+        <div style="padding-top:15px" onclick=" window.location = '#/tab/profile/editprofile'"><i class="ion-gear-b"></i> Edit Profile </div>
+      </div>
+    </div>
+    <div class="list">
+      <label class="item item-input">
+        <span class="input-label">Goal Weight (kg)</span>
+        <input type="number" style="text-align:right;color:#ED7C12;" value="55"  >
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Current Weight (kg)</span>
+        <input type="number" style="text-align:right;color:#ED7C12;margin-right:15px" value="55">
+      </label>
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Weight Goal
+        </div>
+        <select style="color:#ED7C12">
+          <option>Lose 0.2 kg per week</option>
+          <option selected>Lose 0.5 kg per week</option>
+          <option>Lose 0.8 kg per week</option>
+        </select>
+      </label>
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Activity Level
+        </div>
+        <select style="color:#ED7C12">
+          <option ng-repeat="item in activityList" ng-value="item.value" ng-model="data.clientSide" ng-change="changeItem(item)">
+            {{ item.header }}
+          </option>
+        </select>
+      </label>
+
+    </div>
+  </ion-content>
+</ion-view>
