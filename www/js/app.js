@@ -254,7 +254,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
     .state('tab.addfood', {
       url: '/diary/addfood',
       views: {
-        'tab-addfood': {
+          'tab-diary': {
           templateUrl: 'templates/addfood/tab-addfood.html',
           controller: 'AddFoodCtrl'
         }
@@ -264,7 +264,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
   .state('tab.barcode-scanner', {
     url: '/diary/addfood/barcode-scanner',
     views: {
-      'tab-addfood': {
+        'tab-diary': {
         templateUrl: 'templates/addfood/barcode-scanner.html',
         controller: 'AddFoodCtrl'
       }
@@ -274,7 +274,7 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
   .state('tab.food-detail', {
     url: '/diary/addfood/:foodId',
     views: {
-      'tab-addfood': {
+        'tab-diary': {
         templateUrl: 'templates/addfood/food-detail.html',
         controller: 'FoodDetailCtrl'
       }
