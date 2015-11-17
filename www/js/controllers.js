@@ -484,9 +484,10 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
     // $rootScope.userProtein +=$rootScope.userFat += meal.lunch.nutrient_values.protein;
     // $rootScope.userProtein +=$rootScope.userFat += meal.dinner.nutrient_values.protein;
     if ((meal.breakfast.name == "Fruit Salad") && (meal.lunch.name == "Chicken Rice") && (meal.dinner.name == "Seafood Laksa")) {
-      $rootScope.task = 3
+      $rootScope.task = 2
       $rootScope.stopTimer();
-      add_alert();
+      $rootScope.startTimer();
+      // add_alert_default();
     }else{
       add_alert_default();
     }
@@ -504,7 +505,7 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
   };
   var add_alert = function() {
     var alertPopup = $ionicPopup.show({
-      title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Task 3 Completed!</h4></div></div><div class="row"><div class="col" align="center"></div></div></div>'
+      title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Task 2 Completed!</h4></div></div><div class="row"><div class="col" align="center"></div></div></div>'
     });
     alertPopup.then(function(res) {
       // console.log('Account is not valid');
@@ -651,10 +652,9 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
     // }
     var endDate = new Date(2015,10,7);
     if (endDate.getTime()===add_to_date && $scope.added_to.meal == 'lunch' && $scope.added_to.portion == '2' && $scope.food.name == "Fruit Salad") {
-      $rootScope.task = 2
+      $rootScope.task = 3
       $rootScope.stopTimer();
-      $rootScope.startTimer();
-      add_alert1();
+      // add_alert1();
     }
     else{
       add_alert();
@@ -675,7 +675,7 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
 
   var add_alert1 = function() {
     var alertPopup = $ionicPopup.show({
-      title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Task 2 Completed!</h4></div></div><div class="row"><div class="col" align="center"></div></div></div>'
+      title: '<div class=" animated zoomIn"><div class="row"><div class="col" align="center"><h4>Task 3 Completed!</h4></div></div><div class="row"><div class="col" align="center"></div></div></div>'
     });
     alertPopup.then(function (res) {
         $window.location.replace('#/tab/diary/addfood');
@@ -717,7 +717,7 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
     if (endDate.getTime()===added_date.getTime() && $scope.added_to.meal == 'dinner' && $scope.added_to.portion == '1' && $scope.food.name == "Eggs Benedict") {
       $rootScope.task = 1
       $rootScope.stopTimer();
-      add_alert();
+      // add_alert();
       $rootScope.startTimer();
     }else{
       add_alert_default();
@@ -973,14 +973,9 @@ angular.module('starter.controllers', ['nvd3', 'uiGmapgoogle-maps', 'ngCordova',
   }
   $scope.createorFindUser = function(name) {
     $rootScope.userdata.findOrCreateUser(name).then(function(foundUser) {
-      if (foundUser != null) {
         $rootScope.user_id = foundUser.$id;
         $rootScope.user_name = foundUser.name;
         $window.location.replace('#/tab/diary');
-      }
-      else{
-        add_alert();
-      }
     });
   }
   var add_alert = function() {

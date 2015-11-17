@@ -84,17 +84,25 @@ angular.module('starter', ['ionic', 'ionic.service.core', 'uiGmapgoogle-maps', '
         if (foundUser) {
           deferred.resolve(foundUser);
         } else {
-          // console.log(foundUser);
-          // console.log("Creating new user", name);
-          // var newUser = {
-          //   id: maxId + 1,
-          //   name: name,
-          //   version: 'a'
-          // };
-          // userdataArr.$add(newUser).then(function(dataref) {
-          //   deferred.resolve(userdataArr.$getRecord(dataref.key()));
-          // });
-          deferred.resolve(null);
+          console.log("Creating new user", name);
+          if(name != undefined){
+          var newUser = {
+            id: maxId + 1,
+            name: name,
+            version: 'a'
+          }
+        }
+        else{
+          var newUser = {
+            id: maxId + 1,
+            name: null,
+            version: 'a'
+          }
+        }
+          userdataArr.$add(newUser).then(function(dataref) {
+            deferred.resolve(userdataArr.$getRecord(dataref.key()));
+          });
+          // deferred.resolve(null);
         }
       });
       return deferred.promise;
